@@ -18,18 +18,17 @@ class BsUsersForm extends Form {
     /**
      * @return Zend\Form
      */
-    public function __construct(array $options = array()) {
+    public function __construct(\Zend\Db\Adapter\Adapter $adapter, array $options = array()) {
         // Configurações iniciais do Form
         parent::__construct("BsUsers");
         $this->setAttribute("method", "post");
         $this->setAttribute("enctype", "multipart/form-data");
         $this->setAttribute("class", "form-horizontal formulario-configuracao");
         $this->setInputFilter(new BsUsersFilter());
-        extract($options);
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'id',
                     'options' => array(
                         'label' => 'FILD_ID_LABEL',
@@ -41,7 +40,7 @@ class BsUsersForm extends Form {
                 )
         );
 
-
+       
         //############################################ informações da coluna codigo ##############################################:
         $this->add(
                 array(
@@ -233,23 +232,13 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna cidade ##############################################:
         $this->add(
                 array(
-                    'type' => 'DoctrineORMModule\Form\Element\EntitySelect',
+                    'type' => 'Select',
                     'name' => 'cidade',
                     'options' => array(
                         'label' => 'FILD_CIDADE_LABEL',
-                        "object_manager" => $objectManager,
-                        'target_class' => 'Admin\Entity\BsCidades',
-                        'property' => 'title',
-                        'disable_inarray_validator' => true,
-                        'display_empty_item' => true,
                         'empty_item_label' => '---Selecione---',
                         'is_method' => true,
-                        'find_method' => array(
-                            'name' => 'findBy',
-                            'params' => array(
-                                'criteria' => array('state' => '0'),
-                            )
-                        )
+                        'value_options' => ['1' => 'Jacinto', '2' => 'Turvo'],
                     ),
                     'attributes' => array(
                         'id' => 'cidade',
@@ -310,7 +299,7 @@ class BsUsersForm extends Form {
                     'name' => 'role_id',
                     'options' => array(
                         'label' => 'FILD_ROLE_ID_LABEL',
-                        'value_options' => $bs_roles,
+                        'value_options' => array('1' => 'Suporte', '2' => "Admin"),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -350,23 +339,12 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna created_by ##############################################:
         $this->add(
                 array(
-                    'type' => 'DoctrineORMModule\Form\Element\EntitySelect',
+                    'type' => 'Select',
                     'name' => 'created_by',
                     'options' => array(
                         'label' => 'FILD_CREATED_BY_LABEL',
-                        "object_manager" => $objectManager,
-                        'target_class' => 'Admin\Entity\BsUsers',
-                        'property' => 'title',
-                        'disable_inarray_validator' => true,
-                        'display_empty_item' => true,
                         'empty_item_label' => '---Selecione---',
-                        'is_method' => true,
-                        'find_method' => array(
-                            'name' => 'findBy',
-                            'params' => array(
-                                'criteria' => array('state' => '0'),
-                            )
-                        )
+                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
                     ),
                     'attributes' => array(
                         'id' => 'created_by',
@@ -398,28 +376,32 @@ class BsUsersForm extends Form {
                     ),
                 )
         );
-
+ //############################################ informações da coluna modified_by ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'modified_by',
+                    'options' => array(
+                        'label' => 'FILD_MODIFIED_BY_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'modified_by',
+                        'value' => '0',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
         //############################################ informações da coluna ordering ##############################################:
         $this->add(
                 array(
-                    'type' => 'DoctrineORMModule\Form\Element\EntitySelect',
+                    'type' => 'Select',
                     'name' => 'ordering',
                     'options' => array(
                         'label' => 'FILD_ORDERING_LABEL',
-                        "object_manager" => $objectManager,
-                        'target_class' => 'Admin\Entity\BsUsers',
-                        'property' => 'title',
-                        'disable_inarray_validator' => true,
-                        'display_empty_item' => true,
-                        'empty_item_label' => '---Selecione---',
                         'is_method' => true,
-                        'find_method' => array(
-                            'name' => 'findBy',
-                            'params' => array(
-                                'criteria' => array('state' => '0'),
-                            )
-                        )
+                        'value_options' => ['1' => 'Primeiro', '2' => 'Segundo'],
                     ),
                     'attributes' => array(
                         'id' => 'ordering',
@@ -440,7 +422,7 @@ class BsUsersForm extends Form {
                     'name' => 'state',
                     'options' => array(
                         'label' => 'FILD_STATE_LABEL',
-                        'value_options' => $state,
+                        'value_options' => ['0' => 'Publicado', '1' => 'Desativado'],
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -462,7 +444,7 @@ class BsUsersForm extends Form {
                     'name' => 'access',
                     'options' => array(
                         'label' => 'FILD_ACCESS_LABEL',
-                        'value_options' => $bs_roles,
+                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -559,6 +541,15 @@ class BsUsersForm extends Form {
                     ),
                 )
         );
+
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Cadastrar',
+                'id' => 'submitbutton',
+            ),
+        ));
     }
 
 }

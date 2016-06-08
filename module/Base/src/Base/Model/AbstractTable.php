@@ -32,6 +32,7 @@ abstract class AbstractTable {
     }
 
     public function insert(AbstractModel $data) {
+        $data->setCodigo($this->getMax('codigo'));
         return $this->tableGateway->insert($data->toArray());
     }
 
@@ -47,6 +48,22 @@ abstract class AbstractTable {
 
     public function delete($id) {
         $this->tableGateway->delete(array('id' => $id));
+    }
+
+//    FUNÇÕES EXTRAS
+    public function getMax($id) {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array(
+            'maxId' => new \Zend\Db\Sql\Expression("MAX({$id})")
+        ));
+        $query = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
+        $rowset = $query->execute();
+        $row = $rowset->current();
+                
+        if (!$row) {
+            $row['maxId'] = 0;
+        }
+        return $row['maxId'] + 1;
     }
 
 }

@@ -49,6 +49,12 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new \Auth\Model\BsUsers()); // Notice what is set here
                     return new TableGateway('bs_users', $dbAdapter, null, $resultSetPrototype);
                 },
+                'Auth\Form\BsUsersForm' => function ($sm) {
+                    return new \Auth\Form\BsUsersForm($sm->get('Zend\Db\Adapter\Adapter'));
+                },
+                'Auth\Model\BsUsers' => function ($sm) {
+                    return new \Auth\Model\BsUsers();
+                },
                 // Add this for SMTP transport
                 'mail.transport' => function (ServiceManager $serviceManager) {
                     $config = $serviceManager->get('Config');
@@ -57,8 +63,7 @@ class Module {
                     return $transport;
                 },
             ),
-            'invokables' => array(
-            )
+            'invokables' => array()
         );
     }
 

@@ -24,7 +24,7 @@ class AdminController extends AbstractActionController {
         $this->route = "auth/default";
         $this->controller = "auth";
         $this->action = "index";
-        $this->form = "Auth\Form\BsUsers";
+        $this->form = "Auth\Form\BsUsersForm";
         $this->model = "Auth\Model\BsUsers";
         $this->table = "Auth\Model\BsUsersTable";
         $this->template = "/auth/auth/listar";
@@ -53,18 +53,22 @@ class AdminController extends AbstractActionController {
 
     // C - Create
     public function createAction() {
-        $this->form = new UserForm();
+        $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $this->form->setInputFilter(new UserFilter());
-            $this->form->setData($request->getPost());
+            $this->data = $this->params()->fromPost();
+            if (empty($this->data['usr_registration_date']))
+                $this->data['usr_registration_date'] = date("Y-m-d H:i:s");
+            if (empty($this->data['usr_registration_token']))
+                $this->data['usr_registration_token'] = md5(date("Y-m-d H:i:s"));
+            $model = $this->getModel();
+            $model->exchangeArray($this->data);
+            $this->form->setData($model->toArray());
             if ($this->form->isValid()) {
-                $data = $this->form->getData();
-                unset($data['submit']);
-                if (empty($data['usr_registration_date']))
-                    $data['usr_registration_date'] = '2013-07-19 12:00:00';
-                $this->getUsersTable()->insert($data);
+                $this->getUsersTable()->insert($model);
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'admin', 'action' => 'index'));
+            } else {
+                var_dump($this->form->getMessages());
             }
         }
         return new ViewModel(array('form' => $this->form));
@@ -75,25 +79,43 @@ class AdminController extends AbstractActionController {
         $id = $this->params()->fromRoute('id');
         if (!$id)
             return $this->redirect()->toRoute('auth/default', array('controller' => 'admin', 'action' => 'index'));
-        $form = new UserForm();
+        $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter(new UserFilter());
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $data = $form->getData();
-                unset($data['submit']);
-                if (empty($data['usr_registration_date']))
-                    $data['usr_registration_date'] = '2013-07-19 12:00:00';
-                $this->getUsersTable()->update($data, array('usr_id' => $id));
+
+            $this->data = $this->params()->fromPost();
+            if (empty($this->data['usr_registration_date']))
+                $this->data['usr_registration_date'] = date("Y-m-d H:i:s");
+            if (empty($this->data['usr_registration_token']))
+                $this->data['usr_registration_token'] = md5(date("Y-m-d H:i:s"));
+            $model = $this->getModel();
+            $model->exchangeArray($this->data);
+            $this->form->setData($model->toArray());
+            $validator = new \Zend\Validator\Db\NoRecordExists(array(
+                'table' => 'bs_users',
+                'field' => 'email',
+                'schema' => 'base',
+                'adapter' => $this->getAdapter(),
+                'exclude' => array(
+                    'field' => 'id',
+                    'value' => $model->getId()
+                )
+            ));
+            echo $model->getId();
+            $validator->setMessage("Registro Não Existe", 'noRecordFound');
+            $validator->setMessage("Registro Ja Existe", 'recordFound');
+            $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
+            
+            if ($this->form->isValid()) {
+                $this->getUsersTable()->update($model);
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'admin', 'action' => 'index'));
             }
         }
         else {
-            $form->setData($this->getUsersTable()->find($id)->toArray());
+            $this->form->setData($this->getUsersTable()->find($id)->toArray());
         }
 
-        return new ViewModel(array('form' => $form, 'id' => $id));
+        return new ViewModel(array('form' => $this->form, 'id' => $id));
     }
 
     // D - delete
