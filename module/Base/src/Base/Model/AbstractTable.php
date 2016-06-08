@@ -45,4 +45,8 @@ abstract class AbstractTable {
         throw new Exception("User não encontrado");
     }
 
+    public function delete($id) {
+        $this->tableGateway->delete(array('id' => $id));
+    }
+
 }

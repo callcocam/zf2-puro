@@ -29,6 +29,9 @@ abstract class AbstractController extends AbstractActionController {
     public function getAdapter() {
         return $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
     }
+    public function getForm() {
+        return $this->getServiceLocator()->get($this->form);
+    }
 
     public function getTableGateway() {
         return $this->getServiceLocator()->get($this->table);
