@@ -1,0 +1,10 @@
+<a href="<?php echo $this->url($this->route,array('controller'=>$this->controller,'action'=>'inserir')) ?>">Cadastrar</a>
+<table class="table">
+<?php foreach ($this->data as $o):?>
+	<tr>
+		<td><a href="<?php echo $this->url($this->route,array('controller'=>$this->controller,'action'=>'editar','id'=>$o->getId())) ?>"><?=$o->getTitle()?></a></td>
+		<td><?=$o->getDescription()?></td>
+		<td><?=$o->getCreated()?></td>
+	</tr>
+<?php endforeach;?>
+</table>
