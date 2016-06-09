@@ -10,7 +10,7 @@
 namespace Admin\Controller;
 
 use Base\Controller\AbstractController;
-use Zend\View\Model\ViewModel;
+
 
 class BsUsersController extends AbstractController
 {
