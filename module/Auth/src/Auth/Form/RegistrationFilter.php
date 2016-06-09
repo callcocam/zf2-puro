@@ -2,12 +2,17 @@
 
 namespace Auth\Form;
 
-
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Input;
+use Zend\Validator\NotEmpty;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\Identical;
+use Zend\Filter\StripTags;
+use Zend\Filter\StringTrim;
 
 class RegistrationFilter extends InputFilter {
 
-    public function __construct($sm) {
+    public function __construct() {
         $inputFilter = new InputFilter ();
         $emptyfilter = new NotEmpty ();
         $emailfilter = new EmailAddress ();
@@ -27,7 +32,6 @@ class RegistrationFilter extends InputFilter {
         $id->getValidatorChain()->attach($emptyfilter);
         $this->add($id);
         //Check that the email address exists in the database
-      
         // Informação para a coluna codigo:
         $codigo = new Input("codigo");
         $codigo->setRequired(false);
@@ -131,8 +135,8 @@ class RegistrationFilter extends InputFilter {
         $password->getFilterChain()->attach($StripTags);
         $password->getValidatorChain()->attach($emptyfilter);
         $this->add($password);
-        
-         // Informação para a coluna usr_password_confirm:
+
+        // Informação para a coluna usr_password_confirm:
         $usr_password_confirm = new Input("usr_password_confirm");
         $usr_password_confirm->setRequired(true);
         $usr_password_confirm->getFilterChain()->attach($StringTrim);
@@ -140,8 +144,8 @@ class RegistrationFilter extends InputFilter {
         $usr_password_confirm->getValidatorChain()->attach($emptyfilter);
         $usr_password_confirm->getValidatorChain()->attach($identca);
         $this->add($usr_password_confirm);
-        
-          // Informação para a coluna password:
+
+        // Informação para a coluna password:
         $usr_registration_token = new Input("usr_registration_token");
         $usr_registration_token->setRequired(false);
         $usr_registration_token->getFilterChain()->attach($StringTrim);

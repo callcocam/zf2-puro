@@ -18,7 +18,7 @@ class BsUsersForm extends Form {
     /**
      * @return Zend\Form
      */
-    public function __construct(\Zend\Db\Adapter\Adapter $adapter, array $options = array()) {
+    public function __construct($nome = "") {
         // Configurações iniciais do Form
         parent::__construct("BsUsers");
         $this->setAttribute("method", "post");

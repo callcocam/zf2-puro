@@ -34,9 +34,9 @@ class RegistrationController extends AbstractController {
             if ($this->form->isValid()) {
                 $this->data = $this->form->getData();
                 $this->data = $this->prepareData($this->data);
-                $auth = new Auth();
+                $auth = $this->getTableGateway();
                 $auth->exchangeArray($this->data);
-                $this->getTableGateway()->saveUser($auth);
+                $this->getTableGateway()->insert($auth);
                 $this->sendConfirmationEmail($auth);
                 $this->flashMessenger()->addMessage($auth->usr_email);
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'registration-success'));
@@ -145,6 +145,16 @@ class RegistrationController extends AbstractController {
         $staticSalt = $config['static_salt'];
         return $staticSalt;
     }
+    
+    public function prepareData($data)
+	{
+		$data['state'] = 1;
+		$data['password'] = $this->encriptPassword($data['email'],$data['password']);
+		$data['usr_registration_token'] = md5(uniqid(mt_rand(), true)); 
+                $data['empresa'] = 1;
+                $data['created_by'] = 1;
+ 		return $data;
+	}
 
     public function generatePassword($l = 8, $c = 0, $n = 0, $s = 0) {
         // get count of all required minimum special chars

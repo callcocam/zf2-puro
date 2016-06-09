@@ -52,13 +52,7 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new \Auth\Model\BsUsers()); // Notice what is set here
                     return new TableGateway('bs_users', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Auth\Form\BsUsersForm' => function ($sm) {
-                    return new \Auth\Form\BsUsersForm($sm->get('Zend\Db\Adapter\Adapter'));
-                },
-               'Auth\Model\BsUsers' => function ($sm) {
-                    return new \Auth\Model\BsUsers();
-                },
-                // Add this for SMTP transport
+                 // Add this for SMTP transport
                 'mail.transport' => function (ServiceManager $serviceManager) {
                     $config = $serviceManager->get('Config');
                     $transport = new Smtp();
@@ -69,7 +63,6 @@ class Module {
                     return new \Auth\Model\AuthStorage('zf_tutorial');
                 },
                 'AuthService' => function($sm) {
-                    
                     $staticSalt=$sm->get('config')['static_salt'];
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter,
@@ -87,6 +80,8 @@ class Module {
                 'Auth\Form\AuthForm' => 'Auth\Form\AuthForm',
                 'Auth\Form\ForgottenPasswordForm' => 'Auth\Form\ForgottenPasswordForm',
                 'Auth\Form\RegistrationForm' => 'Auth\Form\RegistrationForm',
+                'Auth\Form\BsUsersForm'=>'Auth\Form\BsUsersForm',
+                'Auth\Model\BsUsers'=>'Auth\Model\BsUsers'
             )
         );
     }
