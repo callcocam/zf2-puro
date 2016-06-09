@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -11,24 +12,30 @@ namespace Base;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+class Module {
 
-class Module
-{
-    public function onBootstrap(MvcEvent $e)
-    {
-        $eventManager        = $e->getApplication()->getEventManager();
+    public function onBootstrap(MvcEvent $e) {
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $sharedManager = $eventManager->getSharedManager();
+        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($ev) {
+            $companies=$ev->getApplication()->getServiceManager()->get('Admin\Model\BsCompaniesTable');
+            //var_dump($companies->findOneBy(array('state'=>0)));
+           }, 99);
     }
 
-    public function getConfig()
-    {
+    public function companies() {
+      
+        die;
+    }
+
+    public function getConfig() {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig()
-    {
+    public function getAutoloaderConfig() {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -41,11 +48,22 @@ class Module
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                'resultSetPrototype'=>function($sm)
-                    {
-                        return new ResultSet();
-                    }
-               )
+                 // For Yable data Gateway
+                'Admin\Model\BsCompaniesTable' => function($sm) {
+                    $tableGateway = $sm->get('CompaniesTableGateway');
+                    $table = new \Admin\Model\BsCompaniesTable($tableGateway);
+                    return $table;
+                },
+                'CompaniesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = $sm->get('resultSetPrototype');
+                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCompanies()); // Notice what is set here
+                    return new TableGateway('bs_companies', $dbAdapter, null, $resultSetPrototype);
+                },
+            ),
+            'invokables' => array(
+                'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',
+            )
         );
     }
 

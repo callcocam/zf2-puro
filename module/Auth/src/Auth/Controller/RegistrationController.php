@@ -3,7 +3,6 @@
 namespace Auth\Controller;
 
 use Zend\View\Model\ViewModel;
-use Auth\Model\Auth;
 use Auth\Form\RegistrationFilter;
 use Auth\Form\ForgottenPasswordFilter;
 use Zend\Mail\Message;
