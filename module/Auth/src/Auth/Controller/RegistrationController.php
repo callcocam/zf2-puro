@@ -3,7 +3,6 @@
 namespace Auth\Controller;
 
 use Zend\View\Model\ViewModel;
-use Auth\Form\RegistrationFilter;
 use Auth\Form\ForgottenPasswordFilter;
 use Zend\Mail\Message;
 use Zend\Crypt\Key\Derivation\Pbkdf2;
@@ -25,23 +24,27 @@ class RegistrationController extends AbstractController {
         // $myValidator = new ConfirmPassword();
         $this->form = $this->getForm();
         $this->form->get('submit')->setValue('Register');
-
+        $cache = $this->CachePlugin()->getItem('companies');
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $this->form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
-            $this->form->setData($request->getPost());
+            $this->data = $this->prepareData($this->params()->fromPost());
+            $auth = $this->getModel();
+            $auth->exchangeArray($this->data);
+            $this->form->setData($this->data);
+            //Valida se ja existe um resgistro no banco
+            $validator=$this->setValidation('bs_users', 'email');
+            $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
             if ($this->form->isValid()) {
-                $this->data = $this->form->getData();
-                $this->data = $this->prepareData($this->data);
-                $auth = $this->getTableGateway();
-                $auth->exchangeArray($this->data);
-                $this->getTableGateway()->insert($auth);
-                $this->sendConfirmationEmail($auth);
-                $this->flashMessenger()->addMessage($auth->usr_email);
+                $result = $this->getTableGateway()->insert($auth);
+                if ($result) {
+                    $this->sendConfirmationEmail($auth);
+                }
+
+                $this->flashMessenger()->addMessage($auth->getEmail());
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'registration-success'));
             }
         }
-        return new ViewModel(array('form' => $this->form));
+        return new ViewModel(array('form' => $this->form, 'companies' => $cache));
     }
 
     public function registrationSuccessAction() {
@@ -60,8 +63,7 @@ class RegistrationController extends AbstractController {
         $viewModel = new ViewModel(array('token' => $token));
         try {
             $user = $this->getTableGateway()->getUserByToken($token);
-            $usr_id = $user->usr_id;
-            $this->getUsersTable()->activateUser($usr_id);
+            $this->getTableGateway()->activateUser($user->getId());
         } catch (\Exception $e) {
             $viewModel->setTemplate('auth/registration/confirm-email-error.phtml');
         }
@@ -108,15 +110,15 @@ class RegistrationController extends AbstractController {
         $transport = $this->getServiceLocator()->get('mail.transport');
         $message = new Message();
         $this->getRequest()->getServer();  //Server vars
-        $message->addTo($auth->usr_email)
-                ->addFrom('praktiki@coolcsn.com')
+        $message->addTo($auth->getEmail())
+                ->addFrom('suporte@sigasmart.com.br')
                 ->setSubject('Please, confirm your registration!')
                 ->setBody("Please, click the link to confirm your registration => " .
                         $this->getRequest()->getServer('HTTP_ORIGIN') .
                         $this->url()->fromRoute('auth/default', array(
                             'controller' => 'registration',
                             'action' => 'confirm-email',
-                            'id' => $auth->usr_registration_token)));
+                            'id' => $auth->getUsrRegistrationToken())));
         $transport->send($message);
     }
 
@@ -134,7 +136,8 @@ class RegistrationController extends AbstractController {
         );
         $transport->send($message);
     }
-     public function encryptPassword($login, $password) {
+
+    public function encryptPassword($login, $password) {
         $salt = $this->getStaticSalt();
         return base64_encode(Pbkdf2::calc('sha256', $password, $login, 10000, strlen($salt * 2)));
     }
@@ -144,16 +147,16 @@ class RegistrationController extends AbstractController {
         $staticSalt = $config['static_salt'];
         return $staticSalt;
     }
-    
-    public function prepareData($data)
-	{
-		$data['state'] = 1;
-		$data['password'] = $this->encriptPassword($data['email'],$data['password']);
-		$data['usr_registration_token'] = md5(uniqid(mt_rand(), true)); 
-                $data['empresa'] = 1;
-                $data['created_by'] = 1;
- 		return $data;
-	}
+
+    public function prepareData($data) {
+        $data['state'] = 1;
+        $data['password'] = $this->encryptPassword($data['email'], $data['password']);
+        $data['usr_password_confirm'] = $this->encryptPassword($data['email'], $data['usr_password_confirm']);
+        $data['usr_registration_token'] = md5(uniqid(mt_rand(), true));
+        $data['empresa'] = 1;
+        $data['created_by'] = 1;
+        return $data;
+    }
 
     public function generatePassword($l = 8, $c = 0, $n = 0, $s = 0) {
         // get count of all required minimum special chars

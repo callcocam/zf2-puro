@@ -107,7 +107,7 @@ class RegistrationForm extends Form {
         //############################################ informações da coluna facebook ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'facebook',
                     'attributes' => array(
                         'id' => 'facebook',

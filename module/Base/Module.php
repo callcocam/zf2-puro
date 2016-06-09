@@ -13,6 +13,7 @@ namespace Base;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Db\TableGateway\TableGateway;
+
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
@@ -21,13 +22,19 @@ class Module {
         $moduleRouteListener->attach($eventManager);
         $sharedManager = $eventManager->getSharedManager();
         $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($ev) {
-            $companies=$ev->getApplication()->getServiceManager()->get('Admin\Model\BsCompaniesTable');
-            //var_dump($companies->findOneBy(array('state'=>0)));
-           }, 99);
+            $cache = new Model\Cache(array('ttl'=>6000));
+            if (!$cache->hasItem("companies")) {
+                $model = $ev->getApplication()->getServiceManager()->get('Admin\Model\BsCompaniesTable');
+                $companies = $model->findOneBy(array('state' => 0));
+                if ($companies) {
+                    $cache->addItem("companies", $companies->toArray());
+                }
+            }
+        }, 99);
     }
 
     public function companies() {
-      
+
         die;
     }
 
@@ -48,7 +55,7 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                 // For Yable data Gateway
+                // For Yable data Gateway
                 'Admin\Model\BsCompaniesTable' => function($sm) {
                     $tableGateway = $sm->get('CompaniesTableGateway');
                     $table = new \Admin\Model\BsCompaniesTable($tableGateway);
@@ -63,6 +70,18 @@ class Module {
             ),
             'invokables' => array(
                 'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',
+            )
+        );
+    }
+    
+    public function getViewHelperConfig()
+    {
+         return array(
+            'factories' => array(
+                
+            ),
+            'invokables' => array(
+                'CacheHelper' => 'Base\View\Helper\CacheHelper',
             )
         );
     }

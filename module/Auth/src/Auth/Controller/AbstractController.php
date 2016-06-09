@@ -120,16 +120,10 @@ abstract class AbstractController extends AbstractActionController {
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($model->toArray());
-            $validator = new \Zend\Validator\Db\NoRecordExists(array(
-                'table' => 'bs_users',
-                'field' => 'email',
-                'schema' => 'base',
-                'adapter' => $this->getAdapter(),
-                'exclude' => array(
+            $validator=$this->setValidation('bs_users', 'email', array(
                     'field' => 'id',
                     'value' => $model->getId()
-                )
-            ));
+                ));
             $validator->setMessage("Registro Não Existe", 'noRecordFound');
             $validator->setMessage("Registro Ja Existe", 'recordFound');
             $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
@@ -150,6 +144,19 @@ abstract class AbstractController extends AbstractActionController {
             $this->getTableGateway()->delete($id);
         }
         return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
+    }
+
+    public function setValidation($table,$fild,$exclude="") {
+        $validator = new \Zend\Validator\Db\NoRecordExists(array(
+            'table' => $table,
+            'field' => $fild,
+            'schema' => 'base',
+            'adapter' => $this->getAdapter(),
+            "exclude"=>$exclude
+        ));
+        $validator->setMessage("Registro Não Existe", 'noRecordFound');
+        $validator->setMessage("Registro Ja Existe", 'recordFound');
+        return $validator;
     }
 
 }

@@ -9,9 +9,5 @@ $this->formElementErrors()
         ->setMessageSeparatorString('</li>')->render($form);
 $form->prepare();
 echo $this->form()->openTag($form);
-echo $this->formRow($form->get('title'));
-echo $this->formRow($form->get('email'));
-echo $this->formRow($form->get('password'));
-echo $this->formRow($form->get('usr_password_confirm'));
-echo $this->formRow($form->get('captcha'));
-echo $this->formSubmit($form->get('submit'));
+echo $this->formCollection($form);
+echo $this->form()->closeTag();
