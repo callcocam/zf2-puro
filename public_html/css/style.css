@@ -35,3 +35,22 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+.fmi {
+  width: 100%; 
+  float: left;
+  margin: 10px;
+  padding: 10px;
+ 
+}
+.fmi form{
+  width: 340px; 
+  float: left;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid black;
+}
+.fmi .fmi-footer{
+  width:100%;
+  float: left;
+}

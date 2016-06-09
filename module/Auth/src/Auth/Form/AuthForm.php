@@ -9,20 +9,23 @@ class AuthForm extends Form {
     public function __construct($name = null) {
         parent::__construct('auth');
         $this->setAttribute('method', 'post');
-
+        $this->setAttribute("enctype", "multipart/form-data");
+        $this->setAttribute("class", "form-inline");
         $this->add(array(
-            'name' => 'title',
+            'name' => 'email',
             'attributes' => array(
                 'type' => 'text',
+                'class' => 'form-control'
             ),
             'options' => array(
-                'label' => 'FILD_USER_NAME_LABEL',
+                'label' => 'FILD_USER_EMAIL_LABEL',
             ),
         ));
         $this->add(array(
             'name' => 'password',
             'attributes' => array(
                 'type' => 'password',
+                'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'FILD_USER_PASSWORD_LABEL',
@@ -43,6 +46,7 @@ class AuthForm extends Form {
                 'type' => 'submit',
                 'value' => 'Acessar Minha Conta',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-success'
             ),
         ));
     }

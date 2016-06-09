@@ -149,6 +149,15 @@ class BsUsersFilter extends InputFilter {
         $password->getFilterChain()->attach($StripTags);
         //$password->getValidatorChain()->attach($emptyfilter);
         $this->add($password);
+        
+          // Informação para a coluna password:
+        $usr_registration_token = new Input("usr_registration_token");
+        $usr_registration_token->setRequired(false);
+        $usr_registration_token->getFilterChain()->attach($StringTrim);
+        $usr_registration_token->getFilterChain()->attach($StripTags);
+        //$password->getValidatorChain()->attach($emptyfilter);
+        $this->add($usr_registration_token);
+
 
         // Informação para a coluna role_id:
         $role_id = new Input("role_id");

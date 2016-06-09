@@ -19,8 +19,8 @@ return array(
                     'route' => '/auth',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
-                        'controller' => 'Auth',
-                        'action' => 'index',
+                        'controller' => 'Login',
+                        'action' => 'login',
                     ),
                 ),
                 'may_terminate' => true,
@@ -43,8 +43,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Auth\Controller\Auth' => 'Auth\Controller\AuthController',
-            'Auth\Controller\Index' => 'Auth\Controller\IndexController',
+            'Auth\Controller\Login' => 'Auth\Controller\LoginController',
             'Auth\Controller\Registration' => 'Auth\Controller\RegistrationController',
             'Auth\Controller\Admin' => 'Auth\Controller\AdminController',
         ),

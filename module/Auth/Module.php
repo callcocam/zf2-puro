@@ -10,9 +10,12 @@
 
 namespace Auth;
 
-use Auth\Model\UsersTable;
+
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+
 // Add this for SMTP transport
 use Zend\ServiceManager\ServiceManager;
 use Zend\Mail\Transport\Smtp;
@@ -52,7 +55,7 @@ class Module {
                 'Auth\Form\BsUsersForm' => function ($sm) {
                     return new \Auth\Form\BsUsersForm($sm->get('Zend\Db\Adapter\Adapter'));
                 },
-                'Auth\Model\BsUsers' => function ($sm) {
+               'Auth\Model\BsUsers' => function ($sm) {
                     return new \Auth\Model\BsUsers();
                 },
                 // Add this for SMTP transport
@@ -62,8 +65,27 @@ class Module {
                     $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
                     return $transport;
                 },
+                'Auth\Model\AuthStorage' => function($sm) {
+                    return new \Auth\Model\AuthStorage('zf_tutorial');
+                },
+                'AuthService' => function($sm) {
+                    
+                    $staticSalt=$sm->get('config')['static_salt'];
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter,
+                     'bs_users',
+                     'email',
+                     'password',
+                     "MD5('{$staticSalt}') AND state = 0");
+                    $authService = new AuthenticationService();
+                    $authService->setAdapter($dbTableAuthAdapter);
+                    $authService->setStorage($sm->get('Auth\Model\AuthStorage'));
+                    return $authService;
+                },
             ),
-            'invokables' => array()
+            'invokables' => array(
+                'Auth\Form\AuthForm' => 'Auth\Form\AuthForm',
+            )
         );
     }
 

@@ -28,7 +28,7 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'id',
                     'options' => array(
                         'label' => 'FILD_ID_LABEL',
@@ -40,7 +40,7 @@ class BsUsersForm extends Form {
                 )
         );
 
-       
+
         //############################################ informações da coluna codigo ##############################################:
         $this->add(
                 array(
@@ -291,7 +291,18 @@ class BsUsersForm extends Form {
                 )
         );
 
-
+        //############################################ informações da coluna usr_registration_token ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'usr_registration_token',
+                    'attributes' => array(
+                        'id' => 'usr_registration_token',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
         //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
@@ -376,7 +387,7 @@ class BsUsersForm extends Form {
                     ),
                 )
         );
- //############################################ informações da coluna modified_by ##############################################:
+        //############################################ informações da coluna modified_by ##############################################:
         $this->add(
                 array(
                     'type' => 'hidden',
