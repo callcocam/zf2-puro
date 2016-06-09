@@ -34,11 +34,11 @@ class BsUsersTable extends \Base\Model\AbstractTable {
 
     public function activateUser($usr_id) {
         $data['state'] = 0;
-        $this->tableGateway->update($data, array('usr_id' => (int) $usr_id));
+        $this->tableGateway->update($data, array('id' => (int) $usr_id));
     }
 
     public function getUserByEmail($usr_email) {
-        $rowset = $this->tableGateway->select(array('usr_email' => $usr_email));
+        $rowset = $this->tableGateway->select(array('email' => $usr_email));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $usr_email");
@@ -48,7 +48,7 @@ class BsUsersTable extends \Base\Model\AbstractTable {
 
     public function changePassword($usr_id, $password) {
         $data['password'] = $password;
-        $this->tableGateway->update($data, array('usr_id' => (int) $usr_id));
+        $this->tableGateway->update($data, array('id' => (int) $usr_id));
     }
 
 }

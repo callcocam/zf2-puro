@@ -8,19 +8,22 @@ class LoginController extends AbstractController {
 
     public function __construct() {
         $this->route = "auth/default";
-        $this->controller = "admin";
+        $this->controller = "login";
         $this->action = "index";
         $this->form = "Auth\Form\AuthForm";
         $this->model = "Auth\Model\BsUsers";
         $this->table = "Auth\Model\BsUsersTable";
         $this->template = "/auth/auth/listar";
+        
     }
 
     public function loginAction() {
+        
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
         }
+        $this->storage = $this->getSessionStorage();
         $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -52,6 +55,7 @@ class LoginController extends AbstractController {
          if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route);
         }
+        $this->storage = $this->getSessionStorage();
         $this->getAuthService()->clearIdentity();
         $this->storage->forgetMe();
         return $this->redirect()->toRoute($this->route);

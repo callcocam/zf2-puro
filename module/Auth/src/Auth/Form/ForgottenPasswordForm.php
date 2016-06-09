@@ -14,9 +14,11 @@ class ForgottenPasswordForm extends Form {
             'name' => 'email',
             'attributes' => array(
                 'type' => 'email',
+                'class' => 'form-control'
             ),
             'options' => array(
                 'label' => 'FILD_EMAIL_LABEL',
+               
             ),
         ));
 
@@ -26,6 +28,7 @@ class ForgottenPasswordForm extends Form {
                 'type' => 'submit',
                 'value' => 'Recuperar',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-info'
             ),
         ));
     }

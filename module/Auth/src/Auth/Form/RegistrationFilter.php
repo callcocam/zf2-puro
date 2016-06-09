@@ -10,7 +10,7 @@ class RegistrationFilter extends InputFilter {
     public function __construct($sm) {
         // self::__construct(); // parnt::__construct(); - trows and error
         $this->add(array(
-            'name' => 'name',
+            'name' => 'title',
             'required' => true,
             'filters' => array(
                 array('name' => 'StripTags'),
@@ -28,8 +28,8 @@ class RegistrationFilter extends InputFilter {
                 array(
                     'name' => 'Zend\Validator\Db\NoRecordExists',
                     'options' => array(
-                        'table' => 'users',
-                        'field' => 'name',
+                        'table' => 'bs_users',
+                        'field' => 'title',
                         'adapter' => $sm->get('Zend\Db\Adapter\Adapter'),
                     ),
                 ),

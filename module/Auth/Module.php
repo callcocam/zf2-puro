@@ -85,6 +85,8 @@ class Module {
             ),
             'invokables' => array(
                 'Auth\Form\AuthForm' => 'Auth\Form\AuthForm',
+                'Auth\Form\ForgottenPasswordForm' => 'Auth\Form\ForgottenPasswordForm',
+                'Auth\Form\RegistrationForm' => 'Auth\Form\RegistrationForm',
             )
         );
     }

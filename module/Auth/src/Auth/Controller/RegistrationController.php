@@ -2,43 +2,47 @@
 
 namespace Auth\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Auth\Model\Auth;
-use Auth\Form\RegistrationForm;
 use Auth\Form\RegistrationFilter;
-use Auth\Form\ForgottenPasswordForm;
 use Auth\Form\ForgottenPasswordFilter;
-
 use Zend\Mail\Message;
+use Zend\Crypt\Key\Derivation\Pbkdf2;
 
-class RegistrationController extends AbstractActionController {
+class RegistrationController extends AbstractController {
 
-    protected $usersTable;
+    public function __construct() {
+        $this->route = "auth/default";
+        $this->controller = "registration";
+        $this->action = "forgotten-password";
+        $this->form = "Auth\Form\RegistrationForm";
+        $this->model = "Auth\Model\BsUsers";
+        $this->table = "Auth\Model\BsUsersTable";
+        $this->template = "/auth/auth/listar";
+    }
 
     public function indexAction() {
         // A test instantiation to make sure it works. Not used in the application. You can remove the next line
         // $myValidator = new ConfirmPassword();
-        $form = new RegistrationForm();
-        $form->get('submit')->setValue('Register');
+        $this->form = $this->getForm();
+        $this->form->get('submit')->setValue('Register');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $data = $this->prepareData($data);
+            $this->form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
+            $this->form->setData($request->getPost());
+            if ($this->form->isValid()) {
+                $this->data = $this->form->getData();
+                $this->data = $this->prepareData($this->data);
                 $auth = new Auth();
-                $auth->exchangeArray($data);
-                $this->getUsersTable()->saveUser($auth);
-
+                $auth->exchangeArray($this->data);
+                $this->getTableGateway()->saveUser($auth);
                 $this->sendConfirmationEmail($auth);
                 $this->flashMessenger()->addMessage($auth->usr_email);
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'registration-success'));
             }
         }
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(array('form' => $this->form));
     }
 
     public function registrationSuccessAction() {
@@ -56,7 +60,7 @@ class RegistrationController extends AbstractActionController {
         $token = $this->params()->fromRoute('id');
         $viewModel = new ViewModel(array('token' => $token));
         try {
-            $user = $this->getUsersTable()->getUserByToken($token);
+            $user = $this->getTableGateway()->getUserByToken($token);
             $usr_id = $user->usr_id;
             $this->getUsersTable()->activateUser($usr_id);
         } catch (\Exception $e) {
@@ -66,28 +70,28 @@ class RegistrationController extends AbstractActionController {
     }
 
     public function forgottenPasswordAction() {
-        $form = new ForgottenPasswordForm();
-        $form->get('submit')->setValue('Send');
+        $this->form = 'Auth\Form\ForgottenPasswordForm';
+        $this->form = $this->getForm();
+        $this->form->get('submit')->setValue('Send');
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $usr_email = $data['usr_email'];
-                $usersTable = $this->getUsersTable();
+            $this->form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
+            $this->form->setData($request->getPost());
+            if ($this->form->isValid()) {
+                $this->data = $this->form->getData();
+                $usr_email = $this->data['email'];
+                $usersTable = $this->getTableGateway();
                 $auth = $usersTable->getUserByEmail($usr_email);
                 $password = $this->generatePassword();
-                $auth->usr_password = $this->encriptPassword($this->getStaticSalt(), $password, $auth->usr_password_salt);
-//				$usersTable->changePassword($auth->usr_id, $password);
-// 				or
-                $usersTable->saveUser($auth);
+                $auth->setPassword($password);
+                $auth->usr_password = $this->encryptPassword($usr_email, $password, $this->getStaticSalt());
+                $usersTable->update($auth);
                 $this->sendPasswordByEmail($usr_email, $password);
                 $this->flashMessenger()->addMessage($usr_email);
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'password-change-success'));
             }
         }
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(array('form' => $this->form));
     }
 
     public function passwordChangeSuccessAction() {
@@ -101,40 +105,46 @@ class RegistrationController extends AbstractActionController {
         return new ViewModel(array('usr_email' => $usr_email));
     }
 
-    public function prepareData($data) {
-        $data['usr_active'] = 0;
-        $data['usr_password_salt'] = $this->generateDynamicSalt();
-        $data['usr_password'] = $this->encriptPassword(
-                $this->getStaticSalt(), $data['usr_password'], $data['usr_password_salt']
-        );
-        $data['usrl_id'] = 2;
-        $data['lng_id'] = 1;
-//		$data['usr_registration_date'] = date('Y-m-d H:i:s');
-        $date = new \DateTime();
-        $data['usr_registration_date'] = $date->format('Y-m-d H:i:s');
-        $data['usr_registration_token'] = md5(uniqid(mt_rand(), true)); // $this->generateDynamicSalt();
-//		$data['usr_registration_token'] = uniqid(php_uname('n'), true);
-        $data['usr_email_confirmed'] = 0;
-        return $data;
+    public function sendConfirmationEmail($auth) {
+        // $view = $this->getServiceLocator()->get('View');
+        $transport = $this->getServiceLocator()->get('mail.transport');
+        $message = new Message();
+        $this->getRequest()->getServer();  //Server vars
+        $message->addTo($auth->usr_email)
+                ->addFrom('praktiki@coolcsn.com')
+                ->setSubject('Please, confirm your registration!')
+                ->setBody("Please, click the link to confirm your registration => " .
+                        $this->getRequest()->getServer('HTTP_ORIGIN') .
+                        $this->url()->fromRoute('auth/default', array(
+                            'controller' => 'registration',
+                            'action' => 'confirm-email',
+                            'id' => $auth->usr_registration_token)));
+        $transport->send($message);
     }
 
-    public function generateDynamicSalt() {
-        $dynamicSalt = '';
-        for ($i = 0; $i < 50; $i++) {
-            $dynamicSalt .= chr(rand(33, 126));
-        }
-        return $dynamicSalt;
+    public function sendPasswordByEmail($usr_email, $password) {
+        $transport = $this->getServiceLocator()->get('mail.transport');
+        $message = new Message();
+        $this->getRequest()->getServer();  //Server vars
+        $message->addTo($usr_email)
+                ->addFrom('suporte@sigasmart.com.br')
+                ->setSubject('Your password has been changed!')
+                ->setBody("Your password at  " .
+                        $this->getRequest()->getServer('HTTP_ORIGIN') .
+                        ' has been changed. Your new password is: ' .
+                        $password
+        );
+        $transport->send($message);
+    }
+     public function encryptPassword($login, $password) {
+        $salt = $this->getStaticSalt();
+        return base64_encode(Pbkdf2::calc('sha256', $password, $login, 10000, strlen($salt * 2)));
     }
 
     public function getStaticSalt() {
-        $staticSalt = '';
         $config = $this->getServiceLocator()->get('Config');
         $staticSalt = $config['static_salt'];
         return $staticSalt;
-    }
-
-    public function encriptPassword($staticSalt, $password, $dynamicSalt) {
-        return $password = md5($staticSalt . $password . $dynamicSalt);
     }
 
     public function generatePassword($l = 8, $c = 0, $n = 0, $s = 0) {
@@ -202,46 +212,6 @@ class RegistrationController extends AbstractActionController {
         }
 
         return $out;
-    }
-
-    public function getUsersTable() {
-        if (!$this->usersTable) {
-            $sm = $this->getServiceLocator();
-            $this->usersTable = $sm->get('Auth\Model\UsersTable');
-        }
-        return $this->usersTable;
-    }
-
-    public function sendConfirmationEmail($auth) {
-        // $view = $this->getServiceLocator()->get('View');
-        $transport = $this->getServiceLocator()->get('mail.transport');
-        $message = new Message();
-        $this->getRequest()->getServer();  //Server vars
-        $message->addTo($auth->usr_email)
-                ->addFrom('praktiki@coolcsn.com')
-                ->setSubject('Please, confirm your registration!')
-                ->setBody("Please, click the link to confirm your registration => " .
-                        $this->getRequest()->getServer('HTTP_ORIGIN') .
-                        $this->url()->fromRoute('auth/default', array(
-                            'controller' => 'registration',
-                            'action' => 'confirm-email',
-                            'id' => $auth->usr_registration_token)));
-        $transport->send($message);
-    }
-
-    public function sendPasswordByEmail($usr_email, $password) {
-        $transport = $this->getServiceLocator()->get('mail.transport');
-        $message = new Message();
-        $this->getRequest()->getServer();  //Server vars
-        $message->addTo($usr_email)
-                ->addFrom('praktiki@coolcsn.com')
-                ->setSubject('Your password has been changed!')
-                ->setBody("Your password at  " .
-                        $this->getRequest()->getServer('HTTP_ORIGIN') .
-                        ' has been changed. Your new password is: ' .
-                        $password
-        );
-        $transport->send($message);
     }
 
 }
