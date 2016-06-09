@@ -83,8 +83,7 @@ class RegistrationController extends AbstractController {
                 $usersTable = $this->getTableGateway();
                 $auth = $usersTable->getUserByEmail($usr_email);
                 $password = $this->generatePassword();
-                $auth->setPassword($password);
-                $auth->usr_password = $this->encryptPassword($usr_email, $password, $this->getStaticSalt());
+                $auth->setPassword($this->encryptPassword($usr_email, $password, $this->getStaticSalt()));
                 $usersTable->update($auth);
                 $this->sendPasswordByEmail($usr_email, $password);
                 $this->flashMessenger()->addMessage($usr_email);

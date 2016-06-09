@@ -35,7 +35,7 @@ class LoginController extends AbstractController {
                         ->setIdentity($request->getPost('email'))
                         ->setCredential($password);
                 $result = $this->getAuthService()->authenticate();
-                 if ($result->isValid()) {
+                if ($result->isValid()) {
                     //check if it has rememberMe :
                     if ($request->getPost('rememberme') == 1) {
                         $this->storage->setRememberMe(1);
