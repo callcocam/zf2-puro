@@ -8,9 +8,21 @@ class AdminController extends AbstractController {
         $this->route = "auth/default";
         $this->controller = "admin";
         $this->action = "index";
-        $this->form = "Auth\Form\BsUsersForm";
+        $this->form = "Auth\Form\BsUsersCreateForm";
         $this->model = "Auth\Model\BsUsers";
         $this->table = "Auth\Model\BsUsersTable";
-        $this->template = "/auth/auth/listar";
     }
+    public function updateAction() {
+        $this->form = "Auth\Form\BsUsersUpdateForm";
+        $this->template = "/auth/admin/update";
+        return parent::updateAction();
+    }
+      public function createAction() {
+        $this->form = "Auth\Form\BsUsersCreateForm";
+        $this->template = "/auth/admin/create";
+        return parent::createAction();
+    }
+
+
+
 }

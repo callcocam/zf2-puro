@@ -2,15 +2,14 @@
 
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Base\Form\AbstractForm;
 
-class AuthForm extends Form {
+class AuthForm extends AbstractForm {
 
-    public function __construct($name = null) {
+    public function __construct($serviceLocator) {
         parent::__construct('auth');
-        $this->setAttribute('method', 'post');
-        $this->setAttribute("enctype", "multipart/form-data");
-        $this->setAttribute("class", "form-inline");
+        $this->serviceLocator = $serviceLocator;
+
         $this->add(array(
             'name' => 'email',
             'attributes' => array(

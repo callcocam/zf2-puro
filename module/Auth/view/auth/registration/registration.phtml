@@ -1,0 +1,17 @@
+<h1>Registration</h1>
+ <p>
+        <a href="<?php echo $this->url($this->route, array('controller' => 'admin', 'action' => 'index')); ?>"><?php echo $this->translate('Voltar'); ?></a> |
+        <a href="<?php echo $this->url($this->route); ?>"><?php echo $this->translate('Login'); ?></a>
+</p>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'registration')));
+
+$form->setAttribute('class', 'form-inline');
+$this->formElementErrors()
+        ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+        ->setMessageSeparatorString('</li>')->render($form);
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formCollection($form);
+echo $this->form()->closeTag();

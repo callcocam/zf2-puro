@@ -1,13 +1,9 @@
 <?php
 
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonAdmin for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * Module Config
+ * Call
  */
-
 namespace Auth;
 
 return array(
@@ -54,6 +50,14 @@ return array(
         ),
     ),
     'service_manager' => array(
+        'factories' => array(// !!! aliases not alias
+            'Auth\Form\BsUsersCreateForm' => 'Auth\Factory\BsUsersCreateFactory',
+            'Auth\Form\BsUsersUpdateForm' => 'Auth\Factory\BsUsersUpdateFactory',
+            'Auth\Form\AuthForm' => 'Auth\Factory\AuthFactory',
+            'Auth\Form\ForgottenPasswordForm' => 'Auth\Factory\ForgottenPasswordFactory',
+            'Auth\Form\RegistrationForm' => 'Auth\Factory\RegistrationFactory',
+            'Auth\Form\ProfileForm' => 'Auth\Factory\ProfileFactory',
+        ),
         'aliases' => array(// !!! aliases not alias
             'Zend\Authentication\AuthenticationService' => 'my_auth_service',
         ),

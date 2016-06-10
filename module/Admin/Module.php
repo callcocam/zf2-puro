@@ -9,7 +9,7 @@
  */
 
 namespace Admin;
-
+use Zend\Db\TableGateway\TableGateway;
 class Module {
 
     public function getConfig() {
@@ -29,34 +29,19 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                'Admin\Model\BsUsersTable' => function ($sm) {
-                    $tableGateway = $sm->get('BsUsersTableGateway');
-                    $table = new \Admin\Model\BsUsersTable($tableGateway);
-                    return $table;
+                'Admin\Model\BsCidadesTable' => function($sm) {
+                    $tableGateway = $sm->get('BsCidadesTableGateway');
+                    return new \Admin\Model\BsCidadesTable($tableGateway);
                 },
-                'BsUsersTableGateway' => function ($sm) {
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsUsers());
-                    return new \Zend\Db\TableGateway\TableGateway("bs_users", $dbAdapter, NULL, $resultSetPrototype);
-                },
-                'Admin\Model\BsUsers' => function() {
-                    return new \Admin\Model\BsUsers();
-                },
-                'Admin\Model\BsCategoriasTable' => function ($sm) {
-                    $tableGateway = $sm->get('BsCategoriasTableGateway');
-                    $table = new \Admin\Model\BsCategoriasTable($tableGateway);
-                    return $table;
-                },
-                'BsCategoriasTableGateway' => function ($sm) {
+                'BsCidadesTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCategorias());
-                    return new \Zend\Db\TableGateway\TableGateway("bs_categorias", $dbAdapter, NULL, $resultSetPrototype);
-                },
-                'Admin\Model\BsCategorias' => function() {
-                    return new \Admin\Model\BsCategorias();
+                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCidades()); // Notice what is set here
+                    return new TableGateway('bs_cidades', $dbAdapter, null, $resultSetPrototype);
                 }
+            ),
+            'invokables' => array(
+                'Admin\Model\BsCidades' => 'Admin\Model\BsCidades',
             )
         );
     }

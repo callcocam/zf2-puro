@@ -43,8 +43,7 @@ return array(
      'controllers' => array(
         'invokables' => array(
             'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
-             'Admin\Controller\BsUsers' => 'Admin\Controller\BsUsersController',
-             'Admin\Controller\BsCategorias' => 'Admin\Controller\BsCategoriasController',
+             'Admin\Controller\BsCidades' => 'Admin\Controller\BsCidadesController',
         ),
 
     ),

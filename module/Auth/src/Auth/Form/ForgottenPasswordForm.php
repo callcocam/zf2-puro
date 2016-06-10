@@ -2,13 +2,14 @@
 
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Base\Form\AbstractForm;
 
-class ForgottenPasswordForm extends Form {
+class ForgottenPasswordForm extends AbstractForm {
 
-    public function __construct($name = null) {
-        parent::__construct('registration');
-        $this->setAttribute('method', 'post');
+    public function __construct($serviceLocator) {
+        parent::__construct(" ForgottenPassword");
+        $this->setInputFilter(new ForgottenPasswordFilter($serviceLocator));
+        $this->serviceLocator = $serviceLocator;
 
         $this->add(array(
             'name' => 'email',
@@ -18,7 +19,6 @@ class ForgottenPasswordForm extends Form {
             ),
             'options' => array(
                 'label' => 'FILD_EMAIL_LABEL',
-               
             ),
         ));
 

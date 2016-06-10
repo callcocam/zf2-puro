@@ -1,20 +1,37 @@
 <?php
 
+/**
+ * @license © 2005 - 2016 by Zend Technologies Ltd. All rights reserved.
+ */
+
 namespace Auth\Form;
 
 use Base\Form\AbstractForm;
 
-class RegistrationForm extends AbstractForm {
+/**
+ * SIGA-Smart
+ *
+ * Esta class foi gerada via Zend\Code\Generator.
+ */
+class BsUsersUpdateForm extends AbstractForm {
 
+    /**
+     * @return Zend\Form
+     */
     public function __construct($serviceLocator) {
-        parent::__construct("Registration");
-        $this->serviceLocator=$serviceLocator;
-        $this->setInputFilter(new RegistrationFilter());
+        // Configurações iniciais do Form
+        parent::__construct("BsUsersCreateForm");
+        $this->setInputFilter(new BsUsersFilter());
+        $this->serviceLocator = $serviceLocator;
+
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
                     'type' => 'hidden',
                     'name' => 'id',
+                    'options' => array(
+                        'label' => 'FILD_ID_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'id',
                         'value' => 'AUTOMATICO',
@@ -28,6 +45,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'codigo',
+                    'options' => array(
+                        'label' => 'FILD_CODIGO_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'codigo',
                         'value' => '{codigo}',
@@ -41,6 +61,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'asset_id',
+                    'options' => array(
+                        'label' => 'FILD_ASSET_ID_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'asset_id',
                         'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
@@ -54,9 +77,12 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'empresa',
+                    'options' => array(
+                        'label' => 'FILD_EMPRESA_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'empresa',
-                        'value' => '0',
+                        'value' => '{empresa}',
                     ),
                 )
         );
@@ -68,14 +94,15 @@ class RegistrationForm extends AbstractForm {
                     'type' => 'text',
                     'name' => 'title',
                     'options' => array(
-                        'label' => 'FILD_USER_TITLE_LABEL',
+                        'label' => 'FILD_TITLE_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'title',
-                        'title' => 'FILD_USER_TITLE_DESC',
+                        'title' => 'FILD_TITLE_DESC',
                         'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_USER_TITLE_PLACEHOLDER',
+                        'placeholder' => 'FILD_TITLE_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -96,6 +123,7 @@ class RegistrationForm extends AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_EMAIL_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -105,12 +133,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna facebook ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'facebook',
+                    'options' => array(
+                        'label' => 'FILD_FACEBOOK_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'facebook',
-                        'value'=>'facebook.com/',
+                        'title' => 'FILD_FACEBOOK_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_FACEBOOK_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -120,12 +154,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna twitter ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'twitter',
+                    'options' => array(
+                        'label' => 'FILD_TWITTER_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'twitter',
-                        'value'=>'twitter.com',
+                        'title' => 'FILD_TWITTER_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_TWITTER_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -135,12 +175,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna phone ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'phone',
+                    'options' => array(
+                        'label' => 'FILD_PHONE_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'phone',
-                       'value'=>'(00)0000-0000',
+                        'title' => 'FILD_PHONE_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_PHONE_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -150,12 +196,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna endereco ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'endereco',
+                    'options' => array(
+                        'label' => 'FILD_ENDERECO_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'endereco',
-                        'value'=>'Não Definido',
+                        'title' => 'FILD_ENDERECO_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ENDERECO_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -165,12 +217,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna bairro ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'bairro',
-                   'attributes' => array(
+                    'options' => array(
+                        'label' => 'FILD_BAIRRO_LABEL',
+                    ),
+                    'attributes' => array(
                         'id' => 'bairro',
-                        'value'=>'0',
+                        'title' => 'FILD_BAIRRO_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_BAIRRO_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -180,12 +238,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna cidade ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'cidade',
-                        'attributes' => array(
+                    'options' => array(
+                        'label' => 'FILD_CIDADE_LABEL',
+                    ),
+                    'attributes' => array(
                         'id' => 'cidade',
-                        'value'=>'23746',
+                        'title' => 'FILD_CIDADE_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_CIDADE_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -195,12 +259,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna images_users ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'images',
-                     'attributes' => array(
+                    'options' => array(
+                        'label' => 'FILD_IMAGES_USERS_LABEL',
+                    ),
+                    'attributes' => array(
                         'id' => 'images',
-                         'value'=>'/img/no_avatar.jpg',
+                        'title' => 'FILD_IMAGES_USERS_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_IMAGES_USERS_PLACEHOLDER',
                         'data-access' => '3',
+                        'readonly' => true,
                         'data-position' => 'geral',
                     ),
                 )
@@ -210,41 +280,16 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna password ##############################################:
         $this->add(
                 array(
-                    'type' => 'password',
+                    'type' => 'hidden',
                     'name' => 'password',
-                    'options' => array(
-                        'label' => 'FILD_PASSWORD_LABEL',
-                    ),
                     'attributes' => array(
                         'id' => 'password',
-                        'title' => 'FILD_PASSWORD_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_PASSWORD_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
-        
-         //############################################ informações da coluna usr_password_confirm ##############################################:
-        $this->add(
-                array(
-                    'type' => 'password',
-                    'name' => 'usr_password_confirm',
-                    'options' => array(
-                        'label' => 'FIL_USER_CONFIRM_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'usr_password_confirm',
-                        'title' => 'FILD_USER_CONFIRM_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_USER_CONFIRM_PLACEHOLDER',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
-      
+
         //############################################ informações da coluna usr_registration_token ##############################################:
         $this->add(
                 array(
@@ -252,21 +297,26 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'usr_registration_token',
                     'attributes' => array(
                         'id' => 'usr_registration_token',
-                        'value' => '',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
-      
         //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'select',
                     'name' => 'role_id',
+                    'options' => array(
+                        'label' => 'FILD_ROLE_ID_LABEL',
+                        'value_options' => array('1' => 'Suporte', '2' => "Admin"),
+                        "disable_inarray_validator" => true,
+                    ),
                     'attributes' => array(
                         'id' => 'role_id',
-                        'value' => '5',
+                        'title' => 'FILD_ROLE_ID_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ROLE_ID_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -289,6 +339,7 @@ class RegistrationForm extends AbstractForm {
                         'placeholder' => 'FILD_DESCRIPTION_PLACEHOLDER',
                         'rows' => '5',
                         'cols' => '20',
+                        'readonly' => true,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -303,7 +354,6 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'created_by',
                     'attributes' => array(
                         'id' => 'created_by',
-                        'value' => '1',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -314,10 +364,17 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna alias ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'alias',
+                    'options' => array(
+                        'label' => 'FILD_ALIAS_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'alias',
+                        'title' => 'FILD_ALIAS_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ALIAS_PLACEHOLDER',
+                        'readonly' => true,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -328,6 +385,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'modified_by',
+                    'options' => array(
+                        'label' => 'FILD_MODIFIED_BY_LABEL',
+                    ),
                     'attributes' => array(
                         'id' => 'modified_by',
                         'value' => '0',
@@ -344,7 +404,6 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'ordering',
                     'attributes' => array(
                         'id' => 'ordering',
-                        'value' => '0',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -355,11 +414,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna state ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'select',
                     'name' => 'state',
+                    'options' => array(
+                        'label' => 'FILD_STATE_LABEL',
+                        'value_options' => ['0' => 'Publicado', '1' => 'Desativado'],
+                        "disable_inarray_validator" => true,
+                    ),
                     'attributes' => array(
                         'id' => 'state',
-                        'value' => '1',
+                        'title' => 'FILD_STATE_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_STATE_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -370,11 +436,18 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna access ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'select',
                     'name' => 'access',
+                    'options' => array(
+                        'label' => 'FILD_ACCESS_LABEL',
+                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
+                        "disable_inarray_validator" => true,
+                    ),
                     'attributes' => array(
                         'id' => 'access',
-                        'value' => '4',
+                        'title' => 'FILD_ACCESS_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -385,14 +458,17 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna created ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'created',
                     'options' => array(
                         'label' => 'FILD_CREATED_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'created',
-                        'value' => date("d-m-Y"),
+                        'title' => 'FILD_CREATED_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_CREATED_PLACEHOLDER',
+                        'readonly' => true,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -405,9 +481,6 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'modified',
-                    'options' => array(
-                        'label' => 'FILD_MODIFIED_LABEL',
-                    ),
                     'attributes' => array(
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
@@ -421,13 +494,16 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna publish_up ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'publish_up',
                     'options' => array(
                         'label' => 'FILD_PUBLISH_UP_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'publish_up',
+                        'title' => 'FILD_PUBLISH_UP_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_PUBLISH_UP_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'data-position' => 'geral',
@@ -439,40 +515,28 @@ class RegistrationForm extends AbstractForm {
         //############################################ informações da coluna publish_down ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'text',
                     'name' => 'publish_down',
                     'options' => array(
                         'label' => 'FILD_PUBLISH_DOWN_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'publish_down',
+                        'title' => 'FILD_PUBLISH_DOWN_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
-        //############################################ informações da coluna publish_up ##############################################:
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Captcha',
-            'name' => 'captcha',
-            'attributes' => array(
-                'id' => 'captcha',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Please verify you are human',
-                'captcha' => new \Zend\Captcha\Figlet(),
-            ),
-        ));
 
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Cadastrar',
-                'class' => 'btn btn-danger',
                 'id' => 'submitbutton',
             ),
         ));

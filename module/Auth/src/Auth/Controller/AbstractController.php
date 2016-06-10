@@ -19,13 +19,14 @@ abstract class AbstractController extends AbstractActionController {
     protected $authservice;
     protected $usersTable = null;
     protected $table;
+    protected $user;
     protected $model;
     protected $form;
     protected $data = array();
     protected $route = "auth/default";
     protected $controller = "auth";
     protected $action = "index";
-    protected $template = "/auth/auth/index";
+    protected $template = "/auth/admin/index";
 
     public function getAuthService() {
         if (!$this->authservice) {
@@ -74,33 +75,48 @@ abstract class AbstractController extends AbstractActionController {
 
     // R - retrieve = Index
     public function indexAction() {
-        return new ViewModel(array('rowset' => $this->getTableGateway()->findALL()));
+        //if already login, redirect to success page
+        $rowset = array();
+        if ($this->getAuthService()->hasIdentity()) {
+            $this->user = $this->getAuthService()->getIdentity();
+
+            if ($this->user->role_id > 2) {
+                $this->form = "Auth\Form\ProfileForm";
+                $this->form = $this->getForm();
+                $model = $this->getTableGateway()->find($this->user->id);
+                $this->form->setData($model->toArray());
+                $this->template = "/auth/admin/profile";
+            } else {
+                $rowset = $this->getTableGateway()->findALL();
+            }
+        }
+        $view = new ViewModel(array('rowset' => $rowset, 'user' => $this->user, 'form' => $this->form));
+        $view->setTemplate($this->template);
+        return $view;
     }
 
     // C - Create
     public function createAction() {
         //if already login, redirect to success page
-        if ($this->getAuthService()->hasIdentity()) {
+        if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
         }
         $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
             $this->data = $this->params()->fromPost();
-            $this->data['password'] = $this->encryptPassword(
-                    $this->data['email'], $this->data['password']);
-            if (empty($this->data['usr_registration_token'])):
-                $this->data['usr_registration_token'] = md5(uniqid(mt_rand(), true));
-            endif;
+            $this->data = $this->prepareData($this->params()->fromPost());
             $model = $this->getModel();
             $model->exchangeArray($this->data);
-            $this->form->setData($model->toArray());
+            $this->form->setData($this->data);
             if ($this->form->isValid()) {
                 $this->getTableGateway()->insert($model);
                 return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
             }
         }
-        return new ViewModel(array('form' => $this->form));
+        $view = new ViewModel(array('form' => $this->form));
+        $view->setTemplate($this->template);
+        return $view;
     }
 
     // U - Update
@@ -110,31 +126,34 @@ abstract class AbstractController extends AbstractActionController {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
         }
         $id = $this->params()->fromRoute('id');
-        if (!$id)
-            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
         $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
             $this->data = $this->params()->fromPost();
             $this->data['password'] = $this->encryptPassword($this->data['email'], $this->data['password']);
+            $this->data['usr_password_confirm'] = $this->encryptPassword($this->data['email'], $this->data['usr_password_confirm']);
             $model = $this->getModel();
             $model->exchangeArray($this->data);
-            $this->form->setData($model->toArray());
-            $validator=$this->setValidation('bs_users', 'email', array(
-                    'field' => 'id',
-                    'value' => $model->getId()
-                ));
-            $validator->setMessage("Registro Não Existe", 'noRecordFound');
-            $validator->setMessage("Registro Ja Existe", 'recordFound');
+            $this->form->setData($this->data);
+
+            $validator = $this->setValidation('bs_users', 'email', array(
+                'field' => 'id',
+                'value' => $model->getId()
+            ));
             $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
             if ($this->form->isValid()) {
                 $this->getTableGateway()->update($model);
-                return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
+                return $this->redirect()->toRoute($this->route, array('controller' => 'login', 'action' => 'index'));
             }
         } else {
+            if (!$id) {
+                return $this->redirect()->toRoute($this->route, array('controller' => 'login', 'action' => 'index'));
+            }
             $this->form->setData($this->getTableGateway()->find($id)->toArray());
         }
-        return new ViewModel(array('form' => $this->form, 'id' => $id));
+        $view = new ViewModel(array('form' => $this->form, 'id' => $id));
+        $view->setTemplate($this->template);
+        return $view;
     }
 
     // D - delete
@@ -146,17 +165,96 @@ abstract class AbstractController extends AbstractActionController {
         return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
     }
 
-    public function setValidation($table,$fild,$exclude="") {
+    public function setValidation($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
         $validator = new \Zend\Validator\Db\NoRecordExists(array(
             'table' => $table,
             'field' => $fild,
             'schema' => 'base',
-            'adapter' => $this->getAdapter(),
-            "exclude"=>$exclude
+            'adapter' => $this->getAdapter()
         ));
-        $validator->setMessage("Registro Não Existe", 'noRecordFound');
-        $validator->setMessage("Registro Ja Existe", 'recordFound');
+        if (!empty($exclude)):
+            $validator->setExclude($exclude);
+        endif;
+        $validator->setMessage($noRecordFound, 'noRecordFound');
+        $validator->setMessage($recordFound, 'recordFound');
         return $validator;
+    }
+
+    public function prepareData($data) {
+        $data['state'] = 1;
+        $data['password'] = $this->encryptPassword($data['email'], $data['password']);
+        $data['usr_password_confirm'] = $this->encryptPassword($data['email'], $data['usr_password_confirm']);
+        $data['usr_registration_token'] = md5(uniqid(mt_rand(), true));
+        $data['empresa'] = 1;
+        $data['created_by'] = 1;
+        return $data;
+    }
+
+    public function generatePassword($l = 8, $c = 0, $n = 0, $s = 0) {
+        // get count of all required minimum special chars
+        $count = $c + $n + $s;
+        $out = '';
+        // sanitize inputs; should be self-explanatory
+        if (!is_int($l) || !is_int($c) || !is_int($n) || !is_int($s)) {
+            trigger_error('Argument(s) not an integer', E_USER_WARNING);
+            return false;
+        } elseif ($l < 0 || $l > 20 || $c < 0 || $n < 0 || $s < 0) {
+            trigger_error('Argument(s) out of range', E_USER_WARNING);
+            return false;
+        } elseif ($c > $l) {
+            trigger_error('Number of password capitals required exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($n > $l) {
+            trigger_error('Number of password numerals exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($s > $l) {
+            trigger_error('Number of password capitals exceeds password length', E_USER_WARNING);
+            return false;
+        } elseif ($count > $l) {
+            trigger_error('Number of password special characters exceeds specified password length', E_USER_WARNING);
+            return false;
+        }
+
+        // all inputs clean, proceed to build password
+        // change these strings if you want to include or exclude possible password characters
+        $chars = "abcdefghijklmnopqrstuvwxyz";
+        $caps = strtoupper($chars);
+        $nums = "0123456789";
+        $syms = "!@#$%^&*()-+?";
+
+        // build the base password of all lower-case letters
+        for ($i = 0; $i < $l; $i++) {
+            $out .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+
+        // create arrays if special character(s) required
+        if ($count) {
+            // split base password to array; create special chars array
+            $tmp1 = str_split($out);
+            $tmp2 = array();
+
+            // add required special character(s) to second array
+            for ($i = 0; $i < $c; $i++) {
+                array_push($tmp2, substr($caps, mt_rand(0, strlen($caps) - 1), 1));
+            }
+            for ($i = 0; $i < $n; $i++) {
+                array_push($tmp2, substr($nums, mt_rand(0, strlen($nums) - 1), 1));
+            }
+            for ($i = 0; $i < $s; $i++) {
+                array_push($tmp2, substr($syms, mt_rand(0, strlen($syms) - 1), 1));
+            }
+
+            // hack off a chunk of the base password array that's as big as the special chars array
+            $tmp1 = array_slice($tmp1, 0, $l - $count);
+            // merge special character(s) array with base password array
+            $tmp1 = array_merge($tmp1, $tmp2);
+            // mix the characters up
+            shuffle($tmp1);
+            // convert to string for output
+            $out = implode('', $tmp1);
+        }
+
+        return $out;
     }
 
 }

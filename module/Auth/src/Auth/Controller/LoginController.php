@@ -13,15 +13,14 @@ class LoginController extends AbstractController {
         $this->form = "Auth\Form\AuthForm";
         $this->model = "Auth\Model\BsUsers";
         $this->table = "Auth\Model\BsUsersTable";
-        $this->template = "/auth/auth/listar";
-        
+        $this->template = "/admin/admin/index";
     }
 
     public function loginAction() {
-        
+
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
-           return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
+            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
         }
         $this->storage = $this->getSessionStorage();
         $this->form = $this->getForm();
@@ -35,14 +34,16 @@ class LoginController extends AbstractController {
                         ->setIdentity($request->getPost('email'))
                         ->setCredential($password);
                 $result = $this->getAuthService()->authenticate();
+                
                 if ($result->isValid()) {
+                     $columnsToOmit = array('password');
                     //check if it has rememberMe :
                     if ($request->getPost('rememberme') == 1) {
                         $this->storage->setRememberMe(1);
                         //set storage again
                         $this->getAuthService()->setStorage($this->getSessionStorage());
                     }
-                    $this->getAuthService()->getStorage()->write($request->getPost());
+                    $this->getAuthService()->getStorage()->write($this->getAuthService()->getAdapter()->getResultRowObject(null, $columnsToOmit));
                     return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
                 }
             }
@@ -52,7 +53,7 @@ class LoginController extends AbstractController {
     }
 
     public function logoutAction() {
-         if (!$this->getAuthService()->hasIdentity()) {
+        if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route);
         }
         $this->storage = $this->getSessionStorage();

@@ -6,25 +6,23 @@
 
 namespace Auth\Form;
 
-use Zend\Form\Form;
+use Base\Form\AbstractForm;
 
 /**
  * SIGA-Smart
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsUsersForm extends Form {
+class ProfileForm extends AbstractForm {
 
     /**
      * @return Zend\Form
      */
-    public function __construct($nome = "") {
+    public function __construct($serviceLocator) {
         // Configurações iniciais do Form
-        parent::__construct("BsUsers");
-        $this->setAttribute("method", "post");
-        $this->setAttribute("enctype", "multipart/form-data");
-        $this->setAttribute("class", "form-horizontal formulario-configuracao");
-        $this->setInputFilter(new BsUsersFilter());
+        parent::__construct("BsUsersCreateForm");
+        $this->setInputFilter(new RegistrationFilter());
+        $this->serviceLocator = $serviceLocator;
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
@@ -291,6 +289,25 @@ class BsUsersForm extends Form {
                 )
         );
 
+        //############################################ informações da coluna usr_password_confirm ##############################################:
+        $this->add(
+                array(
+                    'type' => 'password',
+                    'name' => 'usr_password_confirm',
+                    'options' => array(
+                        'label' => 'FIL_USER_CONFIRM_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'usr_password_confirm',
+                        'title' => 'FILD_USER_CONFIRM_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_USER_CONFIRM_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
         //############################################ informações da coluna usr_registration_token ##############################################:
         $this->add(
                 array(
@@ -298,26 +315,21 @@ class BsUsersForm extends Form {
                     'name' => 'usr_registration_token',
                     'attributes' => array(
                         'id' => 'usr_registration_token',
+                        'value' => '',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
+
         //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'role_id',
-                    'options' => array(
-                        'label' => 'FILD_ROLE_ID_LABEL',
-                        'value_options' => array('1' => 'Suporte', '2' => "Admin"),
-                        "disable_inarray_validator" => true,
-                    ),
                     'attributes' => array(
                         'id' => 'role_id',
-                        'title' => 'FILD_ROLE_ID_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_ROLE_ID_PLACEHOLDER',
+                        'value' => '5',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -350,18 +362,11 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna created_by ##############################################:
         $this->add(
                 array(
-                    'type' => 'Select',
+                    'type' => 'hidden',
                     'name' => 'created_by',
-                    'options' => array(
-                        'label' => 'FILD_CREATED_BY_LABEL',
-                        'empty_item_label' => '---Selecione---',
-                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
-                    ),
                     'attributes' => array(
                         'id' => 'created_by',
-                        'title' => 'FILD_CREATED_BY_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_CREATED_BY_PLACEHOLDER',
+                        'value' => '1',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -372,16 +377,10 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna alias ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'alias',
-                    'options' => array(
-                        'label' => 'FILD_ALIAS_LABEL',
-                    ),
                     'attributes' => array(
                         'id' => 'alias',
-                        'title' => 'FILD_ALIAS_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_ALIAS_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -392,9 +391,6 @@ class BsUsersForm extends Form {
                 array(
                     'type' => 'hidden',
                     'name' => 'modified_by',
-                    'options' => array(
-                        'label' => 'FILD_MODIFIED_BY_LABEL',
-                    ),
                     'attributes' => array(
                         'id' => 'modified_by',
                         'value' => '0',
@@ -407,18 +403,11 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna ordering ##############################################:
         $this->add(
                 array(
-                    'type' => 'Select',
+                    'type' => 'hidden',
                     'name' => 'ordering',
-                    'options' => array(
-                        'label' => 'FILD_ORDERING_LABEL',
-                        'is_method' => true,
-                        'value_options' => ['1' => 'Primeiro', '2' => 'Segundo'],
-                    ),
                     'attributes' => array(
                         'id' => 'ordering',
-                        'title' => 'FILD_ORDERING_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_ORDERING_PLACEHOLDER',
+                        'value' => '0',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -429,18 +418,11 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna state ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'state',
-                    'options' => array(
-                        'label' => 'FILD_STATE_LABEL',
-                        'value_options' => ['0' => 'Publicado', '1' => 'Desativado'],
-                        "disable_inarray_validator" => true,
-                    ),
                     'attributes' => array(
                         'id' => 'state',
-                        'title' => 'FILD_STATE_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_STATE_PLACEHOLDER',
+                        'value' => '1',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -451,18 +433,11 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna access ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'access',
-                    'options' => array(
-                        'label' => 'FILD_ACCESS_LABEL',
-                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
-                        "disable_inarray_validator" => true,
-                    ),
                     'attributes' => array(
                         'id' => 'access',
-                        'title' => 'FILD_ACCESS_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
+                        'value' => '4',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -473,16 +448,13 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna created ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'created',
                     'options' => array(
                         'label' => 'FILD_CREATED_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'created',
-                        'title' => 'FILD_CREATED_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_CREATED_PLACEHOLDER',
                         'value' => date("d-m-Y"),
                         'data-access' => '3',
                         'data-position' => 'geral',
@@ -494,16 +466,13 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna modified ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'modified',
                     'options' => array(
                         'label' => 'FILD_MODIFIED_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'modified',
-                        'title' => 'FILD_MODIFIED_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_MODIFIED_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'data-position' => 'geral',
@@ -515,16 +484,13 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna publish_up ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'publish_up',
                     'options' => array(
                         'label' => 'FILD_PUBLISH_UP_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'publish_up',
-                        'title' => 'FILD_PUBLISH_UP_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_PUBLISH_UP_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'data-position' => 'geral',
@@ -536,28 +502,39 @@ class BsUsersForm extends Form {
         //############################################ informações da coluna publish_down ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'publish_down',
                     'options' => array(
                         'label' => 'FILD_PUBLISH_DOWN_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'publish_down',
-                        'title' => 'FILD_PUBLISH_DOWN_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
+        //############################################ informações da coluna publish_up ##############################################:
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Captcha',
+            'name' => 'captcha',
+            'attributes' => array(
+                'id' => 'captcha',
+                'class' => 'form-control'
+            ),
+            'options' => array(
+                'label' => 'Please verify you are human',
+                'captcha' => new \Zend\Captcha\Figlet(),
+            ),
+        ));
 
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Cadastrar',
+                'value' => 'Atualizar',
                 'id' => 'submitbutton',
             ),
         ));

@@ -13,7 +13,6 @@ namespace Auth;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
-use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
 // Add this for SMTP transport
@@ -77,11 +76,7 @@ class Module {
                 },
             ),
             'invokables' => array(
-                'Auth\Form\AuthForm' => 'Auth\Form\AuthForm',
-                'Auth\Form\ForgottenPasswordForm' => 'Auth\Form\ForgottenPasswordForm',
-                'Auth\Form\RegistrationForm' => 'Auth\Form\RegistrationForm',
-                'Auth\Form\BsUsersForm'=>'Auth\Form\BsUsersForm',
-                'Auth\Model\BsUsers'=>'Auth\Model\BsUsers'
+               'Auth\Model\BsUsers'=>'Auth\Model\BsUsers'
             )
         );
     }
