@@ -1,6 +1,7 @@
 <h1>Login </h1>
 <div class="fmi">
     <?php
+    echo $this->messages();
     $form = $this->form;
     $form->setAttribute('action', $this->url($this->route, array('controller' => $this->controller, 'action' => 'login')));
     $form->prepare();
@@ -24,7 +25,7 @@
         }
         ?>
         <p>
-            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'index')); ?>"><?php echo $this->translate('Register'); ?></a> |
+            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'registration')); ?>"><?php echo $this->translate('Register'); ?></a> |
             <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'forgotten-password')); ?>"><?php echo $this->translate('Forgotten Password'); ?></a>
         </p>
 

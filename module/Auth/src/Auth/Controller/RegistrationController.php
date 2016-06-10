@@ -18,7 +18,7 @@ class RegistrationController extends AbstractController {
         $this->template = "/auth/admin/index";
     }
 
-      public function registrationAction() {
+    public function registrationAction() {
         $this->form = $this->getForm();
         $this->form->get('submit')->setValue('Register');
         $cache = $this->CachePlugin()->getItem('companies');
@@ -35,17 +35,18 @@ class RegistrationController extends AbstractController {
                 $result = $this->getTableGateway()->insert($auth);
                 if ($result) {
                     $this->sendConfirmationEmail($auth);
+                    $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
+                } else {
+                    $this->Messages()->error("MSG_CADASTRO_ERROR");
                 }
-                $this->flashMessenger()->addMessage($auth->getEmail());
                 return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'registration-success'));
             }
         }
         return new ViewModel(array('form' => $this->form, 'companies' => $cache));
     }
 
-
     public function profileupdateAction() {
-        
+
         //VERIFICAÇÃO:SOMENTE USUARIO LOGADO
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
@@ -68,14 +69,19 @@ class RegistrationController extends AbstractController {
             ));
             $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
             if ($this->form->isValid()) {
-                $this->getTableGateway()->update($model);
+                $result = $this->getTableGateway()->update($model);
+                if ($result) {
+                    $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
+                } else {
+                    $this->Messages()->error("MSG_CADASTRO_ERROR");
+                }
                 return $this->redirect()->toRoute($this->route, array('controller' => 'admin', 'action' => 'index'));
             }
         } else {
             //CARREGAR OS DADOS DO USUARIO LOGADO NO FORM
             $model = $this->getTableGateway()->find($this->user->id);
             $this->form->setData($model->toArray());
-           }
+        }
         $view = new ViewModel(array('form' => $this->form));
         return $view;
     }
@@ -126,11 +132,13 @@ class RegistrationController extends AbstractController {
                     //TENTA ALTERAR A SENHA NO BANCO
                     $result = $usersTable->update($auth);
                     //SE ALTERO A SENHA ENVIA POR EMAIL
-                    if ($auth) {
+                    if ($result) {
+                        $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
                         //ENVIA A SENHA POR EMAIL
                         $this->sendPasswordByEmail($usr_email, $password);
-                        $this->flashMessenger()->addMessage($usr_email);
                         return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'password-change-success'));
+                    } else {
+                        $this->Messages()->error("MSG_CADASTRO_ERROR");
                     }
                 }
             }

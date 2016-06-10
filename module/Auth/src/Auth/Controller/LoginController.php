@@ -34,17 +34,25 @@ class LoginController extends AbstractController {
                         ->setIdentity($request->getPost('email'))
                         ->setCredential($password);
                 $result = $this->getAuthService()->authenticate();
-                
+                $msg=[];
+                foreach ($result->getMessages() as $message) {
+                    $msg[]= $message;
+                }
                 if ($result->isValid()) {
-                     $columnsToOmit = array('password');
+                    $columnsToOmit = array('password');
                     //check if it has rememberMe :
                     if ($request->getPost('rememberme') == 1) {
                         $this->storage->setRememberMe(1);
                         //set storage again
                         $this->getAuthService()->setStorage($this->getSessionStorage());
                     }
+                    $this->Messages()->flashSuccess(implode(PHP_EOL, $msg));
                     $this->getAuthService()->getStorage()->write($this->getAuthService()->getAdapter()->getResultRowObject(null, $columnsToOmit));
                     return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
+                }
+                else
+                {
+                    $this->Messages()->flashError(implode(PHP_EOL, $msg)); 
                 }
             }
         }
@@ -56,6 +64,7 @@ class LoginController extends AbstractController {
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route);
         }
+        $this->Messages()->flashError("Vote sempre");
         $this->storage = $this->getSessionStorage();
         $this->getAuthService()->clearIdentity();
         $this->storage->forgetMe();

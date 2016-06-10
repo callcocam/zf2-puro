@@ -110,7 +110,12 @@ abstract class AbstractController extends AbstractActionController {
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
             if ($this->form->isValid()) {
-                $this->getTableGateway()->insert($model);
+                $result = $this->getTableGateway()->insert($model);
+                if ($result) {
+                    $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
+                } else {
+                    $this->Messages()->error("MSG_CADASTRO_ERROR");
+                }
                 return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
             }
         }
@@ -142,7 +147,12 @@ abstract class AbstractController extends AbstractActionController {
             ));
             $this->form->getInputFilter()->get('email')->getValidatorChain()->attach($validator);
             if ($this->form->isValid()) {
-                $this->getTableGateway()->update($model);
+                $result = $this->getTableGateway()->update($model);
+                if ($result) {
+                    $this->Messages()->flashSuccess("MSG_UPDATE_SUCCCESS");
+                } else {
+                    $this->Messages()->error("MSG_UPDATE_ERROR");
+                }
                 return $this->redirect()->toRoute($this->route, array('controller' => 'login', 'action' => 'index'));
             }
         } else {

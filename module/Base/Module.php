@@ -78,10 +78,17 @@ class Module {
     {
          return array(
             'factories' => array(
-                
+                 'messages' => function ($helperPluginManager) {
+                    $sm = $helperPluginManager->getServiceLocator();
+                    $messagesPlugin = $sm->get('ControllerPluginManager')->get('messages');
+                    $messages = $messagesPlugin->getMergedMessages();
+                    $helper = new View\Helper\Messages($messages);
+                    return $helper;
+                },
             ),
             'invokables' => array(
                 'CacheHelper' => 'Base\View\Helper\CacheHelper',
+              
             )
         );
     }
