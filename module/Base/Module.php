@@ -31,10 +31,6 @@ class Module {
         }, 99);
     }
 
-    public function companies() {
-
-        die;
-    }
 
     public function getConfig() {
         return include __DIR__ . '/config/module.config.php';

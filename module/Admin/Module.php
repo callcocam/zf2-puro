@@ -40,6 +40,16 @@ class Module {
                     $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCidades()); // Notice what is set here
                     return new TableGateway('bs_cidades', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Admin\Model\BsResourcesTable' => function ($sm) {
+                    $tableGateway = $sm->get('BsResourcesTableGateway');
+                    return new \Admin\Model\BsResourcesTable($tableGateway);
+                },
+                'BsResourcesTableGateway' => function($sm) {
+                    $dbAdapter=$sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype=$sm->get('resultSetPrototype');
+                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsResources());
+                    return new TableGateway('bs_resources', $dbAdapter, NULL, $resultSetPrototype);
                 }
             ),
             'invokables' => array(

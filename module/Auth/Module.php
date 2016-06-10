@@ -86,6 +86,7 @@ class Module {
             'factories' => array(
             ),
             'invokables' => array(
+                 'UserIdentity' => 'Auth\View\Helper\UserIdentity',
             )
         );
     }

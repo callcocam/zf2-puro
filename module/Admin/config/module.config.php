@@ -44,6 +44,8 @@ return array(
         'invokables' => array(
             'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
              'Admin\Controller\BsCidades' => 'Admin\Controller\BsCidadesController',
+             'Admin\Controller\BsCompanies' => 'Admin\Controller\BsCompaniesController',
+             'Admin\Controller\BsResources' => 'Admin\Controller\BsResourcesController',
         ),
 
     ),

@@ -17,11 +17,11 @@ class BsCompaniesController extends \Base\Controller\AbstractController {
 
     public function __construct() {
         $this->route = "admin/default";
-        $this->controller = "bs-coampnies";
+        $this->controller = "bs-companies";
         $this->action = "index";
-        $this->model = "Admin\Model\BsBsCompanies";
-        $this->table = "Admin\Model\BsBsCompaniesTable";
-        $this->template = "/admin/admin/listar";
+        $this->model = "Admin\Model\BsCompanies";
+        $this->table = "Admin\Model\BsCompaniesTable";
+        $this->template = "/admin/admin/conpanies";
     }
 
 }

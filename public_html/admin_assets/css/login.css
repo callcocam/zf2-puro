@@ -1,0 +1,8 @@
+.login-box{margin: 60px auto;float: left;width: 100%;}
+.main-login-header{text-align: left;display: block;width: 400px;max-width: 90%;margin: 0 auto;background: #fff;padding: 0;}
+.login-box-body{text-align: left;display: block;width: 400px;max-width: 90%;margin: 25px auto;background: #fff;padding: 25px;box-shadow: 0 0 5px 0 #ccc;}
+.form-group{margin: 15px 0;}
+.login-logo{padding-bottom: 0;}
+.login-box a{color: #555;text-decoration: none;font-size: 0.8em;margin-top: 10px;text-transform: uppercase;font-weight: 300;}
+.login-box a:hover{text-decoration: underline;}
+

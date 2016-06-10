@@ -1,0 +1,101 @@
+.form-group{
+   position: relative;
+   height: 72px;
+   padding: 16px 0 8px 0;
+}
+.input-group{
+   position: relative;
+   height: 72px;
+   padding: 16px 0 8px 0;
+}
+
+.field-label{
+   position: relative;
+   margin: 0;
+   display: block;
+
+   color:  lighten(#000,75);
+   line-height: 16px;
+   font-size: 16px;
+   font-weight: 400;
+
+   transform: translateY(24px);
+   transition: transform 0.3s, color 0.3s;
+   transform-origin: 0 50%;
+}
+
+.form-control{
+   position: relative;
+   display: block;
+   width: 100%;
+   height: 32px;
+   padding: 8px 0;
+
+   line-height: 16px;
+   font-family: Roboto;
+   font-size: 16px;
+
+   background: transparent;
+   border: none;
+   -webkit-appearance: none;
+   outline: none;
+}
+
+.input-group::after, .input-group::before{
+   content:'';
+   height: 2px;
+   width: 100%;
+   position: absolute;
+   bottom: 6px;
+   left: 0;
+
+   background-color: #e6e6e6;
+   transition: height 0.3s;
+}
+
+.input-group::after{
+   background-color: #00B494;
+   transform: scaleX(0);
+   transition: transform 0.3s;
+}
+
+.form-group::after, .form-group::before{
+   content:'';
+   height: 2px;
+   width: 100%;
+   position: absolute;
+   bottom: 6px;
+   left: 0;
+   background-color: #e6e6e6;
+   transition: height 0.3s;
+}
+
+.form-group::after{
+   background-color: #00B494;
+   transform: scaleX(0);
+   transition: transform 0.3s;
+}
+
+.has-label .field-label{
+   transform: translateY(0) scale(0.75);
+  }
+
+.is-focused .field-label{
+   color: #000;
+}
+
+.form-group.is-focused::after{
+   transform: scaleX(1);
+}
+
+.input-group.is-focused::after{
+   transform: scaleX(1);
+}
+
+.form-group.is-focused::before{
+   height: 32px;
+}
+
+.input-group.is-focused::before{
+   height: 32px;
+}

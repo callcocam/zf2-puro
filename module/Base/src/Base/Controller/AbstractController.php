@@ -15,6 +15,8 @@ use Zend\View\Model\ViewModel;
 
 abstract class AbstractController extends AbstractActionController {
 
+    protected $storage;
+    protected $authservice;
     protected $table;
     protected $model;
     protected $form;
@@ -26,9 +28,34 @@ abstract class AbstractController extends AbstractActionController {
 
     abstract function __construct();
 
+    public function onDispatch(\Zend\Mvc\MvcEvent $e) {
+        //if already login, redirect to success page
+        if (!$this->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute("auth");
+        }
+
+        return parent::onDispatch($e);
+    }
+
+    public function getAuthService() {
+        if (!$this->authservice) {
+            $this->authservice = $this->getServiceLocator()->get('AuthService');
+        }
+
+        return $this->authservice;
+    }
+
+    public function getSessionStorage() {
+        if (!$this->storage) {
+            $this->storage = $this->getServiceLocator()->get('Auth\Model\AuthStorage');
+        }
+        return $this->storage;
+    }
+
     public function getAdapter() {
         return $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
     }
+
     public function getForm() {
         return $this->getServiceLocator()->get($this->form);
     }
