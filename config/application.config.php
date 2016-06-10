@@ -10,6 +10,7 @@ return array(
     'modules' => array(
         'Base',
         'Admin',
+        'Home',
         'Auth'
     ),
 

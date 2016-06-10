@@ -9,7 +9,9 @@
  */
 
 namespace Admin;
+
 use Zend\Db\TableGateway\TableGateway;
+
 class Module {
 
     public function getConfig() {

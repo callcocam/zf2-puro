@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Base;
 
 use Zend\Mvc\ModuleRouteListener;
@@ -17,12 +9,18 @@ use Zend\Db\TableGateway\TableGateway;
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
+       
         $eventManager = $e->getApplication()->getEventManager();
+        $serviceManager = $e->getApplication()->getServiceManager();
+        
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
         $sharedManager = $eventManager->getSharedManager();
+        $eventManager->attach($serviceManager->get('LayoutListener'));
+        $eventManager->attach($serviceManager->get('LayoutErrorListener'));
         $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($ev) {
-            $cache = new Model\Cache(array('ttl'=>6000));
+            $cache = new Model\Cache();
             if (!$cache->hasItem("companies")) {
                 $model = $ev->getApplication()->getServiceManager()->get('Admin\Model\BsCompaniesTable');
                 $companies = $model->findOneBy(array('state' => 0));
@@ -73,12 +71,11 @@ class Module {
             )
         );
     }
-    
-    public function getViewHelperConfig()
-    {
-         return array(
+
+    public function getViewHelperConfig() {
+        return array(
             'factories' => array(
-                 'messages' => function ($helperPluginManager) {
+                'messages' => function ($helperPluginManager) {
                     $sm = $helperPluginManager->getServiceLocator();
                     $messagesPlugin = $sm->get('ControllerPluginManager')->get('messages');
                     $messages = $messagesPlugin->getMergedMessages();
@@ -88,7 +85,6 @@ class Module {
             ),
             'invokables' => array(
                 'CacheHelper' => 'Base\View\Helper\CacheHelper',
-              
             )
         );
     }
