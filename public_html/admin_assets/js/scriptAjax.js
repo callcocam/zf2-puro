@@ -228,10 +228,13 @@ $.Admin.options = {
 			            dataType: type,
 			            data:data,
 			            beforeSend: function (xhr) {
-			               $(optionsForm.options.boxCarregando).fadeIn('fast');
+			               
+			               $(optionsForm.options.carregando).fadeIn('fast');
 			            },
 			            success: function (data)
 			            {
+			            	$(optionsForm.options.carregando).hide('fast');
+			            	$(optionsForm.options.boxCarregando).fadeIn('fast');
 			                optionsForm.message(data.msg,data.class);
 			                options.resultAction=data.result;
 			            }
@@ -312,10 +315,10 @@ $.Form.optionsForm = {
 	    save: 			"#save",
 	    save_copy: 		"#save_copy",
 	    id: 			"#id",
-	    codio: 			"#codio",
+	    codigo: 		"#codigo",
  		options:{ 
  		classeResult:     '',
- 		carregando:     '',
+ 		carregando:     '.carregando',
  		boxCarregando:  '.box-carregando',
  		target:        	'#alert',   // target element(s) to be updated with server response 
         beforeSubmit:  	null,  // pre-submit callback 
@@ -327,11 +330,7 @@ $.Form.optionsForm = {
          dataType:  'json',        // 'xml', 'script', or 'json' (expected server response type) 
          //clearForm: false        // clear all form fields after successful submit 
          //resetForm: false        // reset the form after successful submit 
- 
-        // $.ajax options can be used here too, for example: 
-        //timeout:   3000 
-        // pre-submit callback 
-    	},
+     	},
         showRequest:function (formData, jqForm, options) { 
 			// FormData é um array ; aqui nós usamos $ .param para convertê-lo a uma corda para exibi-lo
 			// Mas o plugin forma faz isso para você automaticamente quando apresentar os dados
@@ -340,8 +339,8 @@ $.Form.optionsForm = {
 			// JqForm é um objeto jQuery encapsular o elemento de formulário. Para acessar o
 			// Elemento DOM para o formulário de fazer isso:
 			// Var formElement = jqForm [ 0 ] ;
-             
-			$(options.boxCarregando).fadeIn('fast');
+            $(options.carregando).fadeIn('fast'); 
+			
 			 // alert( ' Sobre a apresentar : \ n \ n' + queryString );
 			// Aqui poderíamos retornar false para impedir que o formulário a ser apresentado;
 			// Retornando outra coisa senão falsa permitirá que o envio de formulário para continuar
@@ -350,32 +349,17 @@ $.Form.optionsForm = {
         showResponse:function (responseText, statusText, xhr, $form)  { 
 		    // Para as respostas normais de HTML, o primeiro argumento para a chamada de retorno sucesso
 			// É propriedade responseText do objeto XMLHttpRequest
+		     $(optionsForm.options.carregando).hide('fast'); 
 		     optionsForm.message(responseText.msg,responseText.class); 
 		     $(optionsForm.id).val(responseText.result);
 		     $(optionsForm.codigo).val(responseText.codigo);
-		     // if(responseText.callback=="save_copy")
-		     // {
-		     // 	$(this.id).val("0");
-		     // }
-		    // $(this.save_copy).removeClass('disabled');
-		     // optionsForm.options.resetForm=responseText.result;
-		     // optionsForm.options.clearForm=responseText.result;  
-		    // Se o método ajaxForm foi aprovada uma opções objeto com o tipo de dados
-			// Propriedade definida como 'xml' , em seguida, o primeiro argumento para a chamada de retorno sucesso
-			// É propriedade responseXML do objeto XMLHttpRequest
-		 
-		   	// Se o método ajaxForm foi aprovada uma opções objeto com o tipo de dados
-			// Propriedade definida como ' json ' , em seguida, o primeiro argumento para a chamada de retorno sucesso
-			// É o objeto de dados JSON retornado pelo servidor
-		 
-		    // alert('status: ' + statusText + '\n\nresponseText: \n' + responseText.msg + 
-		    //     '\n\nThe output div should have already been updated with the responseText.'); 
+		   
 		},
 		message:function(msg,classe)
 		{
 			optionsForm.options.classeResult=classe;
 		     $(optionsForm.options.target).addClass(classe).html(msg).fadeIn('fast', function() {
-		     	setTimeout(optionsForm.esconde, 1000);
+		     	setTimeout(optionsForm.esconde, 5000);
 		     });
 		},
 		esconde:function()

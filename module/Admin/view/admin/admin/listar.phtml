@@ -1,11 +1,103 @@
-<a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => 'inserir')) ?>">Cadastrar</a>
-<table class="table">
-    <?php foreach ($this->data as $o):?>
-        <tr>
-            <td><?= $o->getId() ?></td>
-            <td><a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => 'editar', 'id' => $o->getId())) ?>"><?= $o->getTitle() ?></a></td>
-            <td><?= $o->getDescription() ?></td>
-            <td><?= $o->getCreated() ?></td>
-        </tr>
-    <?php endforeach; ?>
-</table>
+<?php echo $this->messages(); ?>
+<?=
+$this->headTitle(strtoupper(substr($this->controller, 3)));
+extract($user);
+?>
+<section class="content-header">
+    <h1>
+        Bem Vindo <?php echo $title ?>
+    </h1>
+    <div class="breadcrumb">
+        <ul class="breadcrumbs-item">
+            <li>Admin</li>
+            <li class="divisor"> / </li>
+            <li>Panel</li>
+            <li class="divisor"> / </li>
+            <li><a href="<?php echo $this->url($route, array('controller' => $controller, 'action' => "index")) ?>"><?= ucfirst($controller) ?> </a></li>
+        </ul>
+        <?php echo $this->FormHelper()->filterForm($this->filtro); ?>
+    </div>
+</section>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <?php echo $this->ZFListarHelper()->setNavigation(); ?>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="tabs" class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class=""><a class="tabLink" href="#principal"><?php echo $this->translate('TAB_CONTEUDO_LABEL') ?></a></li>
+        <li class="pull-right"><i class="ion ion-gear-b"></i></li>
+    </ul>
+    <div class="tab-content">
+        <div id="principal" class="tab-pane ui-state-active">
+            <?php
+            $button = array(
+                'EDITAR' => array('type' => 'a', 'label' => 'EDITAR', 'icone' => 'ion ion-compose', 'action' => 'editar', 'class' => 'green', 'page' => $this->page, 'id' => 'editar'),
+                'EXCLUIR' => array('type' => 'a', 'label' => 'EXCLUIR', 'icone' => 'ion ion-ios-trash-outline', 'action' => 'excluir', 'class' => 'blue', 'page' => $this->page, 'id' => 'delete'),
+            );
+            $html = array();
+            $escaper = new \Zend\Escaper\Escaper('utf-8');
+            $qtd_col = 4;
+            if ($this->data):
+                foreach ($this->data as $o) {
+                    $value = $o->toArray();
+                    $value['description'] = \Base\Model\Check::Words($value['description'], 10);
+                    $value['buttons'] = $this->ZFListarHelper()->createBtn($value['id'], $button);
+                    $implode = implode("}}&{{", array_keys($value));
+                    $keys = explode("&", $implode);
+                    if (array_key_exists("images", $value)) {
+                        $images = $value['images'];
+                        $value['images'] = $this->HtmlTag("img")->setAttributes(array(
+                            'alt' => $value['title'],
+                            'title' => $value['title'],
+                            'src' => "/dist/tim.php?src=/uploads/{$images}&w=370&h=200"
+                        ));
+                        $value['title'] = \Base\Model\Check::Words($value['title'], 3);
+                        $html[] = str_replace(array_values($keys),  array_values($value), $this->ZFListarHelper()->setThumbnail($value['id']));
+                    } else {
+                        $html[] = str_replace(array_values($keys),  array_values($value), $this->ZFListarHelper()->setList($value['id']));
+                    }
+                }
+                if ($html) {
+                    echo $this->HtmlTag('div')->setClass('row')->setText(implode("", $html));
+                }
+            endif;
+            ?>
+            <?php
+//            echo $this->paginationControl(
+//                    // the paginator object
+//                    $this->paginator,
+//                    // the scrolling style
+//                    'sliding',
+//                    // the partial to use to render the control
+//                    'partial/paginator.phtml',
+//                    // the route to link to when a user clicks a control link
+//                    array(
+//                'route' => $this->route,
+//                'controller' => $this->controller,
+//                'action' => 'index',
+//                'id' => "0"
+//                    )
+//            );
+            ?>
+        </div><!-- /.tab-pane -->
+    </div><!-- /.tab-content -->
+</div>
+
+
+<script>
+    $(function () {
+
+        $("#created, #publish_down").datetimepicker({
+            timepicker: false,
+            format: 'd-m-Y',
+            onChangeDateTime: function (dp, $input) {
+                //alert($input.val());
+            }
+        });
+        $.datetimepicker.setLocale('pt-BR');
+    });
+</script>

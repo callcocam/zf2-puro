@@ -17,6 +17,7 @@ abstract class AbstractController extends AbstractActionController {
 
     protected $storage;
     protected $authservice;
+    protected $user;
     protected $table;
     protected $model;
     protected $form;
@@ -33,7 +34,7 @@ abstract class AbstractController extends AbstractActionController {
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute("auth");
         }
-
+        $this->user=  $this->getAuthService()->getIdentity();
         return parent::onDispatch($e);
     }
 
@@ -73,7 +74,11 @@ abstract class AbstractController extends AbstractActionController {
         if (!empty($this->table)):
             $this->data = $this->getTableGateway()->findAll();
         endif;
-        $view = new ViewModel(array('data' => $this->data, 'route' => $this->route, 'controller' => $this->controller));
+        $view = new ViewModel(array(
+            'data' => $this->data,
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'user'=>  $this->user));
         $view->setTemplate($this->template);
         return $view;
     }

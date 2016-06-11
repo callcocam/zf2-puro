@@ -1,0 +1,42 @@
+<h1>Login </h1>
+<div class="widgets-box">
+    <?php
+    echo $this->messages();
+    $form = $this->form;
+    $form->setAttribute('action', $this->url($this->route, array('controller' => $this->controller, 'action' => 'login')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formRow($form->get('email'));
+    echo $this->formRow($form->get('password'));
+    echo $this->formRow($form->get('rememberme'));
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+    <div class="fmi-footer">
+        <?php
+        // view helper
+        if ($user = $this->identity()) {
+            echo 'Logged in as ' . $this->escapeHtml($user->title);
+            ?>
+            | <a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => 'logout')); ?>"><?php echo $this->translate('Logout'); ?></a>
+            <?php
+        } else {
+            echo 'Not logged in';
+        }
+        ?>
+        <p>
+            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'registration')); ?>"><?php echo $this->translate('Register'); ?></a> |
+            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'forgotten-password')); ?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+        </p>
+
+        <?php
+        if ($this->messages) {
+            echo '<ul class="nav nav-list">';
+            foreach ($this->messages as $message) {
+                echo '<li>' . $message . '</li>';
+            }
+            echo '</ul>';
+        }
+        ?>
+    </div>
+</div>

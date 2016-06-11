@@ -9,13 +9,13 @@ use Zend\Db\TableGateway\TableGateway;
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
-       
+
         $eventManager = $e->getApplication()->getEventManager();
         $serviceManager = $e->getApplication()->getServiceManager();
-        
+
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        
+
         $sharedManager = $eventManager->getSharedManager();
         $eventManager->attach($serviceManager->get('LayoutListener'));
         $eventManager->attach($serviceManager->get('LayoutErrorListener'));
@@ -30,7 +30,6 @@ class Module {
             }
         }, 99);
     }
-
 
     public function getConfig() {
         return include __DIR__ . '/config/module.config.php';
@@ -77,10 +76,20 @@ class Module {
                     $messages = $messagesPlugin->getMergedMessages();
                     $helper = new View\Helper\Messages($messages);
                     return $helper;
+                }, 'RouteHelper' => function($sm) {
+                    return new \Base\View\Helper\RouteHelper($sm->getServiceLocator());
+                },
+                'ZFListarHelper' => function($sm) {
+                      return new \Base\View\Helper\ZFListarHelper();
+                },
+                'FormHelper' => function ($sm) {
+                    return new \Base\View\Helper\FormHelper($sm);
                 },
             ),
             'invokables' => array(
                 'CacheHelper' => 'Base\View\Helper\CacheHelper',
+                'HtmlTag' => 'Base\View\Helper\HtmlElement',
+                'ZFListarHelper' => 'Base\View\Helper\ZFListarHelper',
             )
         );
     }

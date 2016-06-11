@@ -1,0 +1,29 @@
+ <div class="box login-box">
+      <div class="main-login-header">
+        <a href="<?php echo $this->url('admin')?>"><img src="/img/logo-siga-q.png"></a>
+      </div><!-- /.login-logo -->
+      <div class="main-login-box login-box-body">
+      <p class="trigger trigger_info">Informeu seu e-mail abaixo. Você receberá uma link para recuperar sua senha!</p>
+         <?php
+            echo $this->id;
+            $form = $this->form;
+            $form->setAttribute('action', $this->url('auth/default', array('controller'=>'auth','action' => 'rememberme')));
+            $form->prepare();
+            echo $this->form()->openTag($form);?>
+          <div class="form-group has-feedback">
+            <?php echo $this->formEmail($form->get('email')); ?>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>
+         
+          <div class="row">
+            <div class="col-xs-12">
+              <button type="submit" class="btn btn-blue fl-right">Obter Nova Senha!</button>
+            </div><!-- /.col -->
+          </div>
+         <?php echo $this->form()->closeTag(); ?>
+          <?php echo $this->messages(); ?>
+        <p>
+        <a  href="<?php echo $this->url('auth/default', array('controller'=>'auth','action' => 'login')) ?>">&larrhk; Voltar para Tela de Login!</a><br>
+        
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->

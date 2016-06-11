@@ -1,17 +1,58 @@
 <h1>Registration</h1>
- <p>
-        <a href="<?php echo $this->url($this->route, array('controller' => 'admin', 'action' => 'index')); ?>"><?php echo $this->translate('Voltar'); ?></a> |
-        <a href="<?php echo $this->url($this->route); ?>"><?php echo $this->translate('Login'); ?></a>
-</p>
-<?php
-$form = $this->form;
-$form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'registration')));
+<style>
+    .login-box{margin: 60px auto;float: left;width: 100%;}
+    .main-login-header{text-align: left;display: block;width: 800px;max-width: 90%;margin: 0 auto;background: #fff;padding: 0;}
+    .login-box-body{text-align: left;display: block;width: 800px;max-width: 90%;margin:0 auto 25px auto;background: #fff;padding: 25px;box-shadow: 0 0 5px 0 #ccc;}
+    .form-group{margin:  0;}
+    .login-logo{padding-bottom: 0;}
+    .login-box a{color: #555;text-decoration: none;font-size: 0.8em;margin-top: 10px;text-transform: uppercase;font-weight: 300;}
+    .login-box a:hover{text-decoration: underline;}
+</style>
+<div class="box login-box">
+    <div class="main-login-header">
+        <a href="<?php echo $this->url('admin') ?>"><img style="width:100%;height: 120px" src="/admin_assets/img/logo-siga-q.png"></a>
+    </div><!-- /.login-logo -->
+    <div class="main-login-box login-box-body">
+        <p class="trigger trigger_info">Cadastre-se para mair acesso</p>
+        <p>
+            <a href="<?php echo $this->url($this->route, array('controller' => 'admin', 'action' => 'index')); ?>"><?php echo $this->translate('Voltar'); ?></a> |
+            <a href="<?php echo $this->url($this->route); ?>"><?php echo $this->translate('Login'); ?></a>
+        </p>
+        <?php
+        $form = $this->form;
+        $form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'registration')));
 
-$form->setAttribute('class', 'form-inline');
-$this->formElementErrors()
-        ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
-        ->setMessageSeparatorString('</li>')->render($form);
-$form->prepare();
-echo $this->form()->openTag($form);
-echo $this->formCollection($form);
-echo $this->form()->closeTag();
+        $form->setAttribute('class', '');
+        $this->formElementErrors()
+                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+                ->setMessageSeparatorString('</li>')->render($form);
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        $linha = '<div class="form-group">
+    <label for="#title#">#label#</label>
+    #fild#
+  </div>';
+        foreach ($form->getElements() as $element):
+            if ($element->getAttribute('type') == "cidade") {
+                
+            }
+            if ($element->getAttribute('type') == "hidden"):
+                echo $this->formHidden($element);
+            elseif ($element->getAttribute('type') == "submit"):
+                echo $this->formRow($element);
+            else:
+                $label = $this->translate($element->getLabel());
+                $elementArray = array(
+                    '#fild#' => $this->formRow($element->setLabel("")),
+                    '#label#' => $label,
+                    '#title#' => $element->getName(),
+                );
+                echo str_replace(array_keys($elementArray), array_values($elementArray), $linha);
+            endif;
+
+        endforeach;
+        echo $this->form()->closeTag();
+        ?>
+    </div><!-- /.login-box-body -->
+</div><!-- /.login-box -->
+

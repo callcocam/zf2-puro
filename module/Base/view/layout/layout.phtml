@@ -1,6 +1,7 @@
 <?php
 echo $this->doctype();
 $usuario = $this->UserIdentity();
+extract($usuario);
 ?>
 
 <html lang="en">
@@ -25,12 +26,12 @@ $usuario = $this->UserIdentity();
         ?>
     </head>
     <body>
-        <!--      <div class="box-carregando">
+              <div class="box-carregando">
                 <div class="carregando"></div>
                  <span class="trigger" id="alert" style="display: none;font-size: 14px;">
                        Aguarde...
                  </span> 
-            </div>-->
+            </div>
         <section class="container main-header">
             <div class="main-header-top-left header_green">
                 <picture alt="Layout Admin">      
@@ -48,8 +49,8 @@ $usuario = $this->UserIdentity();
                                 <span class="profile-open">Claudio Camos</span> </a>
                             <ul class="profile-sub">
                                 <li class="profile-sub-avatar"><a href="#"> <img src="/admin_assets/img/no_avatar.jpg" class="img-profile-item b-r-full"></a></li>
-                                <li class="profile-sub-info"><a href="#"><?= $usuario->title ?></a></li>
-                                <li class="profile-sub-date"><a href="#"><?php echo date("m", strtotime($usuario->created)); ?>, <?php echo date("Y", strtotime($usuario->created)); ?></a></li>
+                                <li class="profile-sub-info"><a href="#"><?= $title ?></a></li>
+                                <li class="profile-sub-date"><a href="#"><?php echo date("m", strtotime($created)); ?>, <?php echo date("Y", strtotime($created)); ?></a></li>
                                 <li class="profile-sub-profile"><a class="btn btn-blue" href="#">M. Conta</a></li>
                                 <li class="profile-sub-logout"><a class="btn btn-red" href="#">Sair Do Sist.</a></li>
                             </ul>
@@ -70,7 +71,7 @@ $usuario = $this->UserIdentity();
                         <img src="/admin_assets/img/no_avatar.jpg" class="img-profile-item b-r-full">
                     </h1>
                     <sapn class="sidebar-online">
-                        <?php echo $usuario->title; ?>
+                        <?php echo $title; ?>
                         <p><i class="on b-r-full"></i> Online</p>
                     </sapn>
                 </header>
@@ -99,7 +100,7 @@ $usuario = $this->UserIdentity();
                     <?php echo $this->content; ?>
                     <div class="clear"></div>
             </section>
-            <footer class="main-footer">
+            <footer class="main-footer footer-fixed">
                 <div class="fl-right hidden-xs">
                     <b>Version</b> 2.3.0
                 </div>

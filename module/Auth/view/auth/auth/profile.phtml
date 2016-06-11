@@ -1,0 +1,280 @@
+		<div class="row">
+            <div class="col-md-3">
+              <!-- Profile Image -->
+              <div class="box box-primary">
+                <div class="box-body box-profile">
+                <?php echo $this->ImageHelper()->Image($this->user['images_users'],$this->user['title'],'128','128','profile-user-img img-responsive img-circle') ?>
+
+                  <!-- <img class="profile-user-img img-responsive img-circle" src="/dist/img/user4-128x128.jpg" alt="User profile picture"> -->
+                  <h3 class="profile-username text-center"><?php echo $this->user['title'] ?></h3>
+                  <p class="text-muted text-center"><?php echo $this->user['email'] ?></p>
+
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Fone</b> <a class="pull-right"><?php echo $this->user['phone'] ?></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Facebook</b> <a class="pull-right"><?php echo $this->user['facebook'] ?></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Twitter</b> <a class="pull-right"><?php echo $this->user['twitter'] ?></a>
+                    </li>
+                    
+                  </ul>
+
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+              <!-- About Me Box -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">SOBRE MIM</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <?php echo $this->user['cidade'] ?>, <?php echo $this->user['bairro'] ?>,
+                  <?php echo $this->user['endereco'] ?>,<?php //echo $this->user['cep'] ?></p>
+
+                  <hr>
+
+                  <strong><i class="fa fa-pencil margin-r-5"></i> HABILIDADES</strong>
+                  <p>
+                    <span class="label label-danger">UI Design</span>
+                    <span class="label label-success">Coding</span>
+                    <span class="label label-info">Javascript</span>
+                    <span class="label label-warning">PHP</span>
+                    <span class="label label-primary">Node.js</span>
+                  </p>
+
+                  <hr>-->
+
+                  <strong><i class="fa fa-file-text-o margin-r-5"></i> Nota</strong>
+                  <p><?php echo $this->user['description'] ?></p>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+            <div class="col-md-9">
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <!--<li class="active"><a href="#activity" data-toggle="tab">Atividades</a></li>-->
+                  <li class="active"><a href="#settings" data-toggle="tab">Configuração</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane" id="activity">
+                    <!-- Post -->
+                    <div class="post">
+                      <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="/dist/img/user1-128x128.jpg" alt="user image">
+                        <span class='username'>
+                          <a href="#">Jonathan Burke Jr.</a>
+                          <a href='#' class='pull-right btn-box-tool'><i class='fa fa-times'></i></a>
+                        </span>
+                        <span class='description'>Shared publicly - 7:30 PM today</span>
+                      </div><!-- /.user-block -->
+                      <p>
+                        Lorem ipsum represents a long-held tradition for designers,
+                        typographers and the like. Some people hate it and argue for
+                        its demise, but others ignore the hate as they create awesome
+                        tools to help create filler text for everyone from bacon lovers
+                        to Charlie Sheen fans.
+                      </p>
+                      <ul class="list-inline">
+                        <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
+                        <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
+                        <li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
+                      </ul>
+
+                      <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                    </div><!-- /.post -->
+                     </div><!-- /.tab-pane -->
+                  <div class="active tab-pane" id="settings">
+    	     <?php echo $this->messages();?>
+   <?php $this->form->setAttribute('action',
+			 	$this->url('auth/default', 
+			 		array('controller' => 'auth', 'action' => "profile")));
+					$this->form->setAttribute('class', 'form-horizontal');
+					$this->formElementErrors()
+					->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+					->setMessageSeparatorString('</li>')->render($this->form);
+					echo $this->form()->openTag($this->form);?>
+                    <div class="row">
+                    <?php 
+                       echo $this->FormHidden($this->form->get('id'));
+                        echo $this->FormHidden($this->form->get('asset_id'));
+                         echo $this->FormHidden($this->form->get('empresa'));
+                          echo $this->FormHidden($this->form->get('codigo'));
+                           echo $this->FormHidden($this->form->get('role_id'));
+                           echo $this->FormHidden($this->form->get('access'));
+                           
+                     ?>
+                      	<div class="col-md-10 col-md-offset-2">
+                      		 <legend><strong><i class="fa fa-user margin-r-5"></i> Dados pessoais</strong></legend>
+                      	</div>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputTitle" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('title')->getLabel()) ?></label>
+                        <div class="col-sm-8">
+                          <?php echo $this->formRow($this->form->get('title')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputCpf" class="col-sm-2 control-label"><?php //echo $this->translate($this->form->get('cpf')->getLabel()) ?></label>
+                        <div class="col-sm-4">
+                          <?php //echo $this->formRow($this->form->get('cpf')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputEmail" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('email')->getLabel()) ?></label>
+                        <div class="col-sm-6">
+                          <?php echo $this->formRow($this->form->get('email')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputFacebook" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('facebook')->getLabel()) ?></label>
+                        <div class="col-sm-6">
+                          <?php echo $this->formRow($this->form->get('facebook')->setLabel('')) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputTwitter" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('twitter')->getLabel()) ?></label>
+                        <div class="col-sm-6">
+                          <?php echo $this->formRow($this->form->get('twitter')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputPhone" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('phone')->getLabel()) ?></label>
+                        <div class="col-sm-4">
+                          <?php echo $this->formRow($this->form->get('phone')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="row">
+                      	<div class="col-md-10 col-md-offset-2">
+                      		 <legend><strong><i class="fa fa-map-marker margin-r-5"></i> Endereço</strong></legend>
+                      	</div>
+                      </div>
+                     
+                       <div class="form-group">
+                         <label for="inputCidade" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('cidade')->getLabel()) ?></label>
+                        <div class="col-sm-4">
+                          <?php echo $this->formRow($this->form->get('cidade')->setLabel('')) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputBairro" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('bairro')->getLabel()) ?></label>
+                        <div class="col-sm-5">
+                          <?php echo $this->formRow($this->form->get('bairro')->setLabel('')) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputEndereco" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('endereco')->getLabel()) ?></label>
+                        <div class="col-sm-7">
+                          <?php echo $this->formRow($this->form->get('endereco')->setLabel('')) ?>
+                        </div>
+                      </div>
+                       
+                      <div class="row">
+                      	<div class="col-md-10 col-md-offset-2">
+                      		 <legend><strong><i class="fa fa-lock margin-r-5"></i> Descrição</strong></legend>
+                      	</div>
+                      </div>
+						 <div class="form-group">
+                         <label for="inputDescription" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('description')->getLabel()) ?></label>
+                        <div class="col-sm-10">
+                          <?php echo $this->formRow($this->form->get('description')->setLabel('')) ?>
+                        </div>
+                      </div>
+
+                       <div class="form-group">
+						<label for="inputDescription" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('images_users')->getLabel()) ?></label> 
+						 <div class="col-sm-10">
+                        <div class="btn btn-primary btn-file">
+                      		<i class="fa fa-paperclip"></i> <?php echo $this->translate($this->form->get('images_users')->getLabel()) ?>
+                      		<input type="file" name="attachment">
+                      		<?php echo $this->FormHidden($this->form->get('images_users')->setLabel('')) ?>
+                    	</div>
+                        <p class="help-block">Max. 32MB</p>
+                       </div>
+                      </div>
+                      
+                      <div class="row">
+                      	<div class="col-md-10 col-md-offset-2">
+                      		 <legend><strong><i class="fa fa-lock margin-r-5"></i> Segurança</strong></legend>
+                      	</div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputPassword" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('password')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('password')->setLabel('')->setValue('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputState" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('state')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('state')->setLabel('')) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputOrdering" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('ordering')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('ordering')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputCreatedBy" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('created_by')->getLabel()) ?></label>
+                        <div class="col-sm-5">
+                          <?php echo $this->formRow($this->form->get('created_by')->setLabel('')) ?>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                         <label for="inputAlias" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('alias')->getLabel()) ?></label>
+                        <div class="col-sm-6">
+                          <?php echo $this->formRow($this->form->get('alias')->setLabel('')->setAttribute('readonly',true)) ?>
+                        </div>
+                      </div>
+                      <div class="row">
+                      	<div class="col-md-10 col-md-offset-2">
+                      		 <legend><strong><i class="fa fa-calendar margin-r-5"></i> Datas</strong></legend>
+                      	</div>
+                      </div>
+                        <div class="form-group">
+                         <label for="inputCreated" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('created')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('created')->setLabel('')->setAttribute('readonly','readonly')) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputModified" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('modified')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('modified')->setLabel('')->setAttribute('readonly','readonly')->setValue(date("d-m-Y H:i:s"))) ?>
+                        </div>
+                      </div>
+                       <div class="form-group">
+                         <label for="inputPublishUp" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('publish_up')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('publish_up')->setLabel('')->setAttribute('readonly','readonly')) ?>
+                        </div>
+                      </div>
+						 <div class="form-group">
+                         <label for="inputPublishDown" class="col-sm-2 control-label"><?php echo $this->translate($this->form->get('publish_down')->getLabel()) ?></label>
+                        <div class="col-sm-3">
+                          <?php echo $this->formRow($this->form->get('publish_down')->setLabel('')->setAttribute('readonly','readonly')) ?>
+                        </div>
+                      </div>
+                     <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                          <button type="submit" class="btn btn-success">ATUALIZAR</button>
+                        </div>
+                      </div>
+                   <?php echo $this->form()->closeTag() ?>
+                  </div><!-- /.tab-pane -->
+                </div><!-- /.tab-content -->
+              </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+          <script>
+    $(function () {
+        
+       intTinymce("#description");
+     
+    });
+</script>

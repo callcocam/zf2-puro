@@ -31,7 +31,7 @@ a img { border: none;}
 /*.ion{margin-bottom: 5px !important;}*/
 small{font-size: 0.75em; color: #555;}
 a{text-decoration: none;}
-
+form .disabled{display:none;}
 .none{display: none;}
 .hidden-xs{display: none;}
 .disabled{pointer-events: none;}
@@ -246,6 +246,38 @@ a{text-decoration: none;}
 .box-line{float: left; width: 100%;}
 .box-footer-fixed{position: fixed;bottom: 0;}
 .box-footer-ab{position: absolute;bottom: 0;float: left;}
+
+.comments-box{width: 100%;float: left;}
+.comments-box .comments-header{text-align:center;padding: 10px;border-bottom: 4px solid #ccc;background: #eee;}
+.comments-box .comments-body{float: left;width: 100%;margin-top: 35px;}
+.comments-box .comments-box-footer{float: left;width: 100%;border-top: 4px solid #ccc;padding: 15px;background: #eee;}
+.comments-box form textarea{margin-bottom:10px;}
+.comments-box form #rank{width:30%;}
+.comments-box form #submit{width:30%;float: right;}
+
+/* SINGLE COMMENTS */
+.formulario-comentarios{float: left;width: 100%;}
+.comment-box-row{float: left;display: block;width: 100%;margin: 5px;border-bottom:3px solid #ccc;background:#fff;}
+
+.comment-box-row .comment-box-header, .comment-body, .comment-box-footer {width: 100%;float: left;padding: 15px;}
+.comment-box-row .comment-box-header h1{width: 80%;font-weight:600;font-size: 1.2em;float: left;margin-top: 24px; margin-left: 21px;color:#333;}
+
+.comment-box-row .comment-avatar{display: block;float: left;margin-right:10px;}
+
+.comment-box-row .comment-date{float: left;margin-left: 22px;font-size:0.785em;color:#555;padding: 5px;}
+
+.comment-box-row .comment-body{padding: 10px 30px;}
+.comment-box-row .comment-action{float: left;width: 100%;margin: 5px 0;padding: 2px;border-top:1px #ccc solid;border-bottom: 1px #ccc solid;}
+.comment-box-row .comment-action li{float: left;padding: 2px 20px;}
+
+.comment-box-row .comment-action li a{color:#bbb;font-size:0.7em;font-weight:600;}
+.comment-box-row .comment-action li a:hover{color:#000;}
+.comment-box-row .comment-box-footer{}
+
+.comment-box-row .comment-open{display:block;}
+.comment-box-row .comment-close{display:none;}
+.comment-box-row .comment-status-on a{color: green;}
+.comment-box-row .comment-status-off a{color: red;}
 
 .box-full-01{width: 7.33333333%;}/*1-col*8.33333333*/
 .box-full-02{width: 15.66666667%;}/*2-col*8.33333333*/

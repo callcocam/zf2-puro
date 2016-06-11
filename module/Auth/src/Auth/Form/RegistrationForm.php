@@ -454,18 +454,24 @@ class RegistrationForm extends AbstractForm {
         );
         //############################################ informações da coluna publish_up ##############################################:
 
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Captcha',
-            'name' => 'captcha',
-            'attributes' => array(
-                'id' => 'captcha',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Please verify you are human',
-                'captcha' => new \Zend\Captcha\Figlet(),
-            ),
-        ));
+       $this->add([
+                'type' => 'Zend\Form\Element\Captcha',
+                'name' => 'captcha',
+                'options' => [
+                    'label' => 'Please verify you are human.',
+                    'captcha' => [
+                        'class'   => 'Image',
+                        'options' => [
+                            'font' =>  './data/fonts/arial.ttf',
+                            'width' => 200,
+                            'height' => 100,
+                            'dotNoiseLevel' => 40,
+                            'lineNoiseLevel' => 3,
+                            'imgDir' => './public_html/images/captcha'
+                        ],
+                    ],
+                ],
+        ]);
 
         $this->add(array(
             'name' => 'submit',

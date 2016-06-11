@@ -1,42 +1,52 @@
-<h1>Login </h1>
-<div class="fmi">
-    <?php
-    echo $this->messages();
-    $form = $this->form;
-    $form->setAttribute('action', $this->url($this->route, array('controller' => $this->controller, 'action' => 'login')));
-    $form->prepare();
-    echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('email'));
-    echo $this->formRow($form->get('password'));
-    echo $this->formRow($form->get('rememberme'));
-    echo $this->formSubmit($form->get('submit'));
-    echo $this->form()->closeTag();
-    ?>
-    <div class="fmi-footer">
+<style>
+    .login-box{margin: 60px auto;float: left;width: 100%;}
+    .main-login-header{text-align: left;display: block;width: 500px;max-width: 90%;margin: 0 auto;background: #fff;padding: 0;}
+    .login-box-body{text-align: left;display: block;width: 500px;max-width: 90%;margin:0 auto 25px auto;background: #fff;padding: 25px;box-shadow: 0 0 5px 0 #ccc;}
+    .form-group{margin: 15px 0;}
+    .login-logo{padding-bottom: 0;}
+    .login-box a{color: #555;text-decoration: none;font-size: 0.8em;margin-top: 10px;text-transform: uppercase;font-weight: 300;}
+    .login-box a:hover{text-decoration: underline;}
+</style>
+<div class="box login-box">
+    <div class="main-login-header">
+        <a href="<?php echo $this->url('admin') ?>"><img src="/admin_assets/img/logo-siga-q.png"></a>
+    </div><!-- /.login-logo -->
+    <div class="main-login-box login-box-body">
+        <p class="trigger trigger_info">Faça login para começar a sua sessão</p>
         <?php
-        // view helper
-        if ($user = $this->identity()) {
-            echo 'Logged in as ' . $this->escapeHtml($user->title);
-            ?>
-            | <a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => 'logout')); ?>"><?php echo $this->translate('Logout'); ?></a>
-            <?php
-        } else {
-            echo 'Not logged in';
-        }
+        $this->form = $this->form;
+        $this->form->setAttribute('action', $this->url('auth/default',array('controller' => 'login', 'action' => 'login')));
+        $this->form->prepare();
+        echo $this->form()->openTag($this->form);
         ?>
+        <div class="form-group has-feedback">
+<?php echo $this->formEmail($this->form->get('email')); ?>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+<?php echo $this->formPassword($this->form->get('password')); ?>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="row">
+            <div class="box box-full-07">
+                <div class="checkbox icheck">
+                    <label>
+<?php echo $this->formCheckbox($this->form->get('rememberme')); ?> Lembre-me
+                    </label>
+                </div>
+            </div><!-- /.col -->
+            <div class="box box-full-05">
+                <button type="submit" class="btn btn-green fl-right">ACESSAR!</button>
+            </div><!-- /.col -->
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+<?php echo $this->messages(); ?>
         <p>
-            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'registration')); ?>"><?php echo $this->translate('Register'); ?></a> |
-            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'forgotten-password')); ?>"><?php echo $this->translate('Forgotten Password'); ?></a>
-        </p>
+            <a href="<?php echo $this->url("inicio")?>">&larrhk; Voltar para Site!</a> &nbsp;&nbsp;&nbsp; 
+            <a href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'registration')); ?>"><?php echo $this->translate('Register'); ?></a>
+             &nbsp;&nbsp;&nbsp; 
+            <a  href="<?php echo $this->url($this->route, array('controller' => 'registration', 'action' => 'forgotten-password')); ?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+             <br>
 
-        <?php
-        if ($this->messages) {
-            echo '<ul class="nav nav-list">';
-            foreach ($this->messages as $message) {
-                echo '<li>' . $message . '</li>';
-            }
-            echo '</ul>';
-        }
-        ?>
-    </div>
-</div>
+    </div><!-- /.login-box-body -->
+</div><!-- /.login-box -->

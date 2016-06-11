@@ -28,7 +28,8 @@ class ForgottenPasswordForm extends AbstractForm {
                 'type' => 'submit',
                 'value' => 'Recuperar',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-info'
+                'style'=>'margin-top:5px',
+                'class' => 'btn btn-blue fl-right'
             ),
         ));
     }

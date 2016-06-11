@@ -46,8 +46,10 @@ class LoginController extends AbstractController {
                         //set storage again
                         $this->getAuthService()->setStorage($this->getSessionStorage());
                     }
+                    $resultObject=$this->getAuthService()->getAdapter()->getResultRowObject(null, $columnsToOmit);
+                    $model = $this->getTableGateway()->find($resultObject->id);
                     $this->Messages()->flashSuccess(implode(PHP_EOL, $msg));
-                    $this->getAuthService()->getStorage()->write($this->getAuthService()->getAdapter()->getResultRowObject(null, $columnsToOmit));
+                    $this->getAuthService()->getStorage()->write($model->toArray());
                     return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
                 }
                 else

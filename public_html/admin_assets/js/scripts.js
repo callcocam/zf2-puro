@@ -45,6 +45,7 @@ $(function() {
 	//Easy access to options
 	optionsForm = $.Form.optionsForm;
 	// bind form using 'ajaxForm' 
+	$(optionsForm.options.carregando).hide();
 	optionsForm.options.beforeSubmit=optionsForm.showRequest;
 	optionsForm.options.success=optionsForm.showResponse;
 	$(optionsForm.form).ajaxForm(optionsForm.options); 
