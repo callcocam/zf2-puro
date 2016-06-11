@@ -15,11 +15,6 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 use Zend\Db\TableGateway\TableGateway;
 
-// Add this for SMTP transport
-use Zend\ServiceManager\ServiceManager;
-use Zend\Mail\Transport\Smtp;
-use Zend\Mail\Transport\SmtpOptions;
-
 class Module {
 
     public function getConfig() {
@@ -50,13 +45,6 @@ class Module {
                     $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \Auth\Model\BsUsers()); // Notice what is set here
                     return new TableGateway('bs_users', $dbAdapter, null, $resultSetPrototype);
-                },
-                 // Add this for SMTP transport
-                'mail.transport' => function (ServiceManager $serviceManager) {
-                    $config = $serviceManager->get('Config');
-                    $transport = new Smtp();
-                    $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
-                    return $transport;
                 },
                 'Auth\Model\AuthStorage' => function($sm) {
                     return new \Auth\Model\AuthStorage('zf_tutorial');

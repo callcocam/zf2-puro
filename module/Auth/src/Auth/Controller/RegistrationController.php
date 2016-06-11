@@ -4,7 +4,6 @@ namespace Auth\Controller;
 
 use Zend\View\Model\ViewModel;
 use Auth\Form\ForgottenPasswordFilter;
-use Zend\Mail\Message;
 
 class RegistrationController extends AbstractController {
 
@@ -19,13 +18,12 @@ class RegistrationController extends AbstractController {
     }
 
     public function registrationAction() {
-        //VERIFICAÇÃO:SOMENTE USUARIO LOGADO
+        //VERIFICAÇÃO:SOMENTE USUARIO DESLOGADO
         if ($this->getAuthService()->hasIdentity()) {
-            $this->Messages()->flashInfo("Você ja esta logado, para criar uma nova conta você deve fazer logput");
+            $this->Messages()->flashInfo("Você ja esta logado, para criar uma nova conta você deve fazer logout");
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'profileupdate'));
         }
         $this->form = $this->getForm();
-        $this->form->get('submit')->setValue('Register');
         $cache = $this->CachePlugin()->getItem('companies');
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -120,22 +118,20 @@ class RegistrationController extends AbstractController {
         $this->form->get('submit')->setValue('Solicitar');
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $this->form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
             $this->form->setData($request->getPost());
             //VERIFICA SE O FORMULARIO E VALIDO
             if ($this->form->isValid()) {
                 $this->data = $this->form->getData();
                 $usr_email = $this->data['email'];
                 //PEGA OS DADOS DO USUARIO NO BANCO PELO EMAIL
-                $usersTable = $this->getTableGateway();
-                $auth = $usersTable->getUserByEmail($usr_email);
+                 $auth = $this->getTableGateway()->getUserByEmail($usr_email);
                 //VERIFICA SE ENCONTRO UM USUARIO
                 if ($auth) {
                     //GERA UMA NOVA MSENHA
                     $password = $this->generatePassword();
                     $auth->setPassword($this->encryptPassword($usr_email, $password, $this->getStaticSalt()));
                     //TENTA ALTERAR A SENHA NO BANCO
-                    $result = $usersTable->update($auth);
+                    $result = $this->getTableGateway()->update($auth);
                     //SE ALTERO A SENHA ENVIA POR EMAIL
                     if ($result) {
                         $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
@@ -146,6 +142,11 @@ class RegistrationController extends AbstractController {
                         $this->Messages()->error("MSG_CADASTRO_ERROR");
                     }
                 }
+            }
+            else{
+                 foreach ($this->form->getMessages() as $msg):
+                            $this->Messages()->error(implode(PHP_EOL, $msg));
+                  endforeach;
             }
         }
         return new ViewModel(array('form' => $this->form));
@@ -163,14 +164,22 @@ class RegistrationController extends AbstractController {
     }
 
     public function sendConfirmationEmail($auth) {
+       //MONTAR A URL DO SITE COM A KEY DE ATIVAÇÃO DA CONTA
         $url = sprintf("%s%s", $this->getRequest()->getServer('HTTP_ORIGIN'), $this->url()->fromRoute('auth/default', array(
                     'controller' => 'registration',
                     'action' => 'confirm-email',
                     'id' => $auth->getUsrRegistrationToken())));
+        //PEAR OS DADOS DO USUARIO RECEM CADASTARDO
         $data = $auth->toArray();
+        //ADCIONAMOS A URL COM A KEY A VAR DATA
         $data['url'] = $url;
-        $this->getRequest()->getServer();  //Server vars
+        //PEGAMOS O SERVIÇO DE EMAIL
         $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
+        //SETAMOS AS INFORMAÇÕES DE ENVIO 
+         //:assunto ->Subject
+        //:email do usuario que se cadastro ->To
+        //:dados do email ->Data
+        //:template de email ->Template
         $mail->setSubject('Please, confirm your registration!')
                 ->setTo($auth->getEmail())
                 ->setData($data)
@@ -178,30 +187,19 @@ class RegistrationController extends AbstractController {
         $mail->send();
     }
 
-    public function emailAction() {
-        $url = sprintf("%s%s", $this->getRequest()->getServer('HTTP_ORIGIN'), $this->url()->fromRoute('auth/default', array(
-                    'controller' => 'registration',
-                    'action' => 'confirm-email',
-                    'id' => md5(date("YmdHis")))));
-
-        $data['url'] = $url;
-        $this->getRequest()->getServer();  //Server vars
-        $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
-        $mail->setSubject('Please, confirm your registration!')
-                ->setTo('callcocam@gmail.com')
-                ->setData($data)
-                ->setViewTemplate('confirmacao');
-        $mail->send();
-        var_dump($mail);
-        die;
-    }
-
     public function sendPasswordByEmail($usr_email, $password) {
+       //URL DO SITE
         $url = sprintf("%s", $this->getRequest()->getServer('HTTP_ORIGIN'));
         $data['url'] = $url;
+        //NOVO PASSWORD
         $data['password'] = $password;
-        $this->getRequest()->getServer();  //Server vars
+       //SERVIÇO DE EMAIL
         $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
+        //SETAMOS AS INFORMAÇÕES DE ENVIO 
+        //:assunto ->Subject
+        //:email do usuario que se cadastro ->To
+        //:dados do email ->Data
+        //:template de email ->Template
         $mail->setSubject('Your password has been changed!')
                 ->setTo($usr_email)
                 ->setData($data)

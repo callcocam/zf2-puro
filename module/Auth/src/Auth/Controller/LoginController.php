@@ -35,9 +35,10 @@ class LoginController extends AbstractController {
                         ->setCredential($password);
                 $result = $this->getAuthService()->authenticate();
                 $msg=[];
-                foreach ($result->getMessages() as $message) {
-                    $msg[]= $message;
-                }
+                foreach ($result->getMessages() as $message):
+                       $msg[]= $message;
+                endforeach;
+                 
                 if ($result->isValid()) {
                     $columnsToOmit = array('password');
                     //check if it has rememberMe :
@@ -58,7 +59,6 @@ class LoginController extends AbstractController {
                 }
             }
         }
-        $this->form = $this->getForm();
         return new ViewModel(array('form' => $this->form, 'route' => $this->route, 'controller' => $this->controller));
     }
 
