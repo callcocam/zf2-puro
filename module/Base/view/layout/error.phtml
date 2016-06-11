@@ -1,7 +1,4 @@
 <?php echo $this->doctype();
-$user = $this->UserIdentity();
-$config = $this->CacheHelper()->getItem('companies');
-extract($config);
 ?>
 <html lang="en">
     <head>
@@ -23,26 +20,7 @@ extract($config);
     </head>
     <body>
         <main class="container main-container">
-       <header class="bg-gray main_header">
-           <div class="mobile-btn open">
-               
-           </div>
-            <div>
-                 <a title="Home" href="./" class="main_logo fl-left"><h1 class="fontzero">SIGA-SMART! Sistema Integrado de Gerenciamento e Administração.</h1> 
-                      <img src="/dist/tim.php?src=/admin_assets/images/panel-siga-transparente.png&w=100&h=50" alt="SIGA-SMART! Sistema Integrado de Gerenciamento e Administração.">
-                   
-                </a>
-                <ul class="main_nav transition fl-right">
-                    <li><a href="<?php echo $this->url('auth'); ?>">LOGIN</a></li>
-                    <li><a href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'registration')); ?>">CADASTRAR</a></li>
-                    <li><a href="<?php echo $this->url('admin'); ?>">ADMIN</a></li>
-                </ul>
-              <?php //echo $this->navigation('navigation_site')->menu()->setUlClass('main_nav transition fl-right'); //->setPartial('partial/navigationSite.phtml');   
-              $baner="/img/banner"; ?>
-                
-                <div class="clear"></div>
-            </div>
-        </header> 
+      
         <?php echo $this->content;?>
         <!-- /.content -->
         <!-- ============================================================= FOOTER ============================================================= -->
@@ -63,9 +41,7 @@ extract($config);
                 ->prependFile($this->basePath('/admin_assets/js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath('/admin_assets/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',));?>
         <?php echo $this->inlineScript() ?>
-        <input type="hidden" id="longetude" value="<?= $longetude ?>">
-        <input type="hidden" id="latitude" value="<?= $latitude ?>">
-        <img style="display: none" src="/admin_assets/img/load.gif"/>
+       
     </main>
     </body>
 </html>

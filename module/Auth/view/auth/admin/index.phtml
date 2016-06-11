@@ -2,9 +2,9 @@
 <?php
 echo $this->messages();
 // view helper
-if ($user = $this->user):
-   
-    echo 'Logged in as ' . $this->escapeHtml($user->title);
+if ($user):
+    extract($user);
+    echo 'Logged in as ' . $this->escapeHtml($title);
     ?>
     | <a href="<?php echo $this->url('auth/default', array('controller' => 'login', 'action' => 'logout')); ?>"><?php echo $this->translate('Logout'); ?></a> | 
       <a href="<?php echo $this->url($this->route, array('controller' => 'admin', 'action' => 'create')); ?>"><?php echo $this->translate('Register'); ?></a> 

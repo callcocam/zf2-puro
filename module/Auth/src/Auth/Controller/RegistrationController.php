@@ -19,6 +19,11 @@ class RegistrationController extends AbstractController {
     }
 
     public function registrationAction() {
+        //VERIFICAÇÃO:SOMENTE USUARIO LOGADO
+        if ($this->getAuthService()->hasIdentity()) {
+            $this->Messages()->flashInfo("Você ja esta logado, para criar uma nova conta você deve fazer logput");
+            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'profileupdate'));
+        }
         $this->form = $this->getForm();
         $this->form->get('submit')->setValue('Register');
         $cache = $this->CachePlugin()->getItem('companies');
@@ -79,8 +84,8 @@ class RegistrationController extends AbstractController {
             }
         } else {
             //CARREGAR OS DADOS DO USUARIO LOGADO NO FORM
-            $model = $this->getTableGateway()->find($this->user->id);
-            $this->form->setData($model->toArray());
+            $model = $this->getTableGateway()->find($this->user['id']);
+            $this->form->setData($this->user);
         }
         $view = new ViewModel(array('form' => $this->form));
         return $view;
@@ -158,35 +163,50 @@ class RegistrationController extends AbstractController {
     }
 
     public function sendConfirmationEmail($auth) {
-        // $view = $this->getServiceLocator()->get('View');
-        $transport = $this->getServiceLocator()->get('mail.transport');
-        $message = new Message();
+        $url = sprintf("%s%s", $this->getRequest()->getServer('HTTP_ORIGIN'), $this->url()->fromRoute('auth/default', array(
+                    'controller' => 'registration',
+                    'action' => 'confirm-email',
+                    'id' => $auth->getUsrRegistrationToken())));
+        $data = $auth->toArray();
+        $data['url'] = $url;
         $this->getRequest()->getServer();  //Server vars
-        $message->addTo($auth->getEmail())
-                ->addFrom('suporte@sigasmart.com.br')
-                ->setSubject('Please, confirm your registration!')
-                ->setBody("Please, click the link to confirm your registration => " .
-                        $this->getRequest()->getServer('HTTP_ORIGIN') .
-                        $this->url()->fromRoute('auth/default', array(
-                            'controller' => 'registration',
-                            'action' => 'confirm-email',
-                            'id' => $auth->getUsrRegistrationToken())));
-        $transport->send($message);
+        $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
+        $mail->setSubject('Please, confirm your registration!')
+                ->setTo($auth->getEmail())
+                ->setData($data)
+                ->setViewTemplate('confirmacao');
+        $mail->send();
+    }
+
+    public function emailAction() {
+        $url = sprintf("%s%s", $this->getRequest()->getServer('HTTP_ORIGIN'), $this->url()->fromRoute('auth/default', array(
+                    'controller' => 'registration',
+                    'action' => 'confirm-email',
+                    'id' => md5(date("YmdHis")))));
+
+        $data['url'] = $url;
+        $this->getRequest()->getServer();  //Server vars
+        $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
+        $mail->setSubject('Please, confirm your registration!')
+                ->setTo('callcocam@gmail.com')
+                ->setData($data)
+                ->setViewTemplate('confirmacao');
+        $mail->send();
+        var_dump($mail);
+        die;
     }
 
     public function sendPasswordByEmail($usr_email, $password) {
-        $transport = $this->getServiceLocator()->get('mail.transport');
-        $message = new Message();
+        $url = sprintf("%s", $this->getRequest()->getServer('HTTP_ORIGIN'));
+        $data['url'] = $url;
+        $data['password'] = $password;
         $this->getRequest()->getServer();  //Server vars
-        $message->addTo($usr_email)
-                ->addFrom('suporte@sigasmart.com.br')
-                ->setSubject('Your password has been changed!')
-                ->setBody("Your password at  " .
-                        $this->getRequest()->getServer('HTTP_ORIGIN') .
-                        ' has been changed. Your new password is: ' .
-                        $password
-        );
-        $transport->send($message);
+        $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
+        $mail->setSubject('Your password has been changed!')
+                ->setTo($usr_email)
+                ->setData($data)
+                ->setViewTemplate('forgotten-password');
+        $mail->send();
     }
 
 }

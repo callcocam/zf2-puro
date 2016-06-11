@@ -19,9 +19,6 @@ $linha = '<div class="form-group">
     #fild#
   </div>';
 foreach ($form->getElements() as $element):
-    if($element->getAttribute('type')=="cidade"){
-        
-    }
     if ($element->getAttribute('type') == "hidden"):
         echo $this->formHidden($element);
     elseif ($element->getAttribute('type') == "submit"):

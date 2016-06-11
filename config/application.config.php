@@ -11,7 +11,8 @@ return array(
         'Base',
         'Admin',
         'Home',
-        'Auth'
+        'Auth',
+        'Mail'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

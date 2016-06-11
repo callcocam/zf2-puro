@@ -57,7 +57,7 @@ class LayoutErrorListener implements ListenerAggregateInterface {
          $statusCode = $event->getResponse()->getStatusCode();
          if ($statusCode == 404 || $statusCode == 500) {
             $viewModel = $event->getViewModel();
-            $viewModel->setTemplate('layout/layout');
+            $viewModel->setTemplate('layout/error');
           }
     }
     

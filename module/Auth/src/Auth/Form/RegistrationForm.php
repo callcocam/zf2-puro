@@ -458,7 +458,7 @@ class RegistrationForm extends AbstractForm {
                 'type' => 'Zend\Form\Element\Captcha',
                 'name' => 'captcha',
                 'options' => [
-                    'label' => 'Please verify you are human.',
+                    'label' => 'Por favor verificar que você é humano.',
                     'captcha' => [
                         'class'   => 'Image',
                         'options' => [
@@ -471,6 +471,8 @@ class RegistrationForm extends AbstractForm {
                         ],
                     ],
                 ],
+           'attributes' =>['class' => 'form-control',
+                'placeholder' => 'Digite O Texto Acima',]
         ]);
 
         $this->add(array(
@@ -478,7 +480,7 @@ class RegistrationForm extends AbstractForm {
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Cadastrar',
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-green',
                 'id' => 'submitbutton',
             ),
         ));

@@ -28,6 +28,11 @@ abstract class AbstractController extends AbstractActionController {
     protected $action = "index";
     protected $template = "/auth/admin/index";
 
+    public function onDispatch(\Zend\Mvc\MvcEvent $e) {
+        $this->user = $this->getAuthService()->getIdentity();
+        return parent::onDispatch($e);
+    }
+
     public function getAuthService() {
         if (!$this->authservice) {
             $this->authservice = $this->getServiceLocator()->get('AuthService');
@@ -178,9 +183,9 @@ abstract class AbstractController extends AbstractActionController {
         $validator = new \Zend\Validator\Db\NoRecordExists(array(
             'table' => $table,
             'field' => $fild,
-            'schema' => 'base',
             'adapter' => $this->getAdapter()
         ));
+       
         if (!empty($exclude)):
             $validator->setExclude($exclude);
         endif;
