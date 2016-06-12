@@ -132,19 +132,17 @@ abstract class AbstractController extends AbstractActionController {
     public function updateAction() {
         //if already login, redirect to success page
         if (!$this->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
+            $this->Messages()->flashError("MSG_ACCESS_NEGADO");
+            return $this->redirect()->toRoute("auth");
         }
         $id = $this->params()->fromRoute('id');
         $this->form = $this->getForm();
         $request = $this->getRequest();
         if ($request->isPost()) {
             $this->data = $this->params()->fromPost();
-            $this->data['password'] = $this->encryptPassword($this->data['email'], $this->data['password']);
-            $this->data['usr_password_confirm'] = $this->encryptPassword($this->data['email'], $this->data['usr_password_confirm']);
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
-
             $validator = $this->setValidation('bs_users', 'email', array(
                 'field' => 'id',
                 'value' => $model->getId()
@@ -157,11 +155,11 @@ abstract class AbstractController extends AbstractActionController {
                 } else {
                     $this->Messages()->error("MSG_UPDATE_ERROR");
                 }
-                return $this->redirect()->toRoute($this->route, array('controller' => 'login', 'action' => 'index'));
+                return $this->redirect()->toRoute($this->route, array('controller' => 'admin', 'action' => 'index'));
             }
         } else {
             if (!$id) {
-                return $this->redirect()->toRoute($this->route, array('controller' => 'login', 'action' => 'index'));
+                return $this->redirect()->toRoute($this->route, array('controller' => 'admin', 'action' => 'index'));
             }
             $this->form->setData($this->getTableGateway()->find($id)->toArray());
         }
@@ -185,7 +183,7 @@ abstract class AbstractController extends AbstractActionController {
             'field' => $fild,
             'adapter' => $this->getAdapter()
         ));
-       
+
         if (!empty($exclude)):
             $validator->setExclude($exclude);
         endif;
@@ -195,12 +193,11 @@ abstract class AbstractController extends AbstractActionController {
     }
 
     public function prepareData($data) {
-        $data['state'] = 1;
-        $data['password'] = $this->encryptPassword($data['email'], $data['password']);
-        $data['usr_password_confirm'] = $this->encryptPassword($data['email'], $data['usr_password_confirm']);
-        $data['usr_registration_token'] = md5(uniqid(mt_rand(), true));
-        $data['empresa'] = 1;
-        $data['created_by'] = 1;
+        if (!empty($data['password'])):
+            $data['password'] = $this->encryptPassword($data['email'], $data['password']);
+            $data['usr_password_confirm'] = $this->encryptPassword($data['email'], $data['usr_password_confirm']);
+            $data['usr_registration_token'] = md5(uniqid(mt_rand(), true));
+        endif;
         return $data;
     }
 

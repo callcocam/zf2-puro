@@ -7,9 +7,9 @@ use Base\Form\AbstractForm;
 class ForgottenPasswordForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
-        parent::__construct(" ForgottenPassword");
+        parent::__construct($serviceLocator," ForgottenPassword");
         $this->setInputFilter(new ForgottenPasswordFilter($serviceLocator));
-        $this->serviceLocator = $serviceLocator;
+        
 
         $this->add(array(
             'name' => 'email',

@@ -7,9 +7,8 @@ use Base\Form\AbstractForm;
 class AuthForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
-        parent::__construct('auth');
-        $this->serviceLocator = $serviceLocator;
-
+        parent::__construct($serviceLocator,'auth');
+    
         $this->add(array(
             'name' => 'email',
             'attributes' => array(

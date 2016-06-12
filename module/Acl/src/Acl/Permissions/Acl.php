@@ -72,7 +72,7 @@ class Acl extends ZendAcl
         }
 
         foreach ($privileges as $privilege) {
-                  $this->allow((string) $privilege->getRoleId(),$privilege->getAlias(), $privilege->getTitle());
+                  $this->allow((string) $privilege->getRoleId(),$privilege->getResourcesId(), $privilege->getTitle());
                     }
         $this->allow("3", "Traffic\Controller\Traffic", "index");
 

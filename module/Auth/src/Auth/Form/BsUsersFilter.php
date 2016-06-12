@@ -24,7 +24,7 @@ class BsUsersFilter extends InputFilter {
     /**
      * @return Zend\InputFilter
      */
-    public function __construct() {
+    public function __construct($serviceLocator=null) {
         $inputFilter = new InputFilter ();
         $emptyfilter = new NotEmpty ();
         $emailfilter = new EmailAddress ();

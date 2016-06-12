@@ -3,27 +3,14 @@
 namespace Auth\Form;
 
 use Base\Form\AbstractForm;
-use Base\View\Helper\Form\Custom\Captcha\CustomCaptcha;
+
 class RegistrationForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
-        parent::__construct("Registration");
-        $this->serviceLocator=$serviceLocator;
-        $this->setInputFilter(new RegistrationFilter());
-        $urlcaptcha=sprintf("%s/%s",$this->serviceLocator->get('request')->getServer('DOCUMENT_ROOT'),'images/captcha');
-        // snip... other elements here
-        $dirdata = './data/fonts/arial.ttf';
-        //Create our custom captcha class
-        $captchaImage = new CustomCaptcha(  array(
-        'font' => $dirdata,
-        'width' => 200,
-        'height' => 100,
-        'wordLen' => 5,
-        'dotNoiseLevel' => 50,
-        'lineNoiseLevel' => 3)
-        );
-        $captchaImage->setImgDir($urlcaptcha);
-       // $captchaImage->setImgUrl($urlcaptcha);
+        $this->wordLen=2;
+        parent::__construct($serviceLocator,"Registration");
+        $this->setInputFilter(new RegistrationFilter($serviceLocator));
+             
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
@@ -70,7 +57,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'empresa',
                     'attributes' => array(
                         'id' => 'empresa',
-                        'value' => '0',
+                        'value' => $this->empresa['id'],
                     ),
                 )
         );
@@ -123,7 +110,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'facebook',
                     'attributes' => array(
                         'id' => 'facebook',
-                        'value'=>'facebook.com/',
+                        'value' => 'facebook.com/',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -138,7 +125,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'twitter',
                     'attributes' => array(
                         'id' => 'twitter',
-                        'value'=>'twitter.com',
+                        'value' => 'twitter.com',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -153,7 +140,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'phone',
                     'attributes' => array(
                         'id' => 'phone',
-                       'value'=>'(00)0000-0000',
+                        'value' => '(00)0000-0000',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -168,7 +155,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'endereco',
                     'attributes' => array(
                         'id' => 'endereco',
-                        'value'=>'Não Definido',
+                        'value' => 'Não Definido',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -181,9 +168,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'bairro',
-                   'attributes' => array(
+                    'attributes' => array(
                         'id' => 'bairro',
-                        'value'=>'0',
+                        'value' => '0',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -196,9 +183,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'cidade',
-                        'attributes' => array(
+                    'attributes' => array(
                         'id' => 'cidade',
-                        'value'=>'23746',
+                        'value' => '23746',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -211,9 +198,9 @@ class RegistrationForm extends AbstractForm {
                 array(
                     'type' => 'hidden',
                     'name' => 'images',
-                     'attributes' => array(
+                    'attributes' => array(
                         'id' => 'images',
-                         'value'=>'/img/no_avatar.jpg',
+                        'value' => '/img/no_avatar.jpg',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -239,8 +226,8 @@ class RegistrationForm extends AbstractForm {
                     ),
                 )
         );
-        
-         //############################################ informações da coluna usr_password_confirm ##############################################:
+
+        //############################################ informações da coluna usr_password_confirm ##############################################:
         $this->add(
                 array(
                     'type' => 'password',
@@ -258,7 +245,7 @@ class RegistrationForm extends AbstractForm {
                     ),
                 )
         );
-      
+
         //############################################ informações da coluna usr_registration_token ##############################################:
         $this->add(
                 array(
@@ -272,7 +259,7 @@ class RegistrationForm extends AbstractForm {
                     ),
                 )
         );
-      
+
         //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
@@ -317,7 +304,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'created_by',
                     'attributes' => array(
                         'id' => 'created_by',
-                        'value' => '1',
+                        'value' => self::$DAFAULT_USER,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -344,7 +331,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'modified_by',
                     'attributes' => array(
                         'id' => 'modified_by',
-                        'value' => '0',
+                        'value' => self::$DAFAULT_USER,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -373,7 +360,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'state',
                     'attributes' => array(
                         'id' => 'state',
-                        'value' => '1',
+                        'value' => self::$DAFAULT_STATE,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -388,7 +375,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'access',
                     'attributes' => array(
                         'id' => 'access',
-                        'value' => '4',
+                        'value' => self::$DAFAULT_ACCESS,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -468,26 +455,16 @@ class RegistrationForm extends AbstractForm {
         );
         //############################################ informações da coluna publish_up ##############################################:
 
-       $this->add([
-                'type' => 'Zend\Form\Element\Captcha',
-                'name' => 'captcha',
-                'options' => [
-                    'label' => 'Por favor verificar que você é humano.',
-                    'captcha' => $captchaImage,
-                ],
-           'attributes' =>['class' => 'form-control',
+        $this->add([
+            'type' => 'Zend\Form\Element\Captcha',
+            'name' => 'captcha',
+            'options' => [
+                'label' => 'Por favor verificar que você é humano.',
+                'captcha' => $this->captchaImage,
+            ],
+            'attributes' => ['class' => 'form-control',
                 'placeholder' => 'Digite O Texto Acima',]
         ]);
-
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Cadastrar',
-                'class' => 'btn btn-green',
-                'id' => 'submitbutton',
-            ),
-        ));
     }
 
 }

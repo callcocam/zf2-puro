@@ -58,7 +58,11 @@ abstract class AbstractController extends AbstractActionController {
     }
 
     public function getForm() {
-        return $this->getServiceLocator()->get($this->form);
+        if(!empty($this->form) && is_string($this->form)):
+             return $this->getServiceLocator()->get($this->form);
+        endif;
+        return $this->form;
+       
     }
 
     public function getTableGateway() {
@@ -86,6 +90,7 @@ abstract class AbstractController extends AbstractActionController {
     public function inserirAction() {
 
         $request = $this->getRequest();
+        $this->form=  $this->getForm();
         if ($request->isPost()) {
             $this->data = $this->params()->fromPost();
             $model = $this->getModel();
@@ -100,7 +105,11 @@ abstract class AbstractController extends AbstractActionController {
                 return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
             }
         }
-        $view = new ViewModel(array('data' => $this->data, 'route' => $this->route, 'controller' => $this->controller));
+        $view = new ViewModel(array(
+            'data' => $this->data, 
+            'route' => $this->route, 
+            'controller' => $this->controller,
+             'form'=>  $this->form));
         $view->setTemplate('/admin/admin/inserir');
         return $view;
     }

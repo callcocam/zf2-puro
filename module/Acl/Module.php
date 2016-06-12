@@ -60,7 +60,9 @@ class Module {
                             return new \Acl\Permissions\Acl($repoResourses,$privileges);
                         }
                 ),
-            'invokables'=>array()
+            'invokables'=>array(
+                
+            )
             );      
     }
 

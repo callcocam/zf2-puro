@@ -12,7 +12,7 @@ use Zend\Filter\StringTrim;
 
 class RegistrationFilter extends InputFilter {
 
-    public function __construct() {
+    public function __construct($serviceLocator=null) {
         $inputFilter = new InputFilter ();
         $emptyfilter = new NotEmpty ();
         $emailfilter = new EmailAddress ();
@@ -21,9 +21,10 @@ class RegistrationFilter extends InputFilter {
         $emailfilter->setMessage("O Formato Do Email Não E valido", EmailAddress::INVALID_FORMAT);
         $identca->setToken("password");
         $identca->setMessage("O Campo Repita Senha de ser Igual Ao campo Senha", Identical::MISSING_TOKEN);
+        $identca->setMessage("O Campo de Confirmação deve ser Igual Ao campo Senha", Identical::NOT_SAME);
         $StripTags = new StripTags ();
         $StringTrim = new StringTrim ();
-
+      
         // Informação para a coluna id:
         $id = new Input("id");
         $id->setRequired(true);

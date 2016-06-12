@@ -20,10 +20,9 @@ class ProfileForm extends AbstractForm {
      */
     public function __construct($serviceLocator) {
         // Configurações iniciais do Form
-        parent::__construct("BsUsersCreateForm");
-        $this->setInputFilter(new RegistrationFilter());
-        $this->serviceLocator = $serviceLocator;
-
+        parent::__construct($serviceLocator,"BsUsersCreateForm");
+        $this->setInputFilter(new RegistrationFilter($serviceLocator));
+        
 
         //############################################ informações da coluna id ##############################################:
         $this->add(
@@ -82,8 +81,7 @@ class ProfileForm extends AbstractForm {
                         'label' => 'FILD_EMPRESA_LABEL',
                     ),
                     'attributes' => array(
-                        'id' => 'empresa',
-                        'value' => '{empresa}',
+                        'id' => 'empresa'
                     ),
                 )
         );
@@ -229,8 +227,8 @@ class ProfileForm extends AbstractForm {
         );
 
 
-       //############################################ informações da coluna cidade ##############################################:
-         $this->add(
+        //############################################ informações da coluna cidade ##############################################:
+        $this->add(
                 array(
                     'type' => 'select',
                     'name' => 'cidade',
@@ -367,7 +365,7 @@ class ProfileForm extends AbstractForm {
                     'name' => 'created_by',
                     'attributes' => array(
                         'id' => 'created_by',
-                        'value' => '1',
+                        'value' => $this->authservice['id'],
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -394,7 +392,7 @@ class ProfileForm extends AbstractForm {
                     'name' => 'modified_by',
                     'attributes' => array(
                         'id' => 'modified_by',
-                        'value' => '0',
+                        'value' => $this->authservice['id'],
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -423,7 +421,6 @@ class ProfileForm extends AbstractForm {
                     'name' => 'state',
                     'attributes' => array(
                         'id' => 'state',
-                        'value' => '1',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -438,7 +435,6 @@ class ProfileForm extends AbstractForm {
                     'name' => 'access',
                     'attributes' => array(
                         'id' => 'access',
-                        'value' => '4',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -516,16 +512,6 @@ class ProfileForm extends AbstractForm {
                     ),
                 )
         );
-        
-         $this->add(array(
-                    'name' => 'submit',
-                    'attributes' => array(
-                        'type' => 'submit',
-                        'value' => 'Cadastrar',
-                        'class' => 'btn btn-green',
-                        'id' => 'submitbutton',
-                    ),
-                ));
-            }
+    }
 
 }

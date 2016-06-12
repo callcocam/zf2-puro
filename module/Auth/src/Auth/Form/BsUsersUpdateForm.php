@@ -20,9 +20,8 @@ class BsUsersUpdateForm extends AbstractForm {
      */
     public function __construct($serviceLocator) {
         // Configurações iniciais do Form
-        parent::__construct("BsUsersCreateForm");
-        $this->setInputFilter(new BsUsersFilter());
-        $this->serviceLocator = $serviceLocator;
+        parent::__construct($serviceLocator, "BsUsersCreateForm");
+        $this->setInputFilter(new BsUsersFilter($serviceLocator));
 
         //############################################ informações da coluna id ##############################################:
         $this->add(
@@ -82,7 +81,7 @@ class BsUsersUpdateForm extends AbstractForm {
                     ),
                     'attributes' => array(
                         'id' => 'empresa',
-                        'value' => '{empresa}',
+                       
                     ),
                 )
         );
@@ -309,7 +308,7 @@ class BsUsersUpdateForm extends AbstractForm {
                     'name' => 'role_id',
                     'options' => array(
                         'label' => 'FILD_ROLE_ID_LABEL',
-                        'value_options' => array('1' => 'Suporte', '2' => "Admin"),
+                        'value_options' => $this->getRoles($this->authservice['role_id']),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -356,6 +355,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'id' => 'created_by',
                         'data-access' => '3',
                         'data-position' => 'geral',
+                        'value' => $this->authservice['role_id']
                     ),
                 )
         );
@@ -390,7 +390,7 @@ class BsUsersUpdateForm extends AbstractForm {
                     ),
                     'attributes' => array(
                         'id' => 'modified_by',
-                        'value' => '0',
+                        'value' => $this->authservice['id'],
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -418,7 +418,7 @@ class BsUsersUpdateForm extends AbstractForm {
                     'name' => 'state',
                     'options' => array(
                         'label' => 'FILD_STATE_LABEL',
-                        'value_options' => ['0' => 'Publicado', '1' => 'Desativado'],
+                        'value_options' => self::$STATE,
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -440,7 +440,7 @@ class BsUsersUpdateForm extends AbstractForm {
                     'name' => 'access',
                     'options' => array(
                         'label' => 'FILD_ACCESS_LABEL',
-                        'value_options' => ['1' => 'Admin', '2' => 'Admin'],
+                        'value_options' => $this->getRoles($this->authservice['role_id']),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -470,6 +470,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'placeholder' => 'FILD_CREATED_PLACEHOLDER',
                         'readonly' => true,
                         'data-access' => '3',
+                        'value' => date("d-m-Y"),
                         'data-position' => 'geral',
                     ),
                 )
@@ -531,16 +532,6 @@ class BsUsersUpdateForm extends AbstractForm {
                     ),
                 )
         );
-
-         $this->add(array(
-                    'name' => 'submit',
-                    'attributes' => array(
-                        'type' => 'submit',
-                        'value' => 'Cadastrar',
-                        'class' => 'btn btn-green',
-                        'id' => 'submitbutton',
-                    ),
-                ));
-            }
+    }
 
 }
