@@ -3,13 +3,27 @@
 namespace Auth\Form;
 
 use Base\Form\AbstractForm;
-
+use Base\View\Helper\Form\Custom\Captcha\CustomCaptcha;
 class RegistrationForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
         parent::__construct("Registration");
         $this->serviceLocator=$serviceLocator;
         $this->setInputFilter(new RegistrationFilter());
+        $urlcaptcha=sprintf("%s/%s",$this->serviceLocator->get('request')->getServer('DOCUMENT_ROOT'),'images/captcha');
+        // snip... other elements here
+        $dirdata = './data/fonts/arial.ttf';
+        //Create our custom captcha class
+        $captchaImage = new CustomCaptcha(  array(
+        'font' => $dirdata,
+        'width' => 200,
+        'height' => 100,
+        'wordLen' => 5,
+        'dotNoiseLevel' => 50,
+        'lineNoiseLevel' => 3)
+        );
+        $captchaImage->setImgDir($urlcaptcha);
+       // $captchaImage->setImgUrl($urlcaptcha);
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
@@ -459,17 +473,7 @@ class RegistrationForm extends AbstractForm {
                 'name' => 'captcha',
                 'options' => [
                     'label' => 'Por favor verificar que você é humano.',
-                    'captcha' => [
-                        'class'   => 'Image',
-                        'options' => [
-                            'font' =>  './data/fonts/arial.ttf',
-                            'width' => 200,
-                            'height' => 100,
-                            'dotNoiseLevel' => 40,
-                            'lineNoiseLevel' => 3,
-                            'imgDir' => './public_html/images/captcha'
-                        ],
-                    ],
+                    'captcha' => $captchaImage,
                 ],
            'attributes' =>['class' => 'form-control',
                 'placeholder' => 'Digite O Texto Acima',]

@@ -23,6 +23,8 @@ class ProfileForm extends AbstractForm {
         parent::__construct("BsUsersCreateForm");
         $this->setInputFilter(new RegistrationFilter());
         $this->serviceLocator = $serviceLocator;
+
+
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
@@ -227,16 +229,15 @@ class ProfileForm extends AbstractForm {
         );
 
 
-        //############################################ informações da coluna cidade ##############################################:
-        $this->add(
+       //############################################ informações da coluna cidade ##############################################:
+         $this->add(
                 array(
-                    'type' => 'Select',
+                    'type' => 'select',
                     'name' => 'cidade',
                     'options' => array(
                         'label' => 'FILD_CIDADE_LABEL',
-                        'empty_item_label' => '---Selecione---',
-                        'is_method' => true,
-                        'value_options' => ['1' => 'Jacinto', '2' => 'Turvo'],
+                        'value_options' => $this->setValueOption('Admin\Model\BsCidadesTable'),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'cidade',
@@ -515,29 +516,16 @@ class ProfileForm extends AbstractForm {
                     ),
                 )
         );
-        //############################################ informações da coluna publish_up ##############################################:
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Captcha',
-            'name' => 'captcha',
-            'attributes' => array(
-                'id' => 'captcha',
-                'class' => 'form-control'
-            ),
-            'options' => array(
-                'label' => 'Please verify you are human',
-                'captcha' => new \Zend\Captcha\Figlet(),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Atualizar',
-                'id' => 'submitbutton',
-            ),
-        ));
-    }
+        
+         $this->add(array(
+                    'name' => 'submit',
+                    'attributes' => array(
+                        'type' => 'submit',
+                        'value' => 'Cadastrar',
+                        'class' => 'btn btn-green',
+                        'id' => 'submitbutton',
+                    ),
+                ));
+            }
 
 }

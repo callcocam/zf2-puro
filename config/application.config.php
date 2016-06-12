@@ -12,6 +12,7 @@ return array(
         'Admin',
         'Home',
         'Auth',
+        'Acl',
         'Mail'
     ),
 

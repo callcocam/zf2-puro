@@ -17,7 +17,7 @@ use Zend\Db\TableGateway\TableGateway;
  */
 class BsUsersTable extends \Base\Model\AbstractTable {
 
-    protected $tableGateway;
+   
 
     function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;

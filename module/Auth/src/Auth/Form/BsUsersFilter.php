@@ -84,6 +84,7 @@ class BsUsersFilter extends InputFilter {
         $email->getFilterChain()->attach($StringTrim);
         $email->getFilterChain()->attach($StripTags);
         $email->getValidatorChain()->attach($emptyfilter);
+        $email->getValidatorChain()->attach($emailfilter);
         $this->add($email);
 
         // Informação para a coluna facebook:

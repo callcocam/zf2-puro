@@ -532,14 +532,15 @@ class BsUsersUpdateForm extends AbstractForm {
                 )
         );
 
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'Cadastrar',
-                'id' => 'submitbutton',
-            ),
-        ));
-    }
+         $this->add(array(
+                    'name' => 'submit',
+                    'attributes' => array(
+                        'type' => 'submit',
+                        'value' => 'Cadastrar',
+                        'class' => 'btn btn-green',
+                        'id' => 'submitbutton',
+                    ),
+                ));
+            }
 
 }

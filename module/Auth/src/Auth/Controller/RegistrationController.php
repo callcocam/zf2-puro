@@ -115,7 +115,6 @@ class RegistrationController extends AbstractController {
     public function forgottenPasswordAction() {
         $this->form = 'Auth\Form\ForgottenPasswordForm';
         $this->form = $this->getForm();
-        $this->form->get('submit')->setValue('Solicitar');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $this->form->setData($request->getPost());

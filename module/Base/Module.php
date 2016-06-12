@@ -63,6 +63,7 @@ class Module {
             ),
             'invokables' => array(
                 'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',
+
             )
         );
     }
@@ -90,6 +91,7 @@ class Module {
                 'CacheHelper' => 'Base\View\Helper\CacheHelper',
                 'HtmlTag' => 'Base\View\Helper\HtmlElement',
                 'ZFListarHelper' => 'Base\View\Helper\ZFListarHelper',
+                 'viewhelpercaptcha' => 'Base\View\Helper\Form\Custom\Captcha\ViewHelperCaptcha',
             )
         );
     }
