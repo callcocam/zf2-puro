@@ -6,7 +6,7 @@ $form= $this->form;
 if ($form instanceof \Zend\Form\Form):
     $form->prepare();
 // Assuming the "contact/process" route exists...
-    $form->setAttribute('action', $this->url('auth/default', array('controller' => 'admin', 'action' => 'create'))); //'contact/process'));
+    $form->setAttribute('action', $this->url($this->route, array('controller' =>$this->controller, 'action' => 'inserir'))); //'contact/process'));
 // Set the method attribute for the form
     $form->setAttribute('method', 'post');
     $form->setAttribute('class', '');

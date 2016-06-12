@@ -30,40 +30,33 @@ class Module {
         );
     }
 
-    public function getServiceConfig()
-    {
+    public function getServiceConfig() {
         return array(
-
-            'factories'=>array(
-                'Acl\Model\BsPrivilegesTable'=>function($sm)
-                    {
-                        $tableGateway=$sm->get('BsPrivilegesTableGateway');
-                        return new \Acl\Model\BsPrivilegesTable($tableGateway);
-
-                    },
-                'BsPrivilegesTableGateway'=>function($sm)
-                    {
-                      $dbAdapter=$sm->get('Zend\Db\Adapter\Adapter');
-                      $resultSetPrototype=$sm->get('resultSetPrototype');
-                      $resultSetPrototype->setArrayObjectPrototype(new \Acl\Model\BsPrivileges());
-                      return new TableGateway('bs_privileges',$dbAdapter,null,$resultSetPrototype);
-                    },
-                    'Acl\Model\Resources'=>function($sm)
-                    {
-                        return new \Acl\Model\Resources($sm);
-                    },
-                    'Acl\Permissions\Acl'=>function($sm)
-                        {
-                            $repoResourses=$sm->get('Acl\Model\Resources');
-                            $repoPrivileges=$sm->get('Acl\Model\BsPrivilegesTable');
-                            $privileges=$repoPrivileges->findALL();
-                            return new \Acl\Permissions\Acl($repoResourses,$privileges);
-                        }
-                ),
-            'invokables'=>array(
-                
+            'factories' => array(
+                'Acl\Model\BsPrivilegesTable' => function($sm) {
+                    $tableGateway = $sm->get('BsPrivilegesTableGateway');
+                    return new \Acl\Model\BsPrivilegesTable($tableGateway);
+                },
+                'BsPrivilegesTableGateway' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = $sm->get('resultSetPrototype');
+                    $resultSetPrototype->setArrayObjectPrototype(new \Acl\Model\BsPrivileges());
+                    return new TableGateway('bs_privileges', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Acl\Model\Resources' => function($sm) {
+                    return new \Acl\Model\Resources($sm);
+                },
+                'Acl\Permissions\Acl' => function($sm) {
+                    $repoResourses = $sm->get('Acl\Model\Resources');
+                    $repoPrivileges = $sm->get('Acl\Model\BsPrivilegesTable');
+                    $privileges = $repoPrivileges->findALL();
+                    return new \Acl\Permissions\Acl($repoResourses, $privileges);
+                }
+            ),
+            'invokables' => array(
+                'Acl\Model\BsPrivileges' => 'Acl\Model\BsPrivileges'
             )
-            );      
+        );
     }
 
 }

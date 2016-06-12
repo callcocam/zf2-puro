@@ -38,4 +38,5 @@ function __construct()
 //                die();
                 return parent::editarAction();
         }
+       
 }

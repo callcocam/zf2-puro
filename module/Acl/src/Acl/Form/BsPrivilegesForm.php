@@ -92,8 +92,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_TITLE_PLACEHOLDER',
                         'data-access' => '3',
-                        'readonly' => true,
-                        'data-position' => 'geral',
+                         'data-position' => 'geral',
                     ),
                 )
         );
@@ -160,7 +159,6 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_DESCRIPTION_PLACEHOLDER',
                         'rows' => '5',
                         'cols' => '20',
-                        'readonly' => true,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -196,7 +194,6 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'title' => 'FILD_ALIAS_DESC',
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ALIAS_PLACEHOLDER',
-                        'readonly' => true,
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),

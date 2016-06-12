@@ -51,8 +51,8 @@ extract($usuario);
                                 <li class="profile-sub-avatar"><a href="#"> <img src="/admin_assets/img/no_avatar.jpg" class="img-profile-item b-r-full"></a></li>
                                 <li class="profile-sub-info"><a href="#"><?= $title ?></a></li>
                                 <li class="profile-sub-date"><a href="#"><?php echo date("m", strtotime($created)); ?>, <?php echo date("Y", strtotime($created)); ?></a></li>
-                                <li class="profile-sub-profile"><a class="btn btn-blue" href="#">M. Conta</a></li>
-                                <li class="profile-sub-logout"><a class="btn btn-red" href="#">Sair Do Sist.</a></li>
+                                <li class="profile-sub-profile"><a class="btn btn-blue" href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'profileupdate')); ?>">M. Conta</a></li>
+                                <li class="profile-sub-logout"><a class="btn btn-red" href="<?php echo $this->url('auth/default', array('controller' => 'login', 'action' => 'logout')); ?>">Sair Do Sist.</a></li>
                             </ul>
                         </li>
                     </ul>

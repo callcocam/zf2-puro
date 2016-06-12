@@ -95,6 +95,8 @@ abstract class AbstractController extends AbstractActionController {
             $this->data = $this->params()->fromPost();
             $model = $this->getModel();
             $model->exchangeArray($this->data);
+            \Zend\Debug\Debug::dump($model);
+                        die();
             //Se exitir o campo id valido e uma edição
             if (isset($this->data['id']) && (int) $this->data['id']):
                 $result = $this->getTableGateway()->update($model);

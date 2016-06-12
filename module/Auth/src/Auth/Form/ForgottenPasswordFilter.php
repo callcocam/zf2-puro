@@ -4,30 +4,32 @@ namespace Auth\Form;
 
 use Zend\InputFilter\InputFilter;
 
-class ForgottenPasswordFilter extends InputFilter {
+class ForgottenPasswordFilter  extends \Base\Form\AbstractFilter {
 
-    public function __construct($sm) {
-        $emptyfilter = new \Zend\Validator\NotEmpty ();
-        $emailfilter = new \Zend\Validator\EmailAddress ();
-        $emptyfilter->setMessage("Campo Obrigatorio.", \Zend\Validator\NotEmpty::IS_EMPTY);
-        $emailfilter->setMessage("O Formato Do Email Não E valido", \Zend\Validator\EmailAddress::INVALID_FORMAT);
-        $StripTags = new \Zend\Filter\StripTags ();
-        $StringTrim = new \Zend\Filter\StringTrim ();
-        $validator = new \Zend\Validator\Db\RecordExists(array(
-            'table' => 'bs_users',
-            'field' => 'email',
-            'adapter' => $sm->get('Zend\Db\Adapter\Adapter')
-        ));
-        $validator->setMessage("E-Mail não foi encontrado", 'noRecordFound');
-        // Informação para a coluna email:
+    /**
+     * @return Zend\InputFilter
+     */
+    public function __construct($serviceLocator=null) {
+        $this->inputFilter = new InputFilter ();
+        $this->emptyfilter = new NotEmpty ();
+        $this->emailfilter = new EmailAddress ();
+        $this->identca = new Identical ();
+        $this->StripTags = new StripTags ();
+        $this->StringTrim = new StringTrim ();
+        $this->emptyfilter->setMessage("Campo Obrigatorio.", NotEmpty::IS_EMPTY);
+        $this->emailfilter->setMessage("O Formato Do Email Não E valido", EmailAddress::INVALID_FORMAT);
+        $this->identca->setToken("password");
+        $this->identca->setMessage("O Campo Repita Senha de ser Igual Ao campo Senha", Identical::MISSING_TOKEN);
+        $this->serviceLocator = $serviceLocator;
+        $validator = $this->RecordExiste('bs_users', 'email',"E-Mail não foi encontrado");
+         // Informação para a coluna email:
         $email = new \Zend\InputFilter\Input("email");
         $email->setRequired(true);
-        $email->getFilterChain()->attach($StringTrim);
-        $email->getFilterChain()->attach($StripTags);
-        $email->getValidatorChain()->attach($emptyfilter);
-        $email->getValidatorChain()->attach($emailfilter);
+        $email->getFilterChain()->attach($this->StringTrim);
+        $email->getFilterChain()->attach($this->StripTags);
+        $email->getValidatorChain()->attach($this->emptyfilter);
+        $email->getValidatorChain()->attach($this->emailfilter);
         $email->getValidatorChain()->attach($validator);
-
         $this->add($email);
     }
 

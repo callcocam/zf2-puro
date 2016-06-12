@@ -21,10 +21,11 @@ class AbstractForm extends \Zend\Form\Form {
     protected $cache;
     protected $empresa;
     protected $captchaImage;
-    protected $wordLen=5;
-    protected $width=200;
-    protected $height=100;
+    protected $wordLen = 5;
+    protected $width = 200;
+    protected $height = 100;
     protected $dirdata = './data/fonts/arial.ttf';
+
     public function __construct($serviceLocator = null, $name = null, $options = array()) {
         parent::__construct($name, $options);
         $this->setAttribute("method", "post");
@@ -37,7 +38,6 @@ class AbstractForm extends \Zend\Form\Form {
 
         $urlcaptcha = sprintf("%s/%s", $this->serviceLocator->get('request')->getServer('DOCUMENT_ROOT'), 'images/captcha');
         // snip... other elements here
-        
         //Create our custom captcha class
         $this->captchaImage = new CustomCaptcha(array(
             'font' => $this->dirdata,
