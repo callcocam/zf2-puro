@@ -11,8 +11,8 @@ class Acl extends ZendAcl
 {
 
 	 protected $is_admin;
-	
-	 /**
+	 protected $parent;
+         /**
      * Constructor
      *
      * @param Modulos e Privileges
@@ -21,7 +21,8 @@ class Acl extends ZendAcl
     public function __construct($resources,$privileges) {
         $roles = \Acl\Model\Roles::$ROLES;
         $resources =$resources->getResources();
-        $this->is_admin=\Acl\Model\Roles::$PARENT;
+        $this->is_admin=\Acl\Model\Roles::$IS_ADMIM;
+        $this->parent=\Acl\Model\Roles::$PARENT;
         $this->_addRoles($roles)
                 ->_addAclRules($resources, $privileges);
     }
@@ -39,13 +40,13 @@ class Acl extends ZendAcl
 
             if (!$this->hasRole((string) $role)) {
                 $parentNames = array();
-                if (!is_null($this->is_admin[$role]) && (int) $this->is_admin[$role]) {
-                    $parentNames = (string) $this->is_admin[$role];
+                if (!is_null($this->parent[$role]) && (int) $this->parent[$role]) {
+                    $parentNames = (string) $this->parent[$role];
                 }
                 $this->addRole(new Role((string) $role), $parentNames);
             }
             if ($this->is_admin[$role]) {
-                $this->allow((string) $role, array(), array());
+               $this->allow((string) $role, array(), array());
             }
         }
         return $this;
@@ -72,7 +73,7 @@ class Acl extends ZendAcl
         }
 
         foreach ($privileges as $privilege) {
-                  $this->allow((string) $privilege->getRoleId(),$privilege->getResourcesId(), $privilege->getTitle());
+                  $this->allow((string) $privilege->getRoleId(),$privilege->getResourceId(), $privilege->getTitle());
                     }
         $this->allow("3", "Traffic\Controller\Traffic", "index");
 

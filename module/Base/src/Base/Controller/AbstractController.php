@@ -103,7 +103,19 @@ abstract class AbstractController extends AbstractActionController {
                 //Se exitir o campo id valido e uma edição
                 $result = $this->getTableGateway()->insert($model);
                 if ($result) {
-                    return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                    if (isset($this->data['save_close'])):
+                        $this->Messages()->flashSuccess("MSG_SAVE_SUCCESS");
+                        return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                    elseif (isset($this->data['save_new'])):
+                        $this->form = $this->getForm();
+                        $this->Messages()->success("MSG_SAVE_SUCCESS");
+                    elseif (isset($this->data['save_copy'])):
+                        $this->form->get('id')->setValue('AUTOMATIO');
+                        $this->Messages()->success("MSG_SAVE_SUCCESS");
+                    else:
+                        $this->form->setData($model->toArray());
+                        $this->Messages()->success("MSG_SAVE_SUCCESS");
+                    endif;
                 }
             } else {
                 \Zend\Debug\Debug::dump($this->form->getMessages());

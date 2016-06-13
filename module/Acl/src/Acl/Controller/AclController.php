@@ -28,7 +28,7 @@ class AclController extends AbstractController {
     }
 
     public function editarAction() {
-        $this->exclude['resource_id'] =array("title"=>"=","AND"=>"AND","id"=>"<>");
+        $this->exclude['resource_id'] = array("title" => "=", "AND" => "AND", "id" => "<>");
         $this->NoRecordExist['resource_id'] = $this->setNoRecordExists('bs_privileges', 'resource_id');
         return parent::editarAction();
     }
@@ -40,7 +40,16 @@ class AclController extends AbstractController {
     }
 
     public function testeAction() {
-        //Check that the email address exists in the database
+        var_dump(\Acl\Model\Roles::$ROLES);
+        $role= (string)$this->params()->fromRoute('id', 1);
+        $acl = $this->getServiceLocator()->get('Acl\Permissions\Acl');
+        $md='Admin\Controller\Admin';
+        $action='editar';
+        $acesso= $acl->isAllowed($role, $md, $action)?"Tem":"Não Tem";
+        
+        die(sprintf("O %s %s Permissão de Acesso ao Modulo %s Na Action %s",\Acl\Model\Roles::$ROLES[$role],$acesso,$md,$action));
+
+//Check that the email address exists in the database
 
         $validator = new \Zend\Validator\Db\NoRecordExists(array(
             'table' => 'bs_privileges',
