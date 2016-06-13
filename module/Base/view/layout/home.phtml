@@ -37,7 +37,7 @@ extract($config);
                     <li><a href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'registration')); ?>">CADASTRAR</a></li>
                     <li><a href="<?php echo $this->url('admin'); ?>">ADMIN</a></li>
                 </ul>
-              <?php //echo $this->navigation('navigation_site')->menu()->setUlClass('main_nav transition fl-right'); //->setPartial('partial/navigationSite.phtml');   
+              <?php echo $this->navigation('secondary_navigation')->menu()->setUlClass('main_nav transition fl-right'); //->setPartial('partial/navigationSite.phtml');   
               $baner="/img/banner"; ?>
                 
                 <div class="clear"></div>

@@ -17,28 +17,15 @@ return array(
                 ),
             ),
             'home' => array(
-                'type' => 'Literal',
+                'type' => 'Segment',
                 'options' => array(
-                    'route' => '/home',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Home\Controller',
-                        'controller' => 'Home',
-                        'action' => 'index',
+                    'route' => '/home[/][:action][/:url][/:page]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action][/:id]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
+                    'defaults' => array(
+                        'controller' => 'Home\Controller\Home',
+                        'action' => 'index',
                     ),
                 ),
             ),

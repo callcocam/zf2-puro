@@ -48,9 +48,7 @@ class AclController extends AbstractController {
         $acesso= $acl->isAllowed($role, $md, $action)?"Tem":"Não Tem";
         
         die(sprintf("O %s %s Permissão de Acesso ao Modulo %s Na Action %s",\Acl\Model\Roles::$ROLES[$role],$acesso,$md,$action));
-
-//Check that the email address exists in the database
-
+        //Check that the email address exists in the database
         $validator = new \Zend\Validator\Db\NoRecordExists(array(
             'table' => 'bs_privileges',
             'field' => 'resource_id',

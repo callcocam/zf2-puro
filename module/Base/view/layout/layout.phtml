@@ -26,12 +26,12 @@ extract($usuario);
         ?>
     </head>
     <body>
-              <div class="box-carregando">
-                <div class="carregando"></div>
-                 <span class="trigger" id="alert" style="display: none;font-size: 14px;">
-                       Aguarde...
-                 </span> 
-            </div>
+        <div class="box-carregando">
+            <div class="carregando"></div>
+            <span class="trigger" id="alert" style="display: none;font-size: 14px;">
+                Aguarde...
+            </span> 
+        </div>
         <section class="container main-header">
             <div class="main-header-top-left header_green">
                 <picture alt="Layout Admin">      
@@ -76,18 +76,7 @@ extract($usuario);
                     </sapn>
                 </header>
                 <ul class="main-sidebar">
-                    <li class="sidebar-item dashboard"> <a href="<?php echo $this->url('admin'); ?>"><i class="ion ion-ios-speedometer"></i><span>Dashboard</span></a></li>
-                    <li class="sidebar-item"><a target="_blank" href="<?php echo $this->url('home'); ?>"><i class="ion ion-eye"></i> <span>VER SITE</span></a></li>
-                    <?php //echo $this->navigation('navigation')->menu()->setPartial('partial/navigation.phtml'); ?>
-                    <li class="sidebar-item treeview"><a href="#"><i class="ion ion-gear-a"></i> <span>CONFIGURAÇÕES</span></a>
-                        <ul class="sidebar-sub">
-                            <li class="sidebar-sub-item"><a href="<?php echo $this->url('admin/default', array('controller' => 'bs-companies', 'action' => 'index')); ?>"><i class="ion ion-code-working"></i> <span>EMPRESSAS</span></a></li>
-                            <li class="sidebar-sub-item"><a href="<?php echo $this->url('admin/default', array('controller' => 'bs-resources', 'action' => 'index')); ?>"><i class="ion ion-code-working"></i> <span>MODULOS</span></a></li>
-                            <li class="sidebar-sub-item"><a href="<?php echo $this->url('acl/default', array('controller' => 'acl', 'action' => 'index')); ?>"><i class="ion ion-code-working"></i> <span>PRIVILEGIOS</span></a></li>
-                        </ul>  
-                    </li>
-                    <li class="sidebar-item"><a href="<?php echo $this->url('auth/default', array('controller' => 'admin', 'action' => 'index')); ?>"><i class="ion ion-eye"></i> <span>USUARIOS</span></a></li>
-                    <li class="sidebar-item"><a href="<?php echo $this->url('auth/default', array('controller' => 'login', 'action' => 'logout')); ?>"><i class="fa fa-power-off"></i> <span>SAIR</span></a></li>
+                    <?php echo $this->navigation('navigation')->menu()->setPartial('partial/navigation.phtml'); ?>
                 </ul>
                 </section>
                 <!-- /.sidebar -->
@@ -110,7 +99,7 @@ extract($usuario);
         </main> <!-- /container -->
 
         <!-- Scripts -->
- <!-- Scripts -->
+        <!-- Scripts -->
         <?php
         echo $this->headScript()
                 ->prependFile($this->basePath('/admin_assets/js/scripts.js'))

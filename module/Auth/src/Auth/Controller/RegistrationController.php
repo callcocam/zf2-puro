@@ -124,7 +124,7 @@ class RegistrationController extends AbstractController {
                 $usr_email = $this->data['email'];
                 //PEGA OS DADOS DO USUARIO NO BANCO PELO EMAIL
                  $auth = $this->getTableGateway()->getUserByEmail($usr_email);
-                //VERIFICA SE ENCONTRO UM USUARIO
+                 //VERIFICA SE ENCONTRO UM USUARIO
                 if ($auth) {
                     //GERA UMA NOVA MSENHA
                     $password = $this->generatePassword();

@@ -1,69 +1,73 @@
-<?php 
+<?php
+
 namespace Acl\Permissions;
 
 use Zend\Permissions\Acl\Acl as ZendAcl,
     Zend\Permissions\Acl\Role\GenericRole as Role,
     Zend\Permissions\Acl\Resource\GenericResource as Resource;
-/**
-* Acl
-*/
-class Acl extends ZendAcl
-{
 
-	 protected $is_admin;
-	 protected $parent;
-         /**
+/**
+ * Acl
+ */
+class Acl extends ZendAcl {
+
+    protected $is_admin;
+    protected $parent;
+
+    /**
      * Constructor
      *
      * @param Modulos e Privileges
      * @return void
      */
-    public function __construct($resources,$privileges) {
+    public function __construct($resourcesModel, $privileges) {
+        $resources = $resourcesModel->getResources();
         $roles = \Acl\Model\Roles::$ROLES;
-        $resources =$resources->getResources();
-        $this->is_admin=\Acl\Model\Roles::$IS_ADMIM;
-        $this->parent=\Acl\Model\Roles::$PARENT;
+        $this->is_admin = \Acl\Model\Roles::$IS_ADMIM;
+        $this->parent = \Acl\Model\Roles::$PARENT;
         $this->_addRoles($roles)
                 ->_addAclRules($resources, $privileges);
     }
 
     /**
      * Adds Roles to ACL
-     *
-     * @param array $roles
-     * @return Auth\Acl\AclDb
+     * @param type $roles
+     * @return \Acl\Permissions\Acl
      */
     protected function _addRoles($roles) {
+       //Garante a ordens das roles
         krsort($roles);
-        //\Base\Model\Check::debug($roles);die;
+        //Adidiona as roles
         foreach ($roles as $role => $value) {
-
+            //Verifica a role ja foi add
             if (!$this->hasRole((string) $role)) {
+               //Inicia os parents da role ex:1 e parent da 2 a 2 da 3 etc
+                //a 1 herda da 2,3,4 e 5
                 $parentNames = array();
                 if (!is_null($this->parent[$role]) && (int) $this->parent[$role]) {
                     $parentNames = (string) $this->parent[$role];
                 }
+                //Adiciana a role
                 $this->addRole(new Role((string) $role), $parentNames);
             }
+            //Se a role for admin conceda totos os privileges
             if ($this->is_admin[$role]) {
-               $this->allow((string) $role, array(), array());
+                $this->allow((string) $role, array(), array());
             }
         }
         return $this;
     }
 
     /**
-     * Adds Resources/privileges to ACL
-     *
-     * @param $resources
-     * @param $privileges
-     * @return User\Acl
-     * @throws \Exception
+     * Adiciona os resources  e os privileges
+     * @param type $resources
+     * @param type $privileges
+     * @return \Acl\Permissions\Acl
      */
     protected function _addAclRules($resources, $privileges) {
-        $trataResources = array();
+
         foreach ($resources as $key => $resource) {
-          
+
             if (!$this->hasResource($key)) {
                 $this->addResource(new Resource($key));
             }
@@ -73,8 +77,8 @@ class Acl extends ZendAcl
         }
 
         foreach ($privileges as $privilege) {
-                  $this->allow((string) $privilege->getRoleId(),$privilege->getResourceId(), $privilege->getTitle());
-                    }
+            $this->allow((string) $privilege->getRoleId(), $privilege->getResourceId(), $privilege->getTitle());
+        }
         $this->allow("3", "Traffic\Controller\Traffic", "index");
 
         return $this;

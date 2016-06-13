@@ -10,7 +10,10 @@ namespace Home\Controller;
  * @author Claudio
  * @copyright (c) 2016, Claudio Campos
  */
-class HomeController extends \Zend\Mvc\Controller\AbstractActionController {
+class HomeController extends \Home\Controller\AbstractController {
 
+    public function __construct() {
+        
+    }
 
 }
