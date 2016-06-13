@@ -35,5 +35,20 @@ abstract class AbstractFilter extends \Zend\InputFilter\InputFilter {
         $validator->setMessage($recordFound, 'recordFound');
         return $validator;
     }
+    
+    public function NoRecordExiste($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
+        $validator = new \Zend\Validator\Db\NoRecordExists(array(
+            'table' => $table,
+            'field' => $fild,
+            'adapter' => $this->serviceLocator->get('Zend\Db\Adapter\Adapter')
+        ));
+        
+        if (!empty($exclude)):
+            $validator->setExclude($exclude);
+        endif;
+        $validator->setMessage($noRecordFound, 'noRecordFound');
+        $validator->setMessage($recordFound, 'recordFound');
+        return $validator;
+    }
 
 }

@@ -80,16 +80,14 @@ class BsPrivilegesFilter extends \Base\Form\AbstractFilter {
         $role_id->getFilterChain()->attach($this->StripTags);
         $role_id->getValidatorChain()->attach($this->emptyfilter);
         $this->add($role_id);
-
-        $validator = $this->RecordExiste('bs_privileges', 'resources_id');
+        
         // Informação para a coluna resources_id:
-        $resources_id = new Input("resources_id");
-        $resources_id->setRequired(true);
-        $resources_id->getFilterChain()->attach($this->StringTrim);
-        $resources_id->getFilterChain()->attach($this->StripTags);
-        $resources_id->getValidatorChain()->attach($this->emptyfilter);
-        $resources_id->getValidatorChain()->attach($validator);
-        $this->add($resources_id);
+        $resource_id = new Input("resource_id");
+        $resource_id->setRequired(true);
+        $resource_id->getFilterChain()->attach($this->StringTrim);
+        $resource_id->getFilterChain()->attach($this->StripTags);
+        $resource_id->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($resource_id);
 
 
         //put your code here

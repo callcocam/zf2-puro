@@ -123,17 +123,17 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
         $this->add(
                 array(
                     'type' => 'select',
-                    'name' => 'resources_id',
+                    'name' => 'resource_id',
                     'options' => array(
-                        'label' => 'FILD_RESOURCES_ID_LABEL',
+                        'label' => 'FILD_RESOURCE_ID_LABEL',
                         'value_options' => $this->getResorces(),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'resources_id',
-                        'title' => 'FILD_RESOURCES_ID_DESC',
+                        'id' => 'resource_id',
+                        'title' => 'FILD_RESOURCE_ID_DESC',
                         'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_RESOURCES_ID_PLACEHOLDER',
+                        'placeholder' => 'FILD_RESOURCE_ID_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),

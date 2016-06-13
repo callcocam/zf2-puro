@@ -26,6 +26,9 @@ abstract class AbstractController extends AbstractActionController {
     protected $controller = "admin";
     protected $action = "index";
     protected $template = "/admin/admin/index";
+    protected $NoRecordExist = null;
+    protected $RecordExist = null;
+    protected $exclude = "";
 
     abstract function __construct();
 
@@ -34,7 +37,7 @@ abstract class AbstractController extends AbstractActionController {
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute("auth");
         }
-        $this->user=  $this->getAuthService()->getIdentity();
+        $this->user = $this->getAuthService()->getIdentity();
         return parent::onDispatch($e);
     }
 
@@ -58,11 +61,10 @@ abstract class AbstractController extends AbstractActionController {
     }
 
     public function getForm() {
-        if(!empty($this->form) && is_string($this->form)):
-             return $this->getServiceLocator()->get($this->form);
+        if (!empty($this->form) && is_string($this->form)):
+            return $this->getServiceLocator()->get($this->form);
         endif;
         return $this->form;
-       
     }
 
     public function getTableGateway() {
@@ -82,7 +84,7 @@ abstract class AbstractController extends AbstractActionController {
             'data' => $this->data,
             'route' => $this->route,
             'controller' => $this->controller,
-            'user'=>  $this->user));
+            'user' => $this->user));
         $view->setTemplate($this->template);
         return $view;
     }
@@ -90,28 +92,29 @@ abstract class AbstractController extends AbstractActionController {
     public function inserirAction() {
 
         $request = $this->getRequest();
-        $this->form=  $this->getForm();
+        $this->form = $this->getForm();
         if ($request->isPost()) {
             $this->data = $this->params()->fromPost();
             $model = $this->getModel();
             $model->exchangeArray($this->data);
-            \Zend\Debug\Debug::dump($model);
-                        die();
-            //Se exitir o campo id valido e uma edição
-            if (isset($this->data['id']) && (int) $this->data['id']):
-                $result = $this->getTableGateway()->update($model);
-            else:
+            $this->form->setData($this->data);
+            $this->getValidation();
+            if ($this->form->isValid()) {
+                //Se exitir o campo id valido e uma edição
                 $result = $this->getTableGateway()->insert($model);
-            endif;
-            if ($result) {
-                return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                if ($result) {
+                    return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                }
+            } else {
+                \Zend\Debug\Debug::dump($this->form->getMessages());
             }
         }
         $view = new ViewModel(array(
-            'data' => $this->data, 
-            'route' => $this->route, 
+            'data' => $this->data,
+            'route' => $this->route,
             'controller' => $this->controller,
-             'form'=>  $this->form));
+            'action' => $this->params()->fromRoute('action', 'index'),
+            'form' => $this->form));
         $view->setTemplate('/admin/admin/inserir');
         return $view;
     }
@@ -121,13 +124,121 @@ abstract class AbstractController extends AbstractActionController {
         if (!(int) $id) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
         }
-        $this->data = $this->getTableGateway()->find($id);
-        if (!$this->data) {
-            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+        $request = $this->getRequest();
+        $this->form = $this->getForm();
+        if ($request->isPost()) {
+            $this->data = $this->params()->fromPost();
+            $model = $this->getModel();
+            $model->exchangeArray($this->data);
+            $this->form->setData($this->data);
+
+            $this->getValidation();
+            if ($this->form->isValid()) {
+                //Se exitir o campo id valido e uma edição
+                $result = $this->getTableGateway()->update($model);
+                if ($result) {
+                    return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                }
+            } else {
+                \Zend\Debug\Debug::dump($this->form->getMessages());
+            }
+        } else {
+            $this->data = $this->getTableGateway()->find($id);
+            if (!$this->data) {
+                return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+            }
+            $this->form->setData($this->data->toArray());
         }
-        $view = new ViewModel(array('data' => $this->data->toArray(), 'route' => $this->route, 'controller' => $this->controller));
-        $view->setTemplate($this->template);
+
+        $view = new ViewModel(array(
+            'form' => $this->form,
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => $this->params()->fromRoute('action', 'index'),
+            'id' => $id));
+        $view->setTemplate('/admin/admin/inserir');
         return $view;
+    }
+
+    public function setNoRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
+        $validator = new \Zend\Validator\Db\NoRecordExists(array(
+            'table' => $table,
+            'field' => $fild,
+            'adapter' => $this->getAdapter()
+        ));
+
+        if (!empty($exclude)):
+            $validator->setExclude($exclude);
+        endif;
+        $validator->setMessage($noRecordFound, 'noRecordFound');
+        $validator->setMessage($recordFound, 'recordFound');
+        return $validator;
+    }
+
+    public function setRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
+        $validator = new \Zend\Validator\Db\RecordExists(array(
+            'table' => $table,
+            'field' => $fild,
+            'adapter' => $this->getAdapter()
+        ));
+
+        if (!empty($exclude)):
+            $validator->setExclude($exclude);
+        endif;
+        $validator->setMessage($noRecordFound, 'noRecordFound');
+        $validator->setMessage($recordFound, 'recordFound');
+        return $validator;
+    }
+
+    public function getValidation() {
+        if ($this->NoRecordExist):
+            foreach ($this->NoRecordExist as $key => $value):
+
+                if (isset($this->exclude[$key])):
+                    if (is_array($this->exclude[$key])) {
+                        $condicao = "";
+                        foreach ($this->exclude[$key] as $ek => $ev):
+                            if (array_key_exists($ek, $this->data)):
+                                $condicao.="{$ek}{$ev}'{$this->data[$ek]}'";
+                            else:
+                                $condicao.=" {$ek} ";
+                            endif;
+
+                        endforeach;
+                        $value->setOptions(array('exclude' => $condicao));
+                    }
+                    else {
+                        $value->setOptions(array('exclude' => "{$this->exclude[$key]}='{$this->data[$this->exclude[$key]]}'"));
+                    }
+
+                endif;
+                $this->form->getInputFilter()->get($key)->getValidatorChain()->attach($value);
+            endforeach;
+        endif;
+        if ($this->RecordExist):
+            foreach ($this->RecordExist as $key => $value):
+                if (isset($this->exclude[$key])):
+                    if (is_array($this->exclude[$key])) {
+                        $condicao = "";
+                        foreach ($this->exclude[$key] as $ek => $ev):
+                            if (array_key_exists($ek, $this->data)):
+                                $condicao.="{$ek}{$ev}'{$this->data[$ek]}'";
+                            else:
+                                $condicao.=" {$ek} ";
+                            endif;
+
+                        endforeach;
+                        $value->setOptions(array('exclude' => $condicao));
+                    }
+                    else {
+                        $value->setOptions(array('exclude' => "{$this->exclude[$key]}='{$this->data[$this->exclude[$key]]}'"));
+                    }
+
+                endif;
+                $this->form->getInputFilter()->get($key)->getValidatorChain()->attach($value);
+
+            endforeach;
+        endif;
     }
 
 }

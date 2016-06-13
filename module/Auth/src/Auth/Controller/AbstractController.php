@@ -183,7 +183,7 @@ abstract class AbstractController extends AbstractActionController {
             'field' => $fild,
             'adapter' => $this->getAdapter()
         ));
-
+        
         if (!empty($exclude)):
             $validator->setExclude($exclude);
         endif;

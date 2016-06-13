@@ -50,14 +50,57 @@ class AbstractForm extends \Zend\Form\Form {
         $this->captchaImage->setImgDir($urlcaptcha);
         // $captchaImage->setImgUrl($urlcaptcha);
         $this->add(array(
-            'name' => 'submit',
+            'name' => 'save',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'BTN_CADASTRAR_LABEL',
                 'title' => 'BTN_CADASTRAR_DESC',
-                'class' => 'btn btn-green',
-                'id' => 'submitbutton',
+                'class' => 'btn btn-green submitbutton',
+                'id' => 'save',
             ),
+        ));
+        
+        $this->add(array(
+            'name' => 'save_new',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_CADASTRAR_LABEL',
+                'title' => 'BTN_CADASTRAR_DESC',
+                'class' => 'btn btn-yellow submitbutton',
+                'id' => 'save_new',
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'save_copy',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_CADASTRAR_LABEL',
+                'title' => 'BTN_CADASTRAR_DESC',
+                'class' => 'btn btn-blue submitbutton',
+                'id' => 'save_copy',
+            ),
+        ));
+        
+        $this->add(array(
+            'name' => 'save_close',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_CADASTRAR_LABEL',
+                'title' => 'BTN_CADASTRAR_DESC',
+                'class' => 'btn btn-red submitbutton',
+                'id' => 'save_close',
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => array(
+                'csrf_options' => array(
+                    'timeout' => 600
+                )
+            )
         ));
     }
 

@@ -136,6 +136,7 @@ form .disabled{display:none;}
 ***********************************/
 .btn{display: inline-block;cursor: pointer;padding: 6px 12px;background: #888;font-size: 0.9em;color: #fff;text-decoration: none;text-align: center;
     border: none;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;text-shadow: 1px 1px #555;margin: 5px 0;}
+
 .btn-small{display: inline-block;cursor: pointer;padding: 4px 10px;background: #888;font-size: 0.8em;color: #fff;text-decoration: none;text-align: center;
     border: none;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;text-shadow: 1px 1px #555;margin: 5px 0;}
 
@@ -171,6 +172,12 @@ form .disabled{display:none;}
 
 .btn-red{background-color: #F45563;text-shadow: 1px 1px #C54550;}
 .btn-red:hover{background-color: #C54550;}
+
+.btn-black{background-color: #000000;text-shadow: 1px 1px #222222;}
+.btn-black:hover{background-color: #333333;}
+
+.btn-default{background-color: #ccc;text-shadow: 1px 1px #ccc;}
+.btn-default:hover{background-color: #ccc;}
 
 
 
