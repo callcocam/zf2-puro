@@ -177,7 +177,7 @@ $.Admin.options = {
                 this.files = null;
                 formdata.append('attachment', this.files[0]);
                 $.ajax({
-                    url: '/admin/app/getsql',
+                    url: '/admin/admin/getsql',
                     type: 'post',
                     dataType: 'json',
                     processData: false,
@@ -260,7 +260,7 @@ $.Admin.options = {
                 if (options.resultAction) {
                     _this.parent().parent().parent('.col-box-list').remove();
                 }
-            }, 5000);
+            }, 3000);
 
         }
     },

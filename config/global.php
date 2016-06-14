@@ -25,5 +25,18 @@ return array(
                      => 'Zend\Db\Adapter\AdapterServiceFactory',
          ),
      ),
-     'static_salt' => 'aFGQ475SDsdfsaf2342'
+     'static_salt' => 'aFGQ475SDsdfsaf2342',
+    'log' => array(
+    'Base\Log' => array(
+        'writers' => array(
+            array(
+                'name'     => 'stream',
+                'priority' => 1000,
+                'options'  => array(
+                    'stream' => './data/logs/app.log',
+                ),
+            ),
+        ),
+    ),
+),
 );

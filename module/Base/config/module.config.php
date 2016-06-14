@@ -19,7 +19,7 @@ return array(
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
         ),
-         'invokables' => array(
+        'invokables' => array(
             'LayoutListener' => 'Base\Listener\LayoutListener',
             'LayoutErrorListener' => 'Base\Listener\LayoutErrorListener',
         ),
@@ -55,10 +55,12 @@ return array(
             'base/index/index' => __DIR__ . '/../view/base/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
-            
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        "strategies" => array(
+            "ViewJsonStrategy",
         ),
     ),
     // Placeholder for console routes

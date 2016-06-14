@@ -370,12 +370,14 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
 
 
         //############################################ informações da coluna alias ##############################################:
-        $this->add(
+          $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'select',
                     'name' => 'alias',
                     'options' => array(
                         'label' => 'FILD_ALIAS_LABEL',
+                        'value_options' => self::$MODULES,
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'alias',

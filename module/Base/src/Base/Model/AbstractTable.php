@@ -21,6 +21,8 @@ abstract class AbstractTable {
     protected $tableGateway;
     protected $limit = 50;
     protected $offset = 0;
+    protected $error;
+    protected $result;
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -80,8 +82,13 @@ abstract class AbstractTable {
     public function insert(AbstractModel $data) {
         $data->setCodigo($this->getMax('codigo'));
         if ($this->tableGateway->insert($data->toArray())):
-            return $this->tableGateway->getLastInsertValue();
+            $this->result = $this->tableGateway->getLastInsertValue();
+            $this->error = "O Registro [ {$data->getTitle()} ] Foi Salvo Com Sucesso!";
+            return $this->result;
         endif;
+        $this->error = "Nao Foi Possivel Finalizar a Operação!";
+        $this->result = FALSE;
+        return $this->result;
     }
 
     /**
@@ -93,9 +100,18 @@ abstract class AbstractTable {
         //Verifica se o registro existe no banco
         $oldData = $this->find($data->getId());
         if ($oldData) {
-            return $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
+            $this->result = $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
+            if($this->result){
+                $this->error = "O Registro [ {$oldData->getTitle()} ] Foi Atualizado Com Sucesso!";
+            }
+            else{
+                 $this->error = "Nenhuma Alteração Foi Realizada No Registro [ {$oldData->getTitle()} ]!";
+            }
+            return $this->result;
         }
-        return FALSE;
+        $this->error = "Nenhum Registro Foi Encontrado!";
+        $this->result = FALSE;
+        return $this->result;
     }
 
     /**
@@ -104,7 +120,16 @@ abstract class AbstractTable {
      * @return type bool
      */
     public function delete($id) {
-        return $this->tableGateway->delete(array('id' => $id));
+        $oldData = $this->find($id);
+        if ($oldData) {
+            if ($this->tableGateway->delete(array('id' => $id))) {
+                $this->result = TRUE;
+                $this->error = "O Registro [ {$oldData->getTitle()} ] Foi Excluido Com Sucesso!";
+                return $this->result;
+            }
+        }
+        $this->error = "Nenhum Registro Foi Encontrado!";
+        $this->result = FALSE;
     }
 
 //    FUNÇÕES EXTRAS
@@ -118,6 +143,14 @@ abstract class AbstractTable {
             $row['maxId'] = 0;
         }
         return $row['maxId'] + 1;
+    }
+
+    public function getError() {
+        return $this->error;
+    }
+
+    public function getResult() {
+        return $this->result;
     }
 
 }

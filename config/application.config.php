@@ -14,7 +14,8 @@ return array(
         'Auth',
         'Acl',
         'Mail',
-        'Navigation'
+        'Navigation',
+        'Ddl'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

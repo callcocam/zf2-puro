@@ -17,6 +17,7 @@ class Table {
     public function __construct(\Zend\Db\Adapter\Adapter $adapter) {
         $this->metadata = new \Zend\Db\Metadata\Metadata($adapter);
         $this->setTablenames($this->metadata->getTableNames());
+        
     }
 
     public function getMetadata() {

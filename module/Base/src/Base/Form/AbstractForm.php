@@ -111,6 +111,7 @@ class AbstractForm extends \Zend\Form\Form {
     public static $TIPO_MODULO=['1' => "OPTION_MODULO_LABEL", '2' => "OPTION_COMPONENTE_LABEL", '3' => "OPTION_ARQUIVO_LABEL"];
     public static $MODULE_PAI=['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL"];
     public static $GROUP_ID=['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL"];
+    public static $MODULES=['Admin' => "Modulo Admin", 'Home' => "Mdulo Home"];
 
     public function setValueOption($table, $condicao = array('state' => '0')) {
         $dados = $this->getServiceLocator()->get($table)->findALL();
@@ -144,6 +145,7 @@ class AbstractForm extends \Zend\Form\Form {
         }
         return $roles;
     }
+    
 
     public function getResorces() {
         $resourcesAcl = $this->serviceLocator->get('Acl\Model\Resources');

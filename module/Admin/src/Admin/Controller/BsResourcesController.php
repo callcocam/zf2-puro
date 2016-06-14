@@ -20,7 +20,7 @@ class BsResourcesController extends AbstractController {
         $this->form = "Admin\Form\BsResourcesForm";
         $this->model = "Admin\Model\BsResources";
         $this->table = "Admin\Model\BsResourcesTable";
-        $this->template="admin/admin/listar";
+        $this->template="admin/admin/resources";
     }
 //    public function indexAction() {
 //        $table=new \Base\MetaData\Table($this->getAdapter());

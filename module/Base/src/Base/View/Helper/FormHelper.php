@@ -27,8 +27,41 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $this->ServiceLocator = $ServiceLocator;
     }
 
-    public function getFormulario($data)
-    {
+    public function getInstanceForm($name, $action="index",$labelSubmit="Create New Table") {
+        $form = $this->ServiceLocator->getServiceLocator()->get($name);
+        $form->setAttribute('action', $this->view->url('ddl/default', array('controller' => 'ddl', 'action' => $action)));
+        $this->view->formElementErrors()
+                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+                ->setMessageSeparatorString('</li>')->render($form);
+
+        $html[] = $this->view->form()->openTag($form);
+        $linha = '<div class="form-group">
+    <label for="#title#">#label#</label>
+    #fild#
+  </div>';
+       
+        foreach ($form->getElements() as $element):
+            if ($element->getAttribute('type') == "hidden"):
+                echo $this->view->formHidden($element);
+            elseif ($element->getAttribute('type') == "submit"):
+                
+            else:
+                $label = $this->view->translate($element->getLabel());
+                $elementArray = array(
+                    '#fild#' => $this->view->formRow($element->setLabel("")),
+                    '#label#' => $label,
+                    '#title#' => $element->getName(),
+                );
+                $html[] = str_replace(array_keys($elementArray), array_values($elementArray), $linha);
+            endif;
+
+        endforeach;
+        $html[] = $this->view->formRow($form->get('save')->setValue($labelSubmit));
+        $html[] = $this->view->form()->closeTag();
+        return implode("", $html);
+    }
+
+    public function getFormulario($data) {
         $route = $this->view->RouteHelper()->getRoute();
         $controller = $this->view->RouteHelper()->getController();
         $form = new \Home\Form\BuscaForm();
@@ -39,14 +72,13 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $this->view->formElementErrors()
                 ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
                 ->setMessageSeparatorString('</li>')->render($form);
-        
-            $html[] = $this->view->form()->openTag($form);
-            $html[] = $this->view->formRow($form->get('title')->setLabel(""));
-            $html[] = $this->view->formRow($form->get('submit'));
-            $html[] = $this->view->form()->closeTag();
+
+        $html[] = $this->view->form()->openTag($form);
+        $html[] = $this->view->formRow($form->get('title')->setLabel(""));
+        $html[] = $this->view->formRow($form->get('submit'));
+        $html[] = $this->view->form()->closeTag();
 
         return implode("", $html);
-       
     }
 
     public function GerarElement($form, $blokc) {
@@ -64,7 +96,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
                 $visible = self::$user['role_id'] <= $element->getAttribute('data-access') ? "" : "disabled";
             }
             $element->setAttribute('placeholder', "");
-            $label = $this->view->HtmlTag('label')->setAttributes(array("class"=>"field-label {$visible}","for"=>$element->getName()))->setText($this->view->translate($element->getLabel()));
+            $label = $this->view->HtmlTag('label')->setAttributes(array("class" => "field-label {$visible}", "for" => $element->getName()))->setText($this->view->translate($element->getLabel()));
             // verifica em q block o campo sera alocado
             if ($element->getAttribute('data-position') === $blokc) {
                 // seta como exist campo dentro do block
@@ -75,13 +107,13 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
                 } else {
                     // se o bloco for data monta um bloco para o campo do tipo data
                     if ($blokc === 'datas') {
-                        $addon=$this->view->HtmlTag('div')->setClass('input-group-addon');
-                        $row=$this->view->formRow($element->setAttribute('readonly', true)->setLabel(''));
+                        $addon = $this->view->HtmlTag('div')->setClass('input-group-addon');
+                        $row = $this->view->formRow($element->setAttribute('readonly', true)->setLabel(''));
                         self::$html[] = $this->view->HtmlTag('div')->setClass('input-group')->setText($label)->appendText($addon)->appendText($row);
                         // se for igual a imagem monta um bloco para campos do tipo imagens
                     } elseif ($blokc == "images") {
                         if ($element->getName() == "images") {
-                            $this->setImages($element, $visible,$label);
+                            $this->setImages($element, $visible, $label);
                         } elseif ($element->getName() == "template") {
                             $this->setTemplate($element, $visible);
                         } elseif ($element->getName() == "galeria") {
@@ -102,12 +134,12 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
 
     /* CRIA A BOX DE IMAGES */
 
-    public function setImages($element, $visible = "",$label) {
-        $iFaparpeClicp  = $this->view->HtmlTag('i')->setClass('ion ion-android-upload');
-        $attachment     = $this->view->HtmlTag('input')->setAttributes(array('name' => 'attachment', 'type' => 'file', 'id' => 'attachment'));
-        $imagenHidden   = $this->view->formRow($element->setLabel('')->setAttributes(array('type' => 'hidden')));
-        $divbtnPrimary  = $this->view->HtmlTag('div')->setClass('btn btn-blue btn-file');
-        $span           = $this->view->HtmlTag('span')->setClass('file-text')->appendText("Selecione uma imagem");
+    public function setImages($element, $visible = "", $label) {
+        $iFaparpeClicp = $this->view->HtmlTag('i')->setClass('ion ion-android-upload');
+        $attachment = $this->view->HtmlTag('input')->setAttributes(array('name' => 'attachment', 'type' => 'file', 'id' => 'attachment'));
+        $imagenHidden = $this->view->formRow($element->setLabel('')->setAttributes(array('type' => 'hidden')));
+        $divbtnPrimary = $this->view->HtmlTag('div')->setClass('btn btn-blue btn-file');
+        $span = $this->view->HtmlTag('span')->setClass('file-text')->appendText("Selecione uma imagem");
         $divbtnPrimary->setText($iFaparpeClicp)->appendText($span);
 
         $divbtnPrimary->appendText($attachment)->appendText($imagenHidden);
@@ -163,7 +195,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
             $prev = $this->view->HtmlTag('a')->setAttributes(array('href' => "#MyCarousel", 'class' => "left carousel-control", 'data-slide' => "prev"))->setText($spanPrev);
             $spanNext = $this->view->HtmlTag('span')->setClass('fa fa-angle-right');
             $next = $this->view->HtmlTag('a')->setAttributes(array('href' => "#MyCarousel", 'class' => "right carousel-control", 'data-slide' => "next"))->setText($spanNext);
-             $carousel_example_generic = $this->view->HtmlTag('div')->setAttributes(array('id' => 'MyCarousel', 'class' => 'carousel slide', 'data-ride' => 'carousel'));
+            $carousel_example_generic = $this->view->HtmlTag('div')->setAttributes(array('id' => 'MyCarousel', 'class' => 'carousel slide', 'data-ride' => 'carousel'));
             $carousel_example_generic->setText($ol)->appendText($carousel_inner)->appendText($prev)->appendText($next);
 
         endif;
@@ -181,14 +213,14 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
     //     return implode("", $html);
     // }
     public function btnAlimentation($btn) {
-    $html = array();
-    extract($btn);
-    $i_fa_times = $this->view->HtmlTag('i')->setClass($icone);
-    $span_hidden_xs = $this->view->HtmlTag('i')->setClass('hidden-xs')
-    ->setText($this->view->translate($label));
-    $html = $this->view->HtmlTag($tag)->setAttributes($attr)->setText($i_fa_times)
-    ->appendText($span_hidden_xs);
-    return  $html;
+        $html = array();
+        extract($btn);
+        $i_fa_times = $this->view->HtmlTag('i')->setClass($icone);
+        $span_hidden_xs = $this->view->HtmlTag('i')->setClass('hidden-xs')
+                ->setText($this->view->translate($label));
+        $html = $this->view->HtmlTag($tag)->setAttributes($attr)->setText($i_fa_times)
+                ->appendText($span_hidden_xs);
+        return $html;
     }
 
     public function formElements($form) {
@@ -230,21 +262,21 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $this->view->formElementErrors()
                 ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
                 ->setMessageSeparatorString('</li>')->render($form);
-        
+
         $html[] = $this->view->form()->openTag($form);
-        $href=$this->view->url($route, array('controller' => $controller, 'action' => "ajuda"));
-        $a=$this->view->HtmlTag('a')->setAttributes(array('href'=>$href,'class'=>'b-r-full link-ajuda'));
+        $href = $this->view->url($route, array('controller' => $controller, 'action' => "ajuda"));
+        $a = $this->view->HtmlTag('a')->setAttributes(array('href' => $href, 'class' => 'b-r-full link-ajuda'));
         $html[] = "<ul class='nav-form'>";
         $html[] = $this->view->HtmlTag('li')->setText($a)->setClass('input-ajuda');
         $html[] = $this->view->HtmlTag('li')->setClass('input-busca')->setText($this->view->formRow($form->get('busca')->setLabel("")))->appendText($this->view->formRow($form->get('submit')));
-        
+
         $html[] = $this->view->HtmlTag('li')->setClass('input-publish_down')->setText($this->view->formRow($form->get('publish_down')->setLabel("")));
-       $html[] = $this->view->HtmlTag('li')->setClass('input-created')->setText($this->view->formRow($form->get('created')->setLabel("")));
+        $html[] = $this->view->HtmlTag('li')->setClass('input-created')->setText($this->view->formRow($form->get('created')->setLabel("")));
 
         $html[] = $this->view->HtmlTag('li')->setClass('input-state')->setText($this->view->formRow($form->get('state')->setLabel("")));
-       
-       
-               $html[] = "</ul>";
+
+
+        $html[] = "</ul>";
         $html[] = $this->view->form()->closeTag();
 
         return implode("", $html);
@@ -274,7 +306,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         return $form;
     }
 
-    public function boxWidgets($options = array('body' => "", 'title' => "GEARL", 'class' => "box-green",'icone'=>'clipboard')) {
+    public function boxWidgets($options = array('body' => "", 'title' => "GEARL", 'class' => "box-green", 'icone' => 'clipboard')) {
         extract($options);
         $box_footer = "";
         $box = $this->view->HtmlTag('div')->setClass("widgets-box"); //<div class="box box-blue">
