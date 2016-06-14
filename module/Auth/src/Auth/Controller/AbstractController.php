@@ -84,12 +84,11 @@ abstract class AbstractController extends AbstractActionController {
         $rowset = array();
         if ($this->getAuthService()->hasIdentity()) {
             $this->user = $this->getAuthService()->getIdentity();
-
             if ($this->user['role_id'] > 2) {
                 $this->form = "Auth\Form\ProfileForm";
                 $this->form = $this->getForm();
                 $this->form->setData($this->user);
-                $this->template = "/auth/admin/profile";
+                $this->template = "/auth/registration/profile-update";
             } else {
                 $rowset = $this->getTableGateway()->findALL();
             }

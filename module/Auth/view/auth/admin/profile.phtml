@@ -18,8 +18,7 @@
         $form = $this->form;
         $form->prepare();
 // Assuming the "contact/process" route exists...
-       $form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'profile-update'))); //'contact/process'));
-
+        $form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'profile-update'))); //'contact/process'));
 // Set the method attribute for the form
         $form->setAttribute('method', 'post');
 
@@ -45,7 +44,7 @@
 
         endforeach;
         echo $this->form()->closeTag();
-             ?>
+        ?>
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->
 
