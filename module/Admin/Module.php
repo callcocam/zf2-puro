@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Admin;
 
 use Zend\Db\TableGateway\TableGateway;
@@ -46,14 +38,15 @@ class Module {
                     return new \Admin\Model\BsResourcesTable($tableGateway);
                 },
                 'BsResourcesTableGateway' => function($sm) {
-                    $dbAdapter=$sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype=$sm->get('resultSetPrototype');
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsResources());
                     return new TableGateway('bs_resources', $dbAdapter, NULL, $resultSetPrototype);
                 }
             ),
             'invokables' => array(
-                'Admin\Model\BsCidades' => 'Admin\Model\BsCidades',
+                'Admin\Model\BsResources' => 'Admin\Model\BsResources',
+                'Admin\Model\BsResources' => 'Admin\Model\BsResources',
             )
         );
     }

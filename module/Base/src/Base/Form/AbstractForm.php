@@ -53,8 +53,8 @@ class AbstractForm extends \Zend\Form\Form {
             'name' => 'save',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'BTN_CADASTRAR_LABEL',
-                'title' => 'BTN_CADASTRAR_DESC',
+                'value' => 'BTN_SAVE_LABEL',
+                'title' => 'BTN_SAVE_DESC',
                 'class' => 'btn btn-green submitbutton',
                 'id' => 'save',
             ),
@@ -64,8 +64,8 @@ class AbstractForm extends \Zend\Form\Form {
             'name' => 'save_new',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'BTN_CADASTRAR_LABEL',
-                'title' => 'BTN_CADASTRAR_DESC',
+                'value' => 'BTN_SAVE_NEW_LABEL',
+                'title' => 'BTN_SAVE_NEW_DESC',
                 'class' => 'btn btn-yellow submitbutton',
                 'id' => 'save_new',
             ),
@@ -75,8 +75,8 @@ class AbstractForm extends \Zend\Form\Form {
             'name' => 'save_copy',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'BTN_CADASTRAR_LABEL',
-                'title' => 'BTN_CADASTRAR_DESC',
+                'value' => 'BTN_SAVE_COPY_LABEL',
+                'title' => 'BTN_SAVE_COPY_DESC',
                 'class' => 'btn btn-blue submitbutton',
                 'id' => 'save_copy',
             ),
@@ -86,8 +86,8 @@ class AbstractForm extends \Zend\Form\Form {
             'name' => 'save_close',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'BTN_CADASTRAR_LABEL',
-                'title' => 'BTN_CADASTRAR_DESC',
+                'value' => 'BTN_SAVE_CLOSE_LABEL',
+                'title' => 'BTN_SAVE_CLOSE_DESC',
                 'class' => 'btn btn-red submitbutton',
                 'id' => 'save_close',
             ),
@@ -108,6 +108,9 @@ class AbstractForm extends \Zend\Form\Form {
     public static $DAFAULT_USER = 2;
     public static $DAFAULT_STATE = 1;
     public static $DAFAULT_ACCESS = 2;
+    public static $TIPO_MODULO=['1' => "OPTION_MODULO_LABEL", '2' => "OPTION_COMPONENTE_LABEL", '3' => "OPTION_ARQUIVO_LABEL"];
+    public static $MODULE_PAI=['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL"];
+    public static $GROUP_ID=['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL"];
 
     public function setValueOption($table, $condicao = array('state' => '0')) {
         $dados = $this->getServiceLocator()->get($table)->findALL();
@@ -118,6 +121,17 @@ class AbstractForm extends \Zend\Form\Form {
             endforeach;
         endif;
         return $valueOptions;
+    }
+    
+    public function getTabelas() {
+         $table=new \Base\MetaData\Table($this->serviceLocator->get('Zend\Db\Adapter\Adapter'));
+         $tableNames=[];
+         if($table->getTablenames()):
+             foreach ($table->getTablenames() as $value):
+             $tableNames[$value]=$value;
+             endforeach;
+         endif;
+         return $tableNames;
     }
 
     public function getRoles($roleId = '1') {

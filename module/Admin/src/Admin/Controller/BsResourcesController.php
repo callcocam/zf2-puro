@@ -22,5 +22,20 @@ class BsResourcesController extends AbstractController {
         $this->table = "Admin\Model\BsResourcesTable";
         $this->template="admin/admin/listar";
     }
+//    public function indexAction() {
+//        $table=new \Base\MetaData\Table($this->getAdapter());
+//        $table->setColumns('bs_resources');
+//        var_dump($table->getTablenames());die;
+//        return parent::indexAction();
+//    }
+    public function editarAction() {
+        $this->exclude['controller'] = array("id" => "<>");
+        $this->NoRecordExist['controller'] = $this->setNoRecordExists('bs_resources', 'controller');
+        return parent::editarAction();
+    }
+    public function inserirAction() {
+        $this->NoRecordExist['controller'] = $this->setNoRecordExists('bs_resources', 'controller');
+        return parent::inserirAction();
+    }
 
 }

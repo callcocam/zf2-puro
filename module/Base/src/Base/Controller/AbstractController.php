@@ -39,8 +39,8 @@ abstract class AbstractController extends AbstractActionController {
         }
 
         if (!$this->IsAllowed($e->getRouteMatch())) {
-             $this->Messages()->error('MSG_ACCESS_DENY');
-             $this->template="/admin/admin/deny";
+            $this->Messages()->error('MSG_ACCESS_DENY');
+            $this->template = "/admin/admin/deny";
         }
         $this->user = $this->getAuthService()->getIdentity();
         return parent::onDispatch($e);
@@ -118,8 +118,8 @@ abstract class AbstractController extends AbstractActionController {
                         $this->form->get('id')->setValue('AUTOMATIO');
                         $this->Messages()->success("MSG_SAVE_SUCCESS");
                     else:
-                        $this->form->setData($model->toArray());
-                        $this->Messages()->success("MSG_SAVE_SUCCESS");
+                        $this->Messages()->flashSuccess("MSG_SAVE_SUCCESS");
+                        return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'editar', 'id' => $result));
                     endif;
                 }
             } else {
@@ -150,16 +150,32 @@ abstract class AbstractController extends AbstractActionController {
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
-
             $this->getValidation();
             if ($this->form->isValid()) {
                 //Se exitir o campo id valido e uma edição
                 $result = $this->getTableGateway()->update($model);
                 if ($result) {
-                    return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                    if (isset($this->data['save_close'])):
+                        $this->Messages()->flashSuccess("MSG_SAVE_SUCCESS");
+                        return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
+                    elseif (isset($this->data['save_new'])):
+                        $this->Messages()->flashSuccess("MSG_SAVE_SUCCESS");
+                        return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'inserir'));
+                    elseif (isset($this->data['save_copy'])):
+                        $this->form->get('id')->setValue('AUTOMATIO');
+                        $this->Messages()->success("MSG_SAVE_SUCCESS");
+                    else:
+                        $this->Messages()->flashSuccess("MSG_SAVE_SUCCESS");
+
+                    endif;
+                }
+                else{
+                    \Zend\Debug\Debug::dump($result);
                 }
             } else {
-                \Zend\Debug\Debug::dump($this->form->getMessages());
+                foreach ($this->form->getMessages() as $msg):
+                    $this->Messages()->error(implode(PHP_EOL, $msg));
+                endforeach;
             }
         } else {
             $this->data = $this->getTableGateway()->find($id);

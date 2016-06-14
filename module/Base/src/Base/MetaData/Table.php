@@ -12,6 +12,7 @@ class Table {
     protected $columns;
     protected $constraints;
     protected $tablenames;
+    protected $properts;
 
     public function __construct(\Zend\Db\Adapter\Adapter $adapter) {
         $this->metadata = new \Zend\Db\Metadata\Metadata($adapter);
@@ -37,6 +38,10 @@ class Table {
     public function getTablenames() {
         return $this->tablenames;
     }
+    
+    public function getProperts() {
+        return $this->properts;
+    }
 
     public function setName($name) {
         $this->name = $this->metadata->getTable($name);
@@ -61,6 +66,7 @@ class Table {
             ];
         endforeach;
         $this->setConstraints($tableName);
+        $this->setProperts();
         return $this;
     }
 
@@ -86,6 +92,15 @@ class Table {
 
     public function setTablenames($tablenames) {
         $this->tablenames = $tablenames;
+        return $this;
+    }
+
+    public function setProperts() {
+        if ($this->columns) {
+            foreach ($this->columns as $key => $value) {
+                $this->properts[] = "protected $".$key.";";
+            }
+        }
         return $this;
     }
 

@@ -48,7 +48,9 @@ $(function() {
 	$(optionsForm.options.carregando).hide();
 	optionsForm.options.beforeSubmit=optionsForm.showRequest;
 	optionsForm.options.success=optionsForm.showResponse;
+        
 	$(optionsForm.form).ajaxForm(optionsForm.options); 
+        
     $(optionsForm.options.boxCarregando).hide();
     // Função para a geração dos arquivos do controller app
     $(options.generateClass.btn).click(function ()

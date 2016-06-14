@@ -46,8 +46,21 @@ return array(
              'Admin\Controller\BsCidades' => 'Admin\Controller\BsCidadesController',
              'Admin\Controller\BsCompanies' => 'Admin\Controller\BsCompaniesController',
              'Admin\Controller\BsResources' => 'Admin\Controller\BsResourcesController',
+            
         ),
 
+    ),
+    'service_manager' => array(
+        'factories' => array(// !!! aliases not alias
+            'Admin\Form\BsResourcesForm' => 'Admin\Factory\ResourcesFactory',
+           
+        ),
+        'aliases' => array(// !!! aliases not alias
+         
+        ),
+        'invokables' => array(
+           
+        ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(

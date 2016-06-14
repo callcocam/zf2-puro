@@ -78,7 +78,7 @@ extract($usuario);
                 <ul class="main-sidebar">
                     <?php echo $this->navigation('navigation')->menu()->setPartial('partial/navigation.phtml'); ?>
                 </ul>
-                </section>
+              
                 <!-- /.sidebar -->
             </aside>
 
@@ -104,6 +104,7 @@ extract($usuario);
         echo $this->headScript()
                 ->prependFile($this->basePath('/admin_assets/js/scripts.js'))
                 ->prependFile($this->basePath('/admin_assets/js/scriptAjax.js'))
+                ->prependFile($this->basePath('/admin_assets/js/jquery.form.min.js'))
                 ->prependFile($this->basePath('/admin_assets/js/jquery.min.js'))
                 ->prependFile($this->basePath('/admin_assets/s/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath('/admin_assets/js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',));

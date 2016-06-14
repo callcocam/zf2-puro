@@ -19,8 +19,9 @@ use Zend\Db\Sql\Select;
 abstract class AbstractTable {
 
     protected $tableGateway;
-    protected $limit=50;
-    protected $offset=0;
+    protected $limit = 50;
+    protected $offset = 0;
+
     abstract function __construct(TableGateway $tableGateway);
 
     /**
@@ -34,10 +35,9 @@ abstract class AbstractTable {
                     ->limit($this->limit)
                     ->offset($this->offset)
                     ->order("{$table}.id DESC");
-                    if($table!='bs_users'):
-                         $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
-                    endif;
-                    
+            if ($table != 'bs_users'):
+                $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
+            endif;
         });
         return $resultSelect;
     }
@@ -79,7 +79,9 @@ abstract class AbstractTable {
      */
     public function insert(AbstractModel $data) {
         $data->setCodigo($this->getMax('codigo'));
-        return $this->tableGateway->insert($data->toArray());
+        if ($this->tableGateway->insert($data->toArray())):
+            return $this->tableGateway->getLastInsertValue();
+        endif;
     }
 
     /**
