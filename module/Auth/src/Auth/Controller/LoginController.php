@@ -58,6 +58,12 @@ class LoginController extends AbstractController {
                     $this->Messages()->flashError(implode(PHP_EOL, $msg)); 
                 }
             }
+            else{
+                 foreach ($this->form->getMessages() as $message):
+                       $msg[]= implode(PHP_EOL,$message);
+                endforeach;
+                $this->Messages()->flashError(implode(PHP_EOL, $msg)); 
+            }
         }
         return new ViewModel(array('form' => $this->form, 'route' => $this->route, 'controller' => $this->controller));
     }

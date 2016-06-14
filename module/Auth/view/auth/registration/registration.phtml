@@ -32,13 +32,11 @@
     #fild#
   </div>';
         foreach ($form->getElements() as $element):
-            if ($element->getAttribute('type') == "cidade") {
-                
-            }
             if ($element->getAttribute('type') == "hidden"):
                 echo $this->formHidden($element);
             elseif ($element->getAttribute('type') == "submit"):
                 echo $this->formRow($element);
+            elseif ($element->getAttribute('type') == "submit"):
             else:
                 $label = $this->translate($element->getLabel());
                 $elementArray = array(
@@ -50,6 +48,7 @@
             endif;
 
         endforeach;
+        echo $this->formSubmit($form->get('save')->setValue("BTN_CREATE_USER_LABEL"));
         echo $this->form()->closeTag();
         ?>
     </div><!-- /.login-box-body -->

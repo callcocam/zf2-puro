@@ -38,6 +38,17 @@ return array(
             'Acl\Controller\Acl' => 'Acl\Controller\AclController',
         ),
     ),
+    'controller_plugins' => array(
+        'invokables' => array(
+        ),
+        'factories' => array(
+            'IsAllowed' => function ($sm) {
+                $auth = $sm->getServiceLocator()->get('AuthService');
+                $acl = $sm->getServiceLocator()->get('Acl\Permissions\Acl');
+                return new \Acl\Controller\Plugin\IsAllowed($auth,$acl);
+            }
+        )
+    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',

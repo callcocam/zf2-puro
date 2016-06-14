@@ -37,6 +37,11 @@ abstract class AbstractController extends AbstractActionController {
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute("auth");
         }
+
+        if (!$this->IsAllowed($e->getRouteMatch())) {
+             $this->Messages()->error('MSG_ACCESS_DENY');
+             $this->template="/admin/admin/deny";
+        }
         $this->user = $this->getAuthService()->getIdentity();
         return parent::onDispatch($e);
     }
@@ -118,7 +123,9 @@ abstract class AbstractController extends AbstractActionController {
                     endif;
                 }
             } else {
-                \Zend\Debug\Debug::dump($this->form->getMessages());
+                foreach ($this->form->getMessages() as $msg):
+                    $this->Messages()->error(implode(PHP_EOL, $msg));
+                endforeach;
             }
         }
         $view = new ViewModel(array(

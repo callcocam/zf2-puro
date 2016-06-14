@@ -21,7 +21,7 @@ class RegistrationController extends AbstractController {
         //VERIFICAÇÃO:SOMENTE USUARIO DESLOGADO
         if ($this->getAuthService()->hasIdentity()) {
             $this->Messages()->flashInfo("Você ja esta logado, para criar uma nova conta você deve fazer logout");
-            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'profileupdate'));
+            return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'profile-update'));
         }
         $this->form = $this->getForm();
         $cache = $this->CachePlugin()->getItem('companies');
@@ -65,7 +65,6 @@ class RegistrationController extends AbstractController {
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
-
             $validator = $this->setValidation('bs_users', 'email', array(
                 'field' => 'id',
                 'value' => $model->getId()
@@ -74,16 +73,16 @@ class RegistrationController extends AbstractController {
             if ($this->form->isValid()) {
                 $result = $this->getTableGateway()->update($model);
                 if ($result) {
-                    $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
+                    $this->getAuthService()->getStorage()->write($model->toArray());
+                    $this->Messages()->success("MSG_CADASTRO_SUCCCESS");
                 } else {
                     $this->Messages()->error("MSG_CADASTRO_ERROR");
                 }
-                return $this->redirect()->toRoute($this->route, array('controller' => 'admin', 'action' => 'index'));
+              
             }
         } else {
             //CARREGAR OS DADOS DO USUARIO LOGADO NO FORM
-            $model = $this->getTableGateway()->find($this->user['id']);
-            $this->form->setData($this->user);
+              $this->form->setData($this->user);
         }
         $view = new ViewModel(array('form' => $this->form));
         return $view;
@@ -133,12 +132,12 @@ class RegistrationController extends AbstractController {
                     $result = $this->getTableGateway()->update($auth);
                     //SE ALTERO A SENHA ENVIA POR EMAIL
                     if ($result) {
-                        $this->Messages()->flashSuccess("MSG_CADASTRO_SUCCCESS");
+                        $this->Messages()->flashSuccess("MSG_FORGOTTEN_PASSWORD_SUCCCESS");
                         //ENVIA A SENHA POR EMAIL
                         $this->sendPasswordByEmail($usr_email, $password);
                         return $this->redirect()->toRoute('auth/default', array('controller' => 'registration', 'action' => 'password-change-success'));
                     } else {
-                        $this->Messages()->error("MSG_CADASTRO_ERROR");
+                        $this->Messages()->error("MSG_FORGOTTEN_PASSWORD_ERROR");
                     }
                 }
             }
