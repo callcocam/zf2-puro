@@ -83,6 +83,16 @@ return array(// ToDO make it dynamic - comes from the DB
                         'icone' => 'fa fa-angle-double-right',
                         'title' => '',
                     ),
+                      array(
+                        'label' => 'Ddl',
+                        'route' => 'ddl/default',
+                        'controller' => 'ddl',
+                        'resource' => 'Auth\Controller\Admin',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'fa fa-angle-double-right',
+                        'title' => '',
+                    ),
                 )
             ),
             array(
