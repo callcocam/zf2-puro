@@ -1,5 +1,6 @@
-class App {
+class App extends SIGAMessages{
     constructor() {
+        super();
         //MOBILE VARIAVEIS
         this.marginLeft = 240;
         this.outerWidth = 0;
@@ -25,6 +26,10 @@ class App {
         this.openTreeview = 'menu-open';
         this.animationSpeed = 300;
         //FIM TREEVIEW
+
+        //ELEMENTOS ESCONDE
+        this.seletorElements = $("#type");
+        this.parenteElements = "div";
 
     }
 
@@ -57,7 +62,7 @@ class App {
 
             $('.main-header-top-right').css('width', this.wd);
         } else {
-            $('.main-header-top-right').css('width', this.outerWidth-20);
+            $('.main-header-top-right').css('width', this.outerWidth - 20);
         }
 
         this.rzHeight();
@@ -133,6 +138,16 @@ class App {
         });
     }
 
+    escondeElements() {
+        var cl = this.seletorElements.val();
+        $('form .geral').removeClass('box-red').parent('div').fadeIn('fast');
+        $('form input, select, textarea, checkbox, radio, date, email').each(function (i) {
+            // Aplica a cor de fundo
+            if ($(this).hasClass(cl)) {
+                $(this).addClass('box-red').parent('div').fadeOut('fast');
+            }
+        });
+    }
 }
 
 
@@ -148,13 +163,25 @@ $(function () {
         event.preventDefault();
     });
     _App.treeview(_App.menuTreeview);
-        $("#created, #publish_down").datetimepicker({
-            timepicker: false,
-            format: 'd-m-Y',
-            onChangeDateTime: function (dp, $input) {
-                //alert($input.val());
-            }
-        });
-        $.datetimepicker.setLocale('pt-BR');
- 
+
+    if (_App.seletorElements.length) {
+        _App.escondeElements();
+    }
+
+    $(_App.seletorElements).on('change', function (event) {
+        event.preventDefault();
+        options.escondeElements();
+    });
+
+    $("#created, #publish_down").datetimepicker({
+        timepicker: false,
+        format: 'd-m-Y',
+        onChangeDateTime: function (dp, $input) {
+            //alert($input.val());
+        }
+    });
+    $.datetimepicker.setLocale('pt-BR');
+    $(_App.carregando).hide();
+    $(_App.boxCarregando).hide();
+
 })

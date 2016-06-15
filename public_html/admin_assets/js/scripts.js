@@ -28,21 +28,21 @@ $(function() {
 
 
    //Extend options if external options exist
-	if (typeof optionsForm !== "undefined") {
-		$.extend(true,
-		$.Form.options,
-		optionsForm);
-	}
+	// if (typeof optionsForm !== "undefined") {
+	// 	$.extend(true,
+	// 	$.Form.options,
+	// 	optionsForm);
+	// }
 	//Easy access to options
-	optionsForm = $.Form.optionsForm;
+	//optionsForm = $.Form.optionsForm;
 	// bind form using 'ajaxForm' 
-	$(optionsForm.options.carregando).hide();
-	optionsForm.options.beforeSubmit=optionsForm.showRequest;
-	optionsForm.options.success=optionsForm.showResponse;
+	// $(optionsForm.options.carregando).hide();
+	// optionsForm.options.beforeSubmit=optionsForm.showRequest;
+	// optionsForm.options.success=optionsForm.showResponse;
         
-	$(optionsForm.form).ajaxForm(optionsForm.options); 
+	// $(optionsForm.form).ajaxForm(optionsForm.options); 
         
-    $(optionsForm.options.boxCarregando).hide();
+    // $(optionsForm.options.boxCarregando).hide();
     // Função para a geração dos arquivos do controller app
     $(options.generateClass.btn).click(function ()
     {
@@ -81,15 +81,15 @@ $(function() {
 	    	options.optionsSort.MySortable();
 	    }
 
-    if($("#type").length)
-	    {
-	    	options.appElements.esconde();
-	    }
+    // if($("#type").length)
+	//     {
+	//     	options.appElements.esconde();
+	//     }
 
-	    $(options.appElements.seletor).on('change', function(event) {
-	    	event.preventDefault();
-	    	options.appElements.esconde();
-	    });
+	//     $(options.appElements.seletor).on('change', function(event) {
+	//     	event.preventDefault();
+	//     	options.appElements.esconde();
+	//     });
 
 	    $('.link-ajuda').click(function(event) {
 	    	event.preventDefault();
