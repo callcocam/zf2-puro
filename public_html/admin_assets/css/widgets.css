@@ -12,7 +12,7 @@
 .widgets-box h2{font-size: 0.875em;}
 .widgets-box small{padding-top: 4px;padding-bottom: 4px;font-size: 0.6em;font-weight: 600;}
 .widgets-box .ion{margin-right: 5px;}
-.widgets-box .box-footer{text-align: right;border-bottom: 2px solid #ccc;display: inline-block;text-align: right;width: 100%;}
+.widgets-box .box-footer{background-color: #ddd; text-align: right;border-bottom: 2px solid #ccc;display: inline-block;text-align: right;width: 100%;}
 .box-body-footer{text-align: right;display: inline-block;text-align: right;width: 100%;}
 .widgets-box .box-footer .btn{margin: 5px 5px;}
 .widgets-box .box-body-footer a{margin: 5px 5px;}

@@ -27,8 +27,9 @@ $(function() {
 		options.uploadPreview.selectImg(event);
 	});
    if($("#tabs").length)
-   {
-   	options.tabs.current(options);
+   { 
+       options.tabs.current(options);
+      
    }
    if($(options.uploadPreview.seletorSql).length)
    {

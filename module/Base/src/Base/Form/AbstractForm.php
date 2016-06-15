@@ -30,7 +30,7 @@ class AbstractForm extends \Zend\Form\Form {
         parent::__construct($name, $options);
         $this->setAttribute("method", "post");
         $this->setAttribute("enctype", "multipart/form-data");
-        $this->setAttribute("class", "form-horizontal formulario-configuracao");
+        $this->setAttribute("class", "form-horizontal formulario-configuracao Manager");
         $this->serviceLocator = $serviceLocator;
         $this->authservice = $this->getServiceLocator()->get('AuthService')->getIdentity();
         $this->cache = new \Base\Model\Cache();
@@ -126,7 +126,7 @@ class AbstractForm extends \Zend\Form\Form {
     
     public function getTabelas() {
          $table=new \Base\MetaData\Table($this->serviceLocator->get('Zend\Db\Adapter\Adapter'));
-         $tableNames=[];
+         $tableNames['']='--Selecione--';
          if($table->getTablenames()):
              foreach ($table->getTablenames() as $value):
              $tableNames[$value]=$value;

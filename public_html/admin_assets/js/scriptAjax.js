@@ -65,10 +65,10 @@ $.Admin.options = {
                 $(this.contentLeft).css('min-height', sidebar_height);
                 postSetWidth = sidebar_height;
             }
-            console.clear();
-            console.log(parseInt(neg));
-            console.log(main_height);
-            console.log(sidebar_height);
+//            console.clear();
+//            console.log(parseInt(neg));
+//            console.log(main_height);
+//            console.log(sidebar_height);
 
         },
         open: function () {
@@ -312,7 +312,7 @@ $.Admin.options = {
 $.Form = {};
 var optionsForm = null;
 $.Form.optionsForm = {
-    form: "#Manager",
+    form: ".Manager",
     save: "#save",
     save_copy: "#save_copy",
     id: "#id",

@@ -5,30 +5,33 @@ namespace Ddl\Form;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class CreateTableForm extends \Base\Form\AbstractForm {
+class DropTableForm extends \Base\Form\AbstractForm {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator, 'CreateTableForm', $options);
+        parent::__construct($serviceLocator, 'DropTableForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new TableFilter($serviceLocator));
-        //############################################ informações da coluna title ##############################################:
+          //############################################ informações da coluna tabela ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'select',
                     'name' => 'tabela',
                     'options' => array(
-                        'label' => 'FILD_TABELA_LABEL',
+                        'label' => 'TABELA',
+                        'value_options' => $this->getTabelas(),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'tabela',
-                        'title' => 'FILD_TABELA_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_TABELA_PLACEHOLDER',
+                        'title' => 'TABELA_DESC',
+                        'class' => 'form-control input-sm drop-table',
+                        'placeholder' => 'TABELA_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
+       
 
    }
 

@@ -29,8 +29,7 @@ extract($user);
 <div id="tabs" class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         <li class=""><a class="tabLink" href="#principal"><?php echo $this->translate('TAB_CONTEUDO_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#bd"><?php echo $this->translate('TAB_BD_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#class"><?php echo $this->translate('TAB_CLASS_LABEL') ?></a></li>
+         <li class=""><a class="tabLink" href="#class"><?php echo $this->translate('TAB_CLASS_LABEL') ?></a></li>
         <li class="pull-right"><i class="ion ion-gear-b"></i></li>
     </ul>
     <div class="tab-content">
@@ -88,22 +87,6 @@ extract($user);
 //            );
             ?>
         </div><!-- /.tab-pane -->
-        <div id="bd" class="tab-pane">
-            <?php
-             $CreateTableForm=$this->FormHelper()->getInstanceForm('CreateTableForm','creating','GERAR TABELA');
-             $ColumnForm=$this->FormHelper()->getInstanceForm('ColumnForm','creating','ADICIONAR COLUNA');
-             $ColumnChangeForm=$this->FormHelper()->getInstanceForm('ColumnChangeForm','change','ALTERAR COLUNA');
-             
-             $box1=$this->FormHelper()->boxWidgets(array('body' => $CreateTableForm, "title" => "CRIAR UMA NOVA TABELA", "class" => "box-default", 'footer' =>"",'icone'=>'clipboard'));
-             $box2=$this->FormHelper()->boxWidgets(array('body' => $ColumnForm, "title" => "ADICIONAR UMA COLUNA", "class" => "box-default", 'footer' =>"",'icone'=>'clipboard'));
-             $box3= $this->FormHelper()->boxWidgets(array('body' => $ColumnChangeForm, "title" => "ALTERAR UMA COLUNA", "class" => "box-default", 'footer' =>"",'icone'=>'clipboard'));
-             echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box1);
-             echo $this->HtmlTag('div')->setClass('box box-full-12 box-medium-06')->setText($box2);
-             echo $this->HtmlTag('div')->setClass('box box-full-12 box-medium-06')->setText($box3);
-             ?>
-
-
-        </div>
         <div id="class" class="tab-pane">
             <div class="row">
                 <div class="box box-full-12">
@@ -213,6 +196,7 @@ extract($user);
                 </div>
             </div>
         </div>
+          <div class="clear"></div>
     </div><!-- /.tab-content -->
 </div>
 

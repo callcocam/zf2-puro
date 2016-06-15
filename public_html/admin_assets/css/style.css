@@ -62,6 +62,7 @@
 .nav-tabs li:last-of-type{float: right;}
 .nav-tabs a{display: block; font-size: 0.875em; width: 100%;padding: 12px 13px 15px 13px;color: #fff;background: #00B494;border-radius: 15px 15px 0 0;-moz-border-radius: 15px 15px 0 0;-webkit-border-radius: 15px 15px 0 0;border-top:2px solid #fff;border-right :2px solid #fff;border-left:2px solid #fff;}
 .nav-tabs .ui-state-active a{background: #fff;color: #000;border-top:2px solid #00B494;border-right :2px solid #00B494;border-left:2px solid #00B494;border-bottom: #fff 2px solid;}
+.tab-content{display: block;}
 /*BOX FORM BUSCA*/
 
 .nav-form{display: inline-block;width: 100%;}

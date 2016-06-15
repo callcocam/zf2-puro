@@ -27,26 +27,23 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $this->ServiceLocator = $ServiceLocator;
     }
 
-    public function getInstanceForm($name, $action="index",$labelSubmit="Create New Table") {
+    public function getInstanceForm($name, $action = "index", $labelSubmit = "Create New Table") {
         $form = $this->ServiceLocator->getServiceLocator()->get($name);
         $form->setAttribute('action', $this->view->url('ddl/default', array('controller' => 'ddl', 'action' => $action)));
+        $form->setAttribute("class", "form-horizontal formulario-configuracao formDdl");
         $this->view->formElementErrors()
                 ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
                 ->setMessageSeparatorString('</li>')->render($form);
-
-        $html[] = $this->view->form()->openTag($form);
-        $linha = '<div class="form-group">
-    <label for="#title#">#label#</label>
-    #fild#
-  </div>';
-       
+        $htmlHead = [];
+        $linha = '<td>#fild#</td>';
         foreach ($form->getElements() as $element):
             if ($element->getAttribute('type') == "hidden"):
                 echo $this->view->formHidden($element);
             elseif ($element->getAttribute('type') == "submit"):
-                
+
             else:
                 $label = $this->view->translate($element->getLabel());
+                $htmlHead[] = sprintf("<th>%s</th>", $label);
                 $elementArray = array(
                     '#fild#' => $this->view->formRow($element->setLabel("")),
                     '#label#' => $label,
@@ -56,9 +53,11 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
             endif;
 
         endforeach;
-        $html[] = $this->view->formRow($form->get('save')->setValue($labelSubmit));
+//        $html[] = $this->view->formRow($form->get('save')->setValue($labelSubmit));
         $html[] = $this->view->form()->closeTag();
-        return implode("", $html);
+        $body = sprintf("<table class='table table-condensed'><tr>%s</tr><tr>%s</tr><tr><td>%s</td></tr></table>", implode("", $htmlHead), implode("", $html), $this->view->formRow($form->get('save')->setValue($labelSubmit)));
+
+        return sprintf("%s%s%s", $this->view->form()->openTag($form), $body, $this->view->form()->closeTag());
     }
 
     public function getFormulario($data) {

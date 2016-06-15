@@ -13,6 +13,7 @@ class Table {
     protected $constraints;
     protected $tablenames;
     protected $properts;
+    protected $columnsName;
 
     public function __construct(\Zend\Db\Adapter\Adapter $adapter) {
         $this->metadata = new \Zend\Db\Metadata\Metadata($adapter);
@@ -48,7 +49,11 @@ class Table {
         $this->name = $this->metadata->getTable($name);
         return $this;
     }
+    public function getColumnsName() {
+        return $this->columnsName;
+    }
 
+    
     public function setColumns($tableName) {
         $table = $this->metadata->getTable($tableName);
         foreach ($table->getColumns() as $column):
@@ -65,6 +70,7 @@ class Table {
                 'numericScale' => $column->getNumericScale(),
                 'numericUnsigned' => $column->getNumericUnsigned()
             ];
+            $this->setColumnsName($column);
         endforeach;
         $this->setConstraints($tableName);
         $this->setProperts();
@@ -92,7 +98,10 @@ class Table {
     }
 
     public function setTablenames($tablenames) {
-        $this->tablenames = $tablenames;
+        foreach ($tablenames as $value) :
+            $this->tablenames[$value]= $value;
+        endforeach;
+        
         return $this;
     }
 
@@ -104,5 +113,12 @@ class Table {
         }
         return $this;
     }
+    public function setColumnsName($columnsName) {
+        
+        $this->columnsName []=['name'=> $columnsName->getName()];
+        return $this;
+    }
+
+
 
 }

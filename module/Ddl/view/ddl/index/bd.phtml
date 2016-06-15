@@ -1,0 +1,52 @@
+<?php echo $this->messages(); ?>
+<?=
+$this->headTitle(strtoupper(substr($this->controller, 3)));
+extract($user);
+?>
+<section class="content-header">
+    <h1>
+        Bem Vindo <?php echo $title ?>
+    </h1>
+    <div class="breadcrumb">
+        <ul class="breadcrumbs-item">
+            <li>Admin</li>
+            <li class="divisor"> / </li>
+            <li>Panel</li>
+            <li class="divisor"> / </li>
+            <li><a href="<?php echo $this->url($route, array('controller' => $controller, 'action' => "index")) ?>"><?= ucfirst($controller) ?> </a></li>
+        </ul>
+      
+    </div>
+</section>
+
+<div id="tabs" class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class=""><a class="tabLink" href="#principal"><?php echo $this->translate('TAB_CONTEUDO_LABEL') ?></a></li>
+        <li class="pull-right"><i class="ion ion-gear-b"></i></li>
+    </ul>
+    <div class="tab-content">
+        <div id="principal" class="tab-pane ui-state-active">
+            <input type="hidden" id="change">
+            <?php
+            $CreateTableForm = $this->FormHelper()->getInstanceForm('CreateTableForm', 'creating', 'GERAR TABELA');
+            $DropTableForm = $this->FormHelper()->getInstanceForm('DropTableForm', 'droptable', 'DELETE TABELA');
+            $DropColumnForm = $this->FormHelper()->getInstanceForm('DropColumnForm', 'dropcolumn', 'DELETE COLUNA');
+            $ColumnForm = $this->FormHelper()->getInstanceForm('AddColumnForm', 'addcolumn', 'ADICIONAR COLUNA');
+            $ColumnChangeForm = $this->FormHelper()->getInstanceForm('ChangeColumnForm', 'change', 'ALTERAR COLUNA');
+
+            $box1 = $this->FormHelper()->boxWidgets(array('body' => $CreateTableForm, "title" => "CRIAR UMA NOVA TABELA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            $box2 = $this->FormHelper()->boxWidgets(array('body' => $DropTableForm, "title" => "APAGAR A TABELA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            $box3 = $this->FormHelper()->boxWidgets(array('body' => $DropColumnForm, "title" => "APAGAR UMA COLUNA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            $box4 = $this->FormHelper()->boxWidgets(array('body' => $ColumnForm, "title" => "ADICIONAR UMA COLUNA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            $box5 = $this->FormHelper()->boxWidgets(array('body' => $ColumnChangeForm, "title" => "ALTERAR UMA COLUNA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            echo $this->HtmlTag('div')->setClass('box box-full-12 box-small-04 box-medium-03')->setText($box1);
+            echo $this->HtmlTag('div')->setClass('box box-full-12 box-small-04 box-medium-03')->setText($box2);
+            echo $this->HtmlTag('div')->setClass('box box-full-12 box-small-04 box-medium-06')->setText($box3);
+            echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box4);
+            echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box5);
+            ?>
+        </div><!-- /.tab-pane -->
+        <div class="clear"></div>
+    </div><!-- /.tab-content -->
+</div>
+

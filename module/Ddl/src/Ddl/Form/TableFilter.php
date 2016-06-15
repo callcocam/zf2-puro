@@ -11,7 +11,7 @@ use Zend\Filter\StringTrim;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class CreateTableFilter extends InputFilter {
+class TableFilter extends InputFilter {
 
     /**
      * @return Zend\InputFilter
@@ -22,13 +22,13 @@ class CreateTableFilter extends InputFilter {
         $StripTags = new StripTags ();
         $StringTrim = new StringTrim ();
 
-        // Informação para a coluna title:
-        $title = new Input("title");
-        $title->setRequired(true);
-        $title->getFilterChain()->attach($StringTrim);
-        $title->getFilterChain()->attach($StripTags);
-        $title->getValidatorChain()->attach($emptyfilter);
-        $this->add($title);
+        // Informação para a coluna tabela:
+        $tabela = new Input("tabela");
+        $tabela->setRequired(true);
+        $tabela->getFilterChain()->attach($StringTrim);
+        $tabela->getFilterChain()->attach($StripTags);
+        $tabela->getValidatorChain()->attach($emptyfilter);
+        $this->add($tabela);
     }
 
 }

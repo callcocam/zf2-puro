@@ -7,12 +7,12 @@ namespace Ddl\Form;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class ColumnForm extends \Base\Form\AbstractForm {
+class AddColumnForm extends \Base\Form\AbstractForm {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
         parent::__construct($serviceLocator, 'ColumnForm', $options);
         //Não se esqueça de setar o inputFilter
-        $this->setInputFilter(new ColumnFilter($serviceLocator));
+        $this->setInputFilter(new AddColumnFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
         //############################################ informações da coluna tabela ##############################################:
         $this->add(
@@ -20,14 +20,14 @@ class ColumnForm extends \Base\Form\AbstractForm {
                     'type' => 'select',
                     'name' => 'tabela',
                     'options' => array(
-                        'label' => 'FILD_TABELA_LABEL',
+                        'label' => 'TABELA:',
                         'value_options' => $this->getTabelas(),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'tabela',
                         'title' => 'FILD_TABELA_DESC',
-                        'class' => 'form-control input-sm',
+                        'class' => 'form-control input-sm add-column',
                         'placeholder' => 'FILD_TABELA_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
@@ -40,7 +40,7 @@ class ColumnForm extends \Base\Form\AbstractForm {
                     'type' => 'text',
                     'name' => 'name',
                     'options' => array(
-                        'label' => 'FILD_NAME_LABEL',
+                        'label' => 'NAME:',
                     ),
                     'attributes' => array(
                         'id' => 'name',
@@ -58,17 +58,19 @@ class ColumnForm extends \Base\Form\AbstractForm {
             'type' => 'Zend\Form\Element\Select',
             'name' => 'type',
             'options' => array(
-                'label' => 'FILD_TYPE_LABEL',
+                'label' => 'TYPE:',
                 'value_options' => array(
-                    'Blob' => 'Blob',
+                   'Blob' => 'Blob',
                     'Boolean' => 'Boolean',
                     'Char' => 'Char',
                     'Date' => 'Date',
+                    'Time' => 'Time',
+                    'Datetime' => 'Datetime',
                     'Decimal' => 'Decimal',
                     'Float' => 'Float',
                     'Integer' => 'Integer',
-                    'Time' => 'Time',
                     'Varchar' => 'Varchar',
+                    'Text' => 'Text',
                 ),
             ),
             'attributes' => array(
@@ -86,7 +88,7 @@ class ColumnForm extends \Base\Form\AbstractForm {
             'type' => 'Zend\Form\Element\Number',
             'name' => 'length',
             'options' => array(
-                'label' => 'FILD_LENGTH_LABEL'
+                'label' => 'LENGTH:'
             ),
             'attributes' => array(
                 'min' => 0, // default minimum is 0
@@ -94,6 +96,8 @@ class ColumnForm extends \Base\Form\AbstractForm {
                 'step' => 1, // default interval is 1
                 'id' => 'length',
                 'title' => 'FILD_LENGTH_DESC',
+                'placeholder' => 'FILD_LENGTH_PLACEHOLDER',
+                'value'=>'11',
                 'class' => 'form-control input-sm',
                 'data-access' => '3',
                 'data-position' => 'geral',
@@ -105,13 +109,13 @@ class ColumnForm extends \Base\Form\AbstractForm {
             'type' => 'Zend\Form\Element\Checkbox',
             'name' => 'nullable',
             'options' => array(
-                'label' => 'FILD_NULLABLE_LABEL',
+                'label' => 'NULL:',
                 'use_hidden_element' => true,
                 'checked_value' => true,
                 'unchecked_value' => false
             ),
             'attributes' => array(
-                'value' => 'yes',
+                'value' => '0',
                 'id' => 'nullable',
                 'title' => 'FILD_NULLABLE_DESC',
             )
@@ -124,7 +128,7 @@ class ColumnForm extends \Base\Form\AbstractForm {
                     'type' => 'text',
                     'name' => 'description',
                     'options' => array(
-                        'label' => 'FILD_DESCRIPTION_LABEL',
+                        'label' => 'DESCRIPTION:',
                     ),
                     'attributes' => array(
                         'id' => 'description',
@@ -143,7 +147,7 @@ class ColumnForm extends \Base\Form\AbstractForm {
                     'type' => 'text',
                     'name' => 'default',
                     'options' => array(
-                        'label' => 'FILD_DEFAULT_LABEL',
+                        'label' => 'DEFAULT:',
                     ),
                     'attributes' => array(
                         'id' => 'default',
@@ -161,13 +165,13 @@ class ColumnForm extends \Base\Form\AbstractForm {
             'type' => 'Zend\Form\Element\Checkbox',
             'name' => 'auto_increment',
             'options' => array(
-                'label' => 'FILD_AUTO_INCREMENT_LABEL',
-                'use_hidden_element' => FALSE,
-                'checked_value' => true,
-                'unchecked_value' => false
+                'label' => 'A.I:',
+                'use_hidden_element' => true,
+                'checked_value' => 1,
+                'unchecked_value' => 0
             ),
             'attributes' => array(
-                'value' => 'yes',
+                'value' => '0',
                 'id' => 'auto_increment',
                 'title' => 'FILD_AUTO_INCREMENT_DESC',
             )

@@ -24,11 +24,17 @@ class Module {
                 'CreateTableForm' => function ($sm) {
                     return new \Ddl\Form\CreateTableForm($sm);
                 },
-                'ColumnChangeForm' => function ($sm) {
-                    return new \Ddl\Form\ColumnChangeForm($sm);
+                'ChangeColumnForm' => function ($sm) {
+                    return new \Ddl\Form\ChangeColumnForm($sm);
                 },
-                'ColumnForm' => function ($sm) {
-                    return new \Ddl\Form\ColumnForm($sm);
+                'AddColumnForm' => function ($sm) {
+                    return new \Ddl\Form\AddColumnForm($sm);
+                },
+                'DropColumnForm' => function ($sm) {
+                    return new \Ddl\Form\DropColumnForm($sm);
+                },
+                'DropTableForm' => function ($sm) {
+                    return new \Ddl\Form\DropTableForm($sm);
                 },
                ),
             'invokables' => array(
