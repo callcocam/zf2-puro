@@ -10,14 +10,14 @@ class SIGAMessages {
          _this.classeResult = classe;
         $(_this.carregando).fadeOut('fast');
         $(_this.target).addClass(classe).html(msg).fadeIn('fast', function () {
-            setTimeout(_this.escondeSiga(classe,_this), 5000);
+            setTimeout(_this.escondeSiga, 5000);
         });
     };
     
-    escondeSiga(classe,_this) {
+    escondeSiga() {
         $(_this.target).fadeOut('fast', function () {
             $(_this.boxCarregando).fadeOut('slow');
-            $(_this.target).empty().removeClass(classe);
+            $(_this.target).empty().removeClass( _this.classeResult);
         });
     };
     

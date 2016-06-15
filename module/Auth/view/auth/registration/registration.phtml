@@ -12,7 +12,7 @@
         <a href="<?php echo $this->url('admin') ?>"><img style="width:100%;height: 120px" src="/admin_assets/img/logo-siga-q.png"></a>
     </div><!-- /.login-logo -->
     <div class="main-login-box login-box-body">
-        <p class="trigger trigger_info">Cadastre-se para mair acesso</p>
+        <p class="trigger trigger_info">Cadastre-se para ter acesso</p>
         <p>
             <a href="<?php echo $this->url($this->route, array('controller' => 'admin', 'action' => 'index')); ?>"><?php echo $this->translate('Voltar'); ?></a> |
             <a href="<?php echo $this->url($this->route); ?>"><?php echo $this->translate('Login'); ?></a>
@@ -23,7 +23,7 @@
 
         $form->setAttribute('class', '');
         $this->formElementErrors()
-                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio trigger_error">')
                 ->setMessageSeparatorString('</li>')->render($form);
         $form->prepare();
         echo $this->form()->openTag($form);

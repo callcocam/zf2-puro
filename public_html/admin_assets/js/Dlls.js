@@ -54,8 +54,10 @@ class Dlls extends SIGAMessages {
         });
     }
 
+
     showRequest(formData, jqForm, options) {
         $(_this.carregando).fadeIn('fast');
+        $(_this.target).empty().removeClass(_this.classeResult);
         return true;
     }; // post-submit callback 
 
@@ -74,13 +76,17 @@ class Dlls extends SIGAMessages {
 }
 
 var _this = new Dlls();
-
+//Instania o formulario
 _this.ajaxFormOption.beforeSubmit = _this.showRequest;
 _this.ajaxFormOption.success = _this.showResponse;
 _this.formDdl.ajaxForm(_this.ajaxFormOption);
+
+//Aciona o event change do input
 _this.input.change(function () {
     _this.colunms($(this), _this.colunm);
 });
+
+//Cria um atalho para regarregar os select de tabela
 $("#change").change(function () {
     _this.populaTabela($('.drop-column'));
     _this.populaTabela($('.drop-table'));

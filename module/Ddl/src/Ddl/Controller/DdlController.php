@@ -92,11 +92,22 @@ class DdlController extends \Base\Controller\AbstractController {
 
     public function droptableAction() {
         $request = $this->getRequest();
-        if ($request->isPost()) {
+           if ($request->isPost()) {
+            $this->form='DropTableForm';
             $data = $this->params()->fromPost();
+            $this->form=$this->getForm();
+            $this->form->setData($data);
+            if($this->form->isValid()):
             extract($data);
             $drop = new \Zend\Db\Sql\Ddl\DropTable($tabela);
             $this->execute($drop);
+            else:
+            $msg="";
+            foreach ($this->form->getMessages() as $key => $value) {
+               $msg=implode(PHP_EOL,$value);
+            }
+            $this->msg=$msg;
+            endif;
         }
         return new \Zend\View\Model\JsonModel(
                 array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
@@ -106,12 +117,23 @@ class DdlController extends \Base\Controller\AbstractController {
     public function addcolumnAction() {
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $this->form='AddColumnForm';
             $data = $this->params()->fromPost();
             $data['new_name'] = $data['name'];
+            $this->form=$this->getForm();
+            $this->form->setData($data);
+            if($this->form->isValid()):
             extract($data);
             $table = new \Zend\Db\Sql\Ddl\AlterTable($tabela);
             $table->addColumn($this->setOptions($data));
             $this->execute($table);
+            else:
+            $msg="";
+            foreach ($this->form->getMessages() as $key => $value) {
+               $msg=implode(PHP_EOL,$value);
+            }
+            $this->msg=$msg;
+            endif;
         }
         return new \Zend\View\Model\JsonModel(
                 array('result' => $this->result, 'action' => '.select-tabela', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
@@ -122,11 +144,22 @@ class DdlController extends \Base\Controller\AbstractController {
         $request = $this->getRequest();
         $tabela = "";
         if ($request->isPost()) {
+            $this->form='ChangeColumnForm';
             $data = $this->params()->fromPost();
+            $this->form=$this->getForm();
+            $this->form->setData($data);
+            if($this->form->isValid()):
             extract($data);
             $table = new \Zend\Db\Sql\Ddl\AlterTable($tabela);
             $table->changeColumn($name, $this->setOptions($data));
             $this->execute($table);
+            else:
+            $msg="";
+            foreach ($this->form->getMessages() as $key => $value) {
+               $msg=implode(PHP_EOL,$value);
+            }
+            $this->msg=$msg;
+            endif;
         }
         return new \Zend\View\Model\JsonModel(
                 array('result' => $this->result, 'action' => '.select-tabela', 'tabela' => $tabela, 'class' => $this->class, 'msg' => $this->msg)
@@ -136,11 +169,22 @@ class DdlController extends \Base\Controller\AbstractController {
     public function dropcolumnAction() {
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $this->form='DropColumnForm';
             $data = $this->params()->fromPost();
+            $this->form=$this->getForm();
+            $this->form->setData($data);
+            if($this->form->isValid()):
             extract($data);
             $table = new \Zend\Db\Sql\Ddl\AlterTable($tabela);
             $table->dropColumn($colunms);
             $this->execute($table);
+            else:
+            $msg="";
+            foreach ($this->form->getMessages() as $key => $value) {
+               $msg=implode(PHP_EOL,$value);
+            }
+            $this->msg=$msg;
+            endif;
         }
         return new \Zend\View\Model\JsonModel(
                 array('result' => $this->result, 'action' => '.select-tabela', 'class' => $this->class, 'msg' => $this->msg)

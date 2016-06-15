@@ -21,7 +21,9 @@
         $form->setAttribute('action', $this->url('auth/default', array('controller' => 'registration', 'action' => 'profile-update'))); //'contact/process'));
 // Set the method attribute for the form
         $form->setAttribute('method', 'post');
-
+        $this->formElementErrors()
+                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio trigger_error">')
+                ->setMessageSeparatorString('</li>')->render($form);
         echo $this->form()->openTag($form);
         $linha = '<div class="form-group">
     <label for="#title#">#label#</label>

@@ -7,18 +7,8 @@ $(function() {
 	}
 	//Easy access to options
 	options = $.Admin.options;
-	options.mobile.rzWidth();
-	$(window).resize(function() {
-		options.mobile.rzWidth();	
-	});
-	//CONTROLE DO MENU MOBILE
-	$(options.mobile.mobile_action).click(function(event) {
-		options.mobile.open();
-		event.preventDefault();
-	});
 
-	options.scroll();
-	options.treeview.openMenu(options.treeview.menu);
+	//options.treeview.openMenu(options.treeview.menu);
 
 	$(options.uploadPreview.seletor).change(function(event) {
 		options.uploadPreview.selectImg(event);
