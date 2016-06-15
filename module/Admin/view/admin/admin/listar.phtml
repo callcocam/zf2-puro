@@ -87,18 +87,3 @@ extract($user);
           <div class="clear"></div>
     </div><!-- /.tab-content -->
 </div>
-
-
-<script>
-    $(function () {
-
-        $("#created, #publish_down").datetimepicker({
-            timepicker: false,
-            format: 'd-m-Y',
-            onChangeDateTime: function (dp, $input) {
-                //alert($input.val());
-            }
-        });
-        $.datetimepicker.setLocale('pt-BR');
-    });
-</script>

@@ -57,7 +57,7 @@ class App {
 
             $('.main-header-top-right').css('width', this.wd);
         } else {
-            $('.main-header-top-right').css('width', this.outerWidth);
+            $('.main-header-top-right').css('width', this.outerWidth-20);
         }
 
         this.rzHeight();
@@ -148,6 +148,13 @@ $(function () {
         event.preventDefault();
     });
     _App.treeview(_App.menuTreeview);
-    
-    
+        $("#created, #publish_down").datetimepicker({
+            timepicker: false,
+            format: 'd-m-Y',
+            onChangeDateTime: function (dp, $input) {
+                //alert($input.val());
+            }
+        });
+        $.datetimepicker.setLocale('pt-BR');
+ 
 })
