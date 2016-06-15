@@ -93,15 +93,7 @@ class AbstractForm extends \Zend\Form\Form {
             ),
         ));
 
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Csrf',
-            'name' => 'security',
-            'options' => array(
-                'csrf_options' => array(
-                    'timeout' => 600
-                )
-            )
-        ));
+      
     }
 
     public static $STATE = ['0' => "OPTION_PUBLICADO_LABEL", '1' => "OPTION_ARQUIVADO_LABEL", '2' => "OPTION_LIXEIRA_LABEL"];

@@ -28,9 +28,13 @@ class DdlController extends \Base\Controller\AbstractController {
     }
 
     public function creatingAction() {
+        $this->form='CreateTableForm';
         $request = $this->getRequest();
         if ($request->isPost()) {
             $data = $this->params()->fromPost();
+            $this->form=$this->getForm();
+            $this->form->setData($data);
+            if($this->form->isValid()):
             extract($data);
             $table = new \Zend\Db\Sql\Ddl\CreateTable($tabela);
             $table->addColumn(new Column\Integer(
@@ -56,6 +60,13 @@ class DdlController extends \Base\Controller\AbstractController {
                     new Constraint\UniqueKey(['codigo'], 'my_unique_key')
             );
             $this->execute($table);
+            else:
+            $msg="";
+            foreach ($this->form->getMessages() as $key => $value) {
+               $msg=implode(PHP_EOL,$value);
+            }
+            $this->msg=$msg;
+            endif;
         }
         return new \Zend\View\Model\JsonModel(
                 array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)

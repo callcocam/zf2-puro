@@ -47,6 +47,16 @@ class AuthForm extends AbstractForm {
                 'class' => 'btn btn-success'
             ),
         ));
+        
+          $this->add(array(
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => array(
+                'csrf_options' => array(
+                    'timeout' => 600
+                )
+            )
+        ));
     }
 
 }

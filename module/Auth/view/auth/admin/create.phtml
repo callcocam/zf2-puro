@@ -22,7 +22,7 @@ foreach ($form->getElements() as $element):
     if ($element->getAttribute('type') == "hidden"):
         echo $this->formHidden($element);
     elseif ($element->getAttribute('type') == "submit"):
-        echo $this->formRow($element);
+        //echo $this->formRow($element);
     else:
         $label = $this->translate($element->getLabel());
         $elementArray = array(
@@ -34,5 +34,5 @@ foreach ($form->getElements() as $element):
     endif;
 
 endforeach;
-
+ echo $this->formSubmit($form->get('save')->setValue("BTN_CREATE_USER_LABEL"));
 echo $this->form()->closeTag();

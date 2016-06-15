@@ -40,6 +40,8 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
             if ($element->getAttribute('type') == "hidden"):
                 echo $this->view->formHidden($element);
             elseif ($element->getAttribute('type') == "submit"):
+            
+            elseif ($element->getName() == "security"):
 
             else:
                 $label = $this->view->translate($element->getLabel());

@@ -32,9 +32,12 @@ class Dlls extends SIGAMessages {
                 dataType: 'json',
                 success: function (data) {
                     _this.messageSiga(data.msg, data.class);
-                    $.each(data.result, function () {
-                        $(seletor).append($("<option />").val(this.name).text(this.name));
-                    });
+                    if (data.result) {
+                        $.each(data.result, function () {
+                            $(seletor).append($("<option />").val(this.name).text(this.name));
+                        });
+                    }
+
                 },
                 type: 'GET'
             });
@@ -62,7 +65,9 @@ class Dlls extends SIGAMessages {
         _this.result = responseText.result;
         //console.log(responseText.action);
         if ($(responseText.action).length) {
-            $(responseText.action).change();
+            if (responseText.result) {
+                $(responseText.action).change();
+            }
         }
     }
 

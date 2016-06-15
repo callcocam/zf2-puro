@@ -32,6 +32,15 @@ class ForgottenPasswordForm extends AbstractForm {
                 'class' => 'btn btn-blue fl-right'
             ),
         ));
+          $this->add(array(
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => array(
+                'csrf_options' => array(
+                    'timeout' => 600
+                )
+            )
+        ));
     }
 
 }
