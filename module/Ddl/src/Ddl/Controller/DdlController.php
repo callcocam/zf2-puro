@@ -187,6 +187,18 @@ class DdlController extends \Base\Controller\AbstractController {
                 array('result' => $this->result, 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
         );
     }
+    
+     public function columnsAction() {
+        $tabela = $this->params()->fromQuery("tabela", '');
+        if (!empty($tabela)):
+            $table = new \Base\MetaData\Table($this->getAdapter());
+            $table->setColumns($tabela);
+            $this->result = $table->getColumnsName();
+        endif;
+        return new \Zend\View\Model\JsonModel(
+                array('result' => $this->result, 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
+        );
+    }
 
 //    public function indexAction() {
 //

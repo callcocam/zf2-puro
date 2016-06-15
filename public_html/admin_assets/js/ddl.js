@@ -4,18 +4,18 @@ var select = {
     carregando: '.carregando',
     boxCarregando: '.box-carregando',
     target: '#alert',
-    colunas: "#colunas",
+    colunm: "#colunas",
     form: ".formDdl",
     action: "",
     result: null,
     tabelasBd: ".select-tabela",
-    popula: function ()
+    colunms: function ()
     {
         _this = this;
         $(this.input).change(function ()
         {
-            $(select.colunas).find('option').remove();
-            $(select.colunas).append($("<option />").val('').text("--Selecione--"));
+            $(select.colunm).find('option').remove();
+            $(select.colunm).append($("<option />").val('').text("--Selecione--"));
             if ($(this).val() !== "") {
                 $(select.carregando).fadeIn('slow');
                 _this.ajax($(this));
@@ -26,20 +26,20 @@ var select = {
     ajax: function (_this)
     {
         $.ajax({
-            url: '/ddl/ddl/tabela',
+            url: '/ddl/ddl/columns',
             data: {
                 tabela: _this.val()
             },
             error: function () {
-                alert('<p>An error has occurred</p>');
+                select.message('An error has occurred', 'trigger_error');
             },
             dataType: 'json',
             success: function (data) {
                 select.message(data.msg, data.class);
-                $(select.colunas).find('option').remove();
-                $(select.colunas).append($("<option />").val('').text("--Selecione--"));
+                $(select.colunm).find('option').remove();
+                $(select.colunm).append($("<option />").val('').text("--Selecione--"));
                 $.each(data.result, function () {
-                    $(select.colunas).append($("<option />").val(this.name).text(this.name));
+                    $(select.colunm).append($("<option />").val(this.name).text(this.name));
                 });
             },
             type: 'GET'
