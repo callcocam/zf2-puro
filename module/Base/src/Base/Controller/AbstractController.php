@@ -33,6 +33,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $result = null;
     protected $error = "MSG_NOT_INFO_LABEL";
     protected $codigo = 0;
+    protected $id=0;
     protected $classe = "trigger_error";
     protected $acao = "save";
 
@@ -102,6 +103,7 @@ abstract class AbstractController extends AbstractActionController {
 
     public function inserirAction() {
         $this->form = $this->getForm();
+        $this->form->get('save_copy')->setAttributes(array('disabled'=>'disabled'));
         $view = new ViewModel(array(
             'data' => $this->data,
             'route' => $this->route,
@@ -142,7 +144,7 @@ abstract class AbstractController extends AbstractActionController {
             $this->result = $this->getTableGateway()->getResult();
             $this->error = $this->getTableGateway()->getError();
         }
-        return new JsonModel(array('result' => $this->resutl, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
             'msg' => $this->error));
     }
 
@@ -150,38 +152,33 @@ abstract class AbstractController extends AbstractActionController {
         $this->form = $this->getForm();
         if ($this->params()->fromPost()) {
             $this->data = array_merge_recursive($this->params()->fromPost(), $this->params()->fromFiles());
+            $this->data['ordering'] = '0';
+            $this->data['empresa'] = $this->user['empresa'];
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
             $this->getValidation();
             if ($this->form->isValid()) {
-                //Se exitir o campo id valido e uma edição
                 $result = null;
+                if (isset($this->data['save_copy'])):
+                $this->data['id'] = 'AUTOMATICO';
+                $model->setId(null);
+                endif;
                 try {
+                     //Se exitir o campo id valido e uma edição
                     if (isset($this->data['id']) && (int) $this->data['id']):
                         $result = $this->getTableGateway()->update($model);
                     else:
                         $result = $this->getTableGateway()->insert($model);
                         $this->data['id'] = $result;
+                        $this->id=$this->getTableGateway()->getLastInsert()->getId();
+                        $this->codigo=$this->getTableGateway()->getLastInsert()->getCodigo();
                     endif;
                     if ($result) {
                         $this->classe = 'trigger_success';
-                        if (isset($this->data['save_close'])):
-                            $this->error = $this->getTableGateway()->getError();
-                            $this->acao = 'save_close';
-                        elseif (isset($this->data['save_new'])):
-                            $this->error = $this->getTableGateway()->getError();
-                            $this->acao = 'save_new';
-                        elseif (isset($this->data['save_copy'])):
-                            $this->data['id'] = 'AUTOMATICO';
-                            $this->result = $this->data;
-                            $this->error = $this->getTableGateway()->getError();
-                            $this->acao = 'save_copy';
-                        else:
-                            $this->result = $this->data;
-                            $this->error = $this->getTableGateway()->getError();
-                        endif;
-                    }
+                        $this->result = $this->getTableGateway()->getResult();
+                        $this->error = $this->getTableGateway()->getError();
+                     }
                     else {
                         $this->error = $this->getTableGateway()->getError();
                     }
@@ -193,11 +190,11 @@ abstract class AbstractController extends AbstractActionController {
                     $msgs = implode(PHP_EOL, $msg);
                 endforeach;
                 $this->result = null;
-                $this->error = $msgs;
+                $this->error = json_encode($this->form->getMessages());
                 $this->acao = 'save';
             }
         }
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' => $this->id, 'class' => $this->classe,
             'msg' => $this->error, 'data' => $this->data));
     }
 

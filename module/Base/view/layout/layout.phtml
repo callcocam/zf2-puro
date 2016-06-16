@@ -18,9 +18,9 @@ extract($usuario);
         <!-- Le styles -->
         <?php
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                ->prependStylesheet($this->basePath('/admin_assets/css/forms-default.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/style.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/widgets.css'))
-                ->prependStylesheet($this->basePath('/admin_assets/css/forms-default.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/ionicons.min.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/jquery.datetimepicker.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/boot.css'))

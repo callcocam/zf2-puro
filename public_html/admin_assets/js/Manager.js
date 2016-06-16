@@ -33,7 +33,12 @@ class Manager extends SIGAMessages {
         $(_Manager.carregando).hide('fast');
         _Manager.messageSiga(responseText.msg, responseText.class);
         _Manager.result = responseText.result;
-        //console.log(responseText.action);
+
+        if (responseText.id) {
+            _Manager.save_copy.removeAttr('disabled');
+            _Manager.id.val(responseText.id);
+        }
+        _Manager.codigo.val(responseText.codigo);
         if ($(responseText.action).length) {
             if (responseText.result) {
                 $(responseText.action).change();
@@ -83,7 +88,7 @@ $(function () {
     _Manager.ManagerFormOption.success = _Manager.showResponse;
     _Manager.formManger.ajaxForm(_Manager.ManagerFormOption);
 
-    if ( _Manager.seletorSqlAttach.length) {
+    if (_Manager.seletorSqlAttach.length) {
         _Manager.selectSql(_Manager);
     }
 
@@ -93,7 +98,7 @@ $(function () {
     _Manager.seletorSqlAttach.change(function (event) {
         _Manager.selectImg(event, _Manager);
     });
-
+   
 
 
 })

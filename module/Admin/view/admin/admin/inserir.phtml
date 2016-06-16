@@ -1,48 +1,77 @@
+<!-- Filename: /module/Blog/view/blog/write/add.phtml -->
+<!-- Main content -->
 <?php
-
-echo '<h1>Create</h1>';
-echo $this->messages();
-$form= $this->form;
-if ($form instanceof \Zend\Form\Form):
-    $form->prepare();
-// Assuming the "contact/process" route exists...
-    $form->setAttribute('action', $this->url($this->route, array('controller' =>$this->controller, 'action' =>$this->action,'id'=>$this->id))); //'contact/process'));
-// Set the method attribute for the form
-    $form->setAttribute('method', 'post');
-   // $form->setAttribute('class', '');
+    $route = $this->RouteHelper()->getRoute();
+    $controller = $this->RouteHelper()->getController();
+    $action = $this->RouteHelper()->getAction();
+    $id = $this->RouteHelper()->getId();
+    $page = $this->RouteHelper()->getRotaAndContrllerAction('page');
+    echo $this->headTitle(strtoupper(substr($controller,3)));
+   
+    ?>
+    <section class="content-header">
+    <div class="breadcrumb">
+    <ul class="breadcrumbs-item">
+        <li>Admin</li>
+        <li class="divisor"> / </li>
+        <li>Panel</li>
+        <li class="divisor"> / </li>
+        <li><a href="<?php echo $this->url($route,array('controller'=>$controller,'action'=>"index"))?>"><?=ucfirst($controller)?> </a></li>  
+        <li class="divisor"> / </li>
+        <li>MANUTENÇÃO - <b><?php echo "Manutenção";?></b></li>
+    </ul>
+    
+</div>
+</section>
+<section class="content">
+      <?php
+    echo $this->messages();
+    $form = $this->form;
+    $form->setAttribute('action', $this->url($route, array('controller' => $controller, 'action' => $this->action, 'id' => $this->id)));
+    $form->setAttribute('class', 'form-geral Manager');
     $this->formElementErrors()
             ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
             ->setMessageSeparatorString('</li>')->render($form);
     echo $this->form()->openTag($form);
-    $linha = '<div class="form-group">
-    <label for="#title#">#label#</label>
-    #fild#
-  </div>';
-    $btn=[];
-    foreach ($form->getElements() as $element):
-        if ($element->getAttribute('type') == "hidden"):
-            echo $this->formHidden($element);
-        elseif ($element->getAttribute('type') == "submit"):
-            $btn[]= $this->formRow($element);
-        else:
-            $label = $this->translate($element->getLabel());
-            $elementArray = array(
-                '#fild#' => $this->formRow($element->setLabel("")),
-                '#label#' => $label,
-                '#title#' => $element->getName(),
-            );
-            echo str_replace(array_keys($elementArray), array_values($elementArray), $linha);
-        endif;
+    ?>
+    <div class="row">
 
-    endforeach;
-    $linha = '<a class="btn btn-black" href="%s">
-    BTN_VOLTAR_LABEL
-  </a><p>';
-    $btn[]=  sprintf($linha,$this->url($this->route, array('controller' =>$this->controller, 'action' =>"index")));
-    echo implode("", $btn);
-    
-    echo $this->form()->closeTag();
-    else:
-        echo "<h1>Nenhum Formulario Enontrado</h1>";
-endif;
- echo "<p><p><p>";
+        <div class="box box-full-12 box-medium-07 box-large-08">
+        <?php
+        //BLOCO DE GERAL
+        $geral = $this->FormHelper()->GerarElement($form, 'geral'); 
+        $linha = "<a class=\"btn btn-black\" href=\"%s\">{$this->translate('BTN_VOLTAR_LABEL')}</a><p>";
+        $btnVoltar=  sprintf($linha,$this->url($this->route, array('controller' =>$this->controller, 'action' =>"index")));
+        $footer=[$this->formSubmit($form->get('save')),$this->formSubmit($form->get('save_copy')),$btnVoltar];
+        if (!is_null($geral)):
+            echo $this->FormHelper()->boxWidgets(array('body' => $geral, "title" => "MANUTENÇÃO DOS DADOS", "class" => "box-default", 'footer' =>implode("", $footer),'icone'=>'clipboard'));
+        endif;
+        ?>
+        </div><!-- /.col -->
+        <div class="box box-full-12 box-medium-05 box-large-04">
+
+            <?php
+            //BLOCO DE CONTROLES
+            $controle = $this->FormHelper()->GerarElement($form, 'controle');
+            if (!is_null($controle)):
+                echo $this->FormHelper()->boxWidgets(array('body' => $controle, "title" => "CONTROLES", "class" => "box-default",'icone'=>'clipboard'));
+            endif;
+            //BLOCO DE IMAGENS
+            $images = $this->FormHelper()->GerarElement($form, 'images');
+
+            if (!is_null($images)):
+                echo $this->FormHelper()->boxWidgets(array('body' => $images, "title" => "IMAGENS", "class" => "box-default",'icone'=>'clipboard'));
+            endif;
+
+            //BLOCO DE DATAS
+            $datas = $this->FormHelper()->GerarElement($form, 'datas');
+            if (!is_null($datas)):
+                echo $this->FormHelper()->boxWidgets(array('body' => $datas, "title" => "DATAS", "class" => "box-default",'icone'=>'clipboard'));
+            endif;
+            ?>
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+    <?php echo $this->form()->closeTag() ?>
+</section><!-- /.content -->
+

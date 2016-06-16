@@ -97,7 +97,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
                 $visible = self::$user['role_id'] <= $element->getAttribute('data-access') ? "" : "disabled";
             }
             $element->setAttribute('placeholder', "");
-            $label = $this->view->HtmlTag('label')->setAttributes(array("class" => "field-label {$visible}", "for" => $element->getName()))->setText($this->view->translate($element->getLabel()));
+            $label = $this->view->HtmlTag('label')->setAttributes(array("class" => "field-label {$visible}", "for" => $element->getName()))->setText($element->getLabel());
             // verifica em q block o campo sera alocado
             if ($element->getAttribute('data-position') === $blokc) {
                 // seta como exist campo dentro do block

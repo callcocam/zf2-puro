@@ -15,6 +15,7 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    
 }
 
 body{height: 100%;}
@@ -148,6 +149,8 @@ form .disabled{display:none;}
     border: none;border-radius: 2px;-moz-border-radius: 2px;-webkit-border-radius: 2px;text-shadow: 1px 1px #555;margin: 0;}
 
 .btn:hover{background: #555;text-decoration: none;}
+
+
 
 .btn-blue{background-color: #0E96E5;text-shadow: 1px 1px #096397;}
 .btn-blue:hover{background-color: #096397;}

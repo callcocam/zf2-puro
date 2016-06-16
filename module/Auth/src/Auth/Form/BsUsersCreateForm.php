@@ -22,38 +22,7 @@ class BsUsersCreateForm extends AbstractForm {
         // Configurações iniciais do Form
         parent::__construct($serviceLocator, "BsUsersCreateForm");
         $this->setInputFilter(new BsUsersFilter($serviceLocator));
-        //############################################ informações da coluna id ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'id',
-                    'options' => array(
-                        'label' => 'FILD_ID_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'id',
-                        'value' => 'AUTOMATICO',
-                    ),
-                )
-        );
-
-
-        //############################################ informações da coluna codigo ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'codigo',
-                    'options' => array(
-                        'label' => 'FILD_CODIGO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'codigo',
-                        'value' => '{codigo}',
-                    ),
-                )
-        );
-
-
+      
         //############################################ informações da coluna asset_id ##############################################:
         $this->add(
                 array(

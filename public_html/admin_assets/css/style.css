@@ -39,7 +39,7 @@
 .sidebar-user{width: 100%;display: inline-block;}
 .sidebar-user-img{width: 50px;float: left;margin: 10px;}
 .sidebar-online{width: 170px;padding: 20px 5px;float: left;font-weight: 500;color: #fff;}
-.sidebar-online h1{}
+/*.sidebar-online h1{}*/
 .sidebar-online p{display: inline-block; font-size: 0.6em;color: #00A65A;margin: 3px auto;padding: 2px 5px;position: relative;}
 .sidebar-online .on{width: 10px;height: 10px; background: #00A65A;float: left;margin-right: 4px;}
 

@@ -13,37 +13,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
         parent::__construct($serviceLocator, 'BsResources', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new BsResourcesFilter($serviceLocator));
-        //############################################ informações da coluna id ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'id',
-                    'options' => array(
-                        'label' => 'FILD_ID_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'id',
-                        'value' => 'AUTOMATICO',
-                    ),
-                )
-        );
-
-
-        //############################################ informações da coluna codigo ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'codigo',
-                    'options' => array(
-                        'label' => 'FILD_CODIGO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'codigo',
-                        'value' => '{codigo}',
-                    ),
-                )
-        );
-
+    
 
         //############################################ informações da coluna asset_id ##############################################:
         $this->add(
@@ -263,7 +233,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_MODULE_ID_PLACEHOLDER',
                         'value' => 2,
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -304,7 +274,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_REGISTRO_PAGE_PLACEHOLDER',
                         'data-access' => '3',
                         'value' => 12,
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -325,7 +295,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_COLUNAS_LINHA_PLACEHOLDER',
                         'data-access' => '3',
                         'value' => 4,
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -385,7 +355,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ALIAS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -401,7 +371,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'id' => 'modified_by',
                         'value' => $this->authservice['id'],
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -414,7 +384,8 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                     'attributes' => array(
                         'id' => 'ordering',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'value'=>'0',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -436,7 +407,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_STATE_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -458,7 +429,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -480,7 +451,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'readonly' => true,
                         'data-access' => '3',
                         'value' => date("d-m-Y"),
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -495,7 +466,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -517,7 +488,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'readonly' => true,
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -539,7 +510,7 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
                         'readonly' => true,
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -549,9 +520,14 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
-                    'timeout' => 600
+                    'timeout' => 6000
                 )
-            )
+            ),
+            'attributes' => array(
+                        'id' => 'security',
+                        'data-access' => '5',
+                        'data-position' => 'geral',
+                    )
         ));
     }
 

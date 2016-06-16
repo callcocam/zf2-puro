@@ -49,6 +49,49 @@ class AbstractForm extends \Zend\Form\Form {
         );
         $this->captchaImage->setImgDir($urlcaptcha);
         // $captchaImage->setImgUrl($urlcaptcha);
+
+          //############################################ informações da coluna id ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'id',
+                    'options' => array(
+                        'label' => 'FILD_ID_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'id',
+                        'value' => 'AUTOMATICO',
+                        'title' => 'FILD_ID_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ID_PLACEHOLDER',
+                        'data-access' => '3',
+                        'readonly'=>true,
+                        'data-position' => 'controle',
+                    ),
+                )
+        );
+
+
+        //############################################ informações da coluna codigo ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'codigo',
+                    'options' => array(
+                        'label' => 'FILD_CODIGO_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'codigo',
+                        'value' => '00000',
+                        'title' => 'FILD_CODIGOD_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_CODIGO_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'controle',
+                    ),
+                )
+        );
+
         $this->add(array(
             'name' => 'save',
             'attributes' => array(
@@ -60,16 +103,16 @@ class AbstractForm extends \Zend\Form\Form {
             ),
         ));
         
-        $this->add(array(
-            'name' => 'save_new',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'BTN_SAVE_NEW_LABEL',
-                'title' => 'BTN_SAVE_NEW_DESC',
-                'class' => 'btn btn-yellow submitbutton',
-                'id' => 'save_new',
-            ),
-        ));
+        // $this->add(array(
+        //     'name' => 'save_new',
+        //     'attributes' => array(
+        //         'type' => 'submit',
+        //         'value' => 'BTN_SAVE_NEW_LABEL',
+        //         'title' => 'BTN_SAVE_NEW_DESC',
+        //         'class' => 'btn btn-yellow submitbutton',
+        //         'id' => 'save_new',
+        //     ),
+        // ));
         
         $this->add(array(
             'name' => 'save_copy',
@@ -78,20 +121,21 @@ class AbstractForm extends \Zend\Form\Form {
                 'value' => 'BTN_SAVE_COPY_LABEL',
                 'title' => 'BTN_SAVE_COPY_DESC',
                 'class' => 'btn btn-blue submitbutton',
+                'disabled'=>true,
                 'id' => 'save_copy',
             ),
         ));
         
-        $this->add(array(
-            'name' => 'save_close',
-            'attributes' => array(
-                'type' => 'submit',
-                'value' => 'BTN_SAVE_CLOSE_LABEL',
-                'title' => 'BTN_SAVE_CLOSE_DESC',
-                'class' => 'btn btn-red submitbutton',
-                'id' => 'save_close',
-            ),
-        ));
+        // $this->add(array(
+        //     'name' => 'save_close',
+        //     'attributes' => array(
+        //         'type' => 'submit',
+        //         'value' => 'BTN_SAVE_CLOSE_LABEL',
+        //         'title' => 'BTN_SAVE_CLOSE_DESC',
+        //         'class' => 'btn btn-red submitbutton',
+        //         'id' => 'save_close',
+        //     ),
+        // ));
 
       
     }

@@ -23,6 +23,7 @@ abstract class AbstractTable {
     protected $offset = 0;
     protected $error;
     protected $result;
+    protected $last_insert;
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -82,7 +83,8 @@ abstract class AbstractTable {
     public function insert(AbstractModel $data) {
         $data->setCodigo($this->getMax('codigo'));
         if ($this->tableGateway->insert($data->toArray())):
-            $this->result = $this->tableGateway->getLastInsertValue();
+            $this->result =1;
+            $this->last_insert=$this->find($this->tableGateway->getLastInsertValue());
             $this->error = "O Registro [ {$data->getTitle()} ] Foi Salvo Com Sucesso!";
             return $this->result;
         endif;
@@ -151,6 +153,11 @@ abstract class AbstractTable {
 
     public function getResult() {
         return $this->result;
+    }
+
+    public function getLastInsert()
+    {
+        return $this->last_insert;
     }
 
 }
