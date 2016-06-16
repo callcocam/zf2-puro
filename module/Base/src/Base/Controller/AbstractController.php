@@ -107,7 +107,7 @@ abstract class AbstractController extends AbstractActionController {
             'data' => $this->data,
             'route' => $this->route,
             'controller' => $this->controller,
-            'action' => $this->params()->fromRoute('action', 'index'),
+             'action' => 'publica',
             'form' => $this->form));
         $view->setTemplate('/admin/admin/inserir');
         return $view;
@@ -122,12 +122,13 @@ abstract class AbstractController extends AbstractActionController {
         if (!$this->data) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
         }
+           $this->form=$this->getForm();
            $this->form->setData($this->data->toArray());
            $view = new ViewModel(array(
             'form' => $this->form,
             'route' => $this->route,
             'controller' => $this->controller,
-            'action' => $this->params()->fromRoute('action', 'index'),
+            'action' => 'publica',
             'id' => $id));
         $view->setTemplate('/admin/admin/inserir');
         return $view;
@@ -157,7 +158,8 @@ abstract class AbstractController extends AbstractActionController {
             $this->getValidation();
             if ($this->form->isValid()) {
                 //Se exitir o campo id valido e uma edição
-                if(isset($data['id']) && (int)$data['id']):
+                
+                if(isset($this->data['id']) && (int)$this->data['id']):
                     $result = $this->getTableGateway()->update($model);
                 else:
                     $result = $this->getTableGateway()->insert($model);
@@ -193,8 +195,8 @@ abstract class AbstractController extends AbstractActionController {
                 $this->acao='save';
             }
         } 
-        return new JsonModel(array('result' => $this->resutl,'acao'=>$this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-                'msg' => $this->error));
+        return new JsonModel(array('result' => $this->result,'acao'=>$this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error,'data'=>$this->data));
     }
 
     public function setNoRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {

@@ -9,7 +9,7 @@ if ($form instanceof \Zend\Form\Form):
     $form->setAttribute('action', $this->url($this->route, array('controller' =>$this->controller, 'action' =>$this->action,'id'=>$this->id))); //'contact/process'));
 // Set the method attribute for the form
     $form->setAttribute('method', 'post');
-    $form->setAttribute('class', '');
+   // $form->setAttribute('class', '');
     $this->formElementErrors()
             ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
             ->setMessageSeparatorString('</li>')->render($form);
