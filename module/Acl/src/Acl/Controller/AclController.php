@@ -40,6 +40,10 @@ class AclController extends AbstractController {
     }
 
     public function testeAction() {
+       
+       $table=new \Base\MetaData\Table($this->getAdapter());
+       var_dump($table->getColumnsName());
+       
         var_dump(\Acl\Model\Roles::$ROLES);
         $role= (string)$this->params()->fromRoute('id', 1);
         $acl = $this->getServiceLocator()->get('Acl\Permissions\Acl');
