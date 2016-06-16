@@ -77,10 +77,10 @@ class AddColumnFilter extends InputFilter {
         
          // Informação para a coluna default:
         $default = new Input("default");
-        $default->setRequired(true);
+        $default->setRequired(false);
         $default->getFilterChain()->attach($StringTrim);
         $default->getFilterChain()->attach($StripTags);
-        $default->getValidatorChain()->attach($emptyfilter);
+       // $default->getValidatorChain()->attach($emptyfilter);
         $this->add($default);
         
         

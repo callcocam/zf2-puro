@@ -1,4 +1,4 @@
-class App extends SIGAMessages{
+class App extends SIGAMessages {
     constructor() {
         super();
         //MOBILE VARIAVEIS
@@ -30,7 +30,20 @@ class App extends SIGAMessages{
         //ELEMENTOS ESCONDE
         this.seletorElements = $("#type");
         this.parenteElements = "div";
-
+        //FIM
+        this.resultAction = null;
+        this.btnGenerate = $('.btn-generate');
+        this.btnExcluir = $(".excluir");
+        //SORTABLE
+        this.seletorSortable = $(".todo-list");
+        this.myarray = [];
+        //FIM
+        //MY TABS
+        this.navTabs = $('.nav-tabs');
+        this.contentTabs = $('.tab-pane');
+        this.activeTabs = 'ui-state-active';
+        this.parentLinksTabs = ".tabLink";
+        //FIM
     }
 
     open() {
@@ -148,6 +161,90 @@ class App extends SIGAMessages{
             }
         });
     }
+
+    excluir(_this, _AppExcluir) {
+        if (_this.hasClass('btn-blue')) {
+            _this.removeClass('btn-blue');
+            _this.addClass('btn-red');
+            _this.children('.hidden-xs').text('CONFIMAR');
+            setTimeout(function () {
+                _this.addClass('btn-blue');
+                _this.removeClass('btn-red');
+                _this.children('.hidden-xs').text('EXCLUIR');
+            }, 10000);
+        } else {
+            _AppExcluir.ajaxFunction(_this.attr('href'), 'get', 'json', '', _AppExcluir);
+            setTimeout(function () {
+                if (_AppExcluir.resultAction) {
+                    _this.parent().parent().parent('.col-box-list').remove();
+                }
+            }, 3000);
+
+        }
+    }
+
+    ajaxFunction(url, method, type, data, _AppAjax) {
+        $.ajax({
+            url: url, //$(this).attr('href'),
+            type: method, //'GET',
+            dataType: type,
+            data: data,
+            beforeSend: function (xhr) {
+
+                $(_AppAjax.carregando).fadeIn('fast');
+            },
+            success: function (data) {
+                $(_AppAjax.carregando).hide('fast');
+                $(_AppAjax.boxCarregando).fadeIn('fast');
+                _AppAjax.messageSiga(data.msg, data.class);
+                _AppAjax.resultAction = data.result;
+            }
+        });
+    }
+
+    MySortable(_AppSortable) {
+        $(_AppSortable.seletorSortable).sortable(
+            {
+                handle: ".handle",
+                cursor: "move",
+                distance: 5,
+                containment: 'parent',
+                tolerance: "pointer",
+                stop: function (event, ui) {
+                    _AppSortable.myarray = [];
+                    $(this).find('li').each(function (i) {
+                        $(this).find('li:last').attr('id', i + 1);
+                        _AppSortable.myarray.push({
+                            id: $(this).attr('id'),
+                            value: i + 1
+                        });
+                    });
+                    _AppSortable.ajaxFunction('/admin/app/configuracoesordering', 'post', 'json', { ordering: _AppSortable.myarray }, _AppSortable);
+                }
+            }).disableSelection();
+    }
+
+    myTabs(_AppTab) {
+        // Cachear el contenedor de los links
+        var linksParent = _AppTab.navTabs;
+        // Cachear cada uno de los links
+        var links = linksParent.find('a');
+        // Cachear cada uno de los items
+        var items = _AppTab.contentTabs;
+        // Añadir la clase "active" al primer link y al primer contenido 
+        links.eq(0).add(items.eq(0)).parent('li').addClass(_AppTab.activeTabs);
+        // Evento clic en el contendor de los links, delegado a los links 
+        linksParent.on('click', _AppTab.parentLinks, function (event) {
+            event.preventDefault();
+            // Cachear el link en el que se hace clic 
+            var t = $(this).parent('li');
+            // Cachear la posición del link en el que se ha hecho clic
+            var i = t.index();
+            // Al link y a su respectivo contenido se le añade la clase
+            // active y a sus hermanos se les quita dicha clase 
+            t.add(items.eq(i)).addClass(_AppTab.activeTabs).siblings().removeClass(_AppTab.activeTabs);
+        });
+    }
 }
 
 
@@ -173,6 +270,26 @@ $(function () {
         options.escondeElements();
     });
 
+    if (_App.seletorSortable.length) {
+        _App.MySortable(_App);
+    }
+
+    if ($("#tabs").length) {
+        _App.myTabs(_App);
+    }
+
+    $(_App.btnGenerate).click(function () {
+        _App.ajaxFunction($(this).attr('href'), 'get', 'json', '', _App);
+        return false;
+    });
+    // Função para excluir
+    _App.btnExcluir.click(function () {
+        var _this = $(this);
+        _App.excluir(_this, _App);
+        return false;
+    });
+
+
     $("#created, #publish_down").datetimepicker({
         timepicker: false,
         format: 'd-m-Y',
@@ -181,7 +298,27 @@ $(function () {
         }
     });
     $.datetimepicker.setLocale('pt-BR');
+
+    $('.link-ajuda').click(function (event) {
+        event.preventDefault();
+    });
+
     $(_App.carregando).hide();
     $(_App.boxCarregando).hide();
+
+    if ($(".fancybox").length) {
+        var _width = "70%";
+        var _heigth = "70%";
+        if ($(window).outerWidth() < 500) {
+          	 _width = "90%";
+            _heigth = "90%";
+        }
+        $(".fancybox").fancybox({
+            maxWidth: 600,
+            maxHeight: 600,
+            width: _width,
+            height: _heigth
+        });
+    }
 
 })

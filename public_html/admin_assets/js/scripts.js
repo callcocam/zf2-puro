@@ -10,17 +10,17 @@ $(function() {
 
 	//options.treeview.openMenu(options.treeview.menu);
 
-	$(options.uploadPreview.seletor).change(function(event) {
-		options.uploadPreview.selectImg(event);
-	});
-	$(options.uploadPreview.seletorSql).change(function(event) {
-		options.uploadPreview.selectImg(event);
-	});
-   if($("#tabs").length)
-   { 
-       options.tabs.current(options);
+	// $(options.uploadPreview.seletor).change(function(event) {
+	// 	options.uploadPreview.selectImg(event);
+	// });
+	// $(options.uploadPreview.seletorSql).change(function(event) {
+	// 	options.uploadPreview.selectImg(event);
+	// });
+//    if($("#tabs").length)
+//    { 
+//        options.tabs.current(options);
       
-   }
+//    }
    if($(options.uploadPreview.seletorSql).length)
    {
    	  options.uploadPreview.selectSql(options);
@@ -44,42 +44,42 @@ $(function() {
         
     // $(optionsForm.options.boxCarregando).hide();
     // Função para a geração dos arquivos do controller app
-    $(options.generateClass.btn).click(function ()
-    {
-        options.ajaxFunction($(this).attr('href'),'get','json','');
-        return false;
-    });
-     // Função para excluir
-    $(options.btnExcluir).click(function ()
-    {
-    	var _this=$(this);
-    	options.excluir(_this);
-        return false;
-    });
+    // $(options.generateClass.btn).click(function ()
+    // {
+    //     options.ajaxFunction($(this).attr('href'),'get','json','');
+    //     return false;
+    // });
+    //  // Função para excluir
+    // $(options.btnExcluir).click(function ()
+    // {
+    // 	var _this=$(this);
+    // 	options.excluir(_this);
+    //     return false;
+    // });
 
-    if($(".fancybox").length){
+    // if($(".fancybox").length){
     	
- 		var _width="70%";
- 		var _heigth="70%";
- 		if($(window).outerWidth()<500)
- 		{
-          	 _width="90%";
- 			 _heigth="90%";
- 		}
- 		console.clear();
-        console.log(_width);
-         console.log(_heigth);
-    	$(".fancybox").fancybox({
-		maxWidth	: 600,
-		maxHeight	: 600,
-		width		: _width,
-		height		: _heigth
-	});
-    }
-   if($(options.optionsSort.seletor).length)
-	    {
-	    	options.optionsSort.MySortable();
-	    }
+ 	// 	var _width="70%";
+ 	// 	var _heigth="70%";
+ 	// 	if($(window).outerWidth()<500)
+ 	// 	{
+    //       	 _width="90%";
+ 	// 		 _heigth="90%";
+ 	// 	}
+ 	// 	console.clear();
+    //     console.log(_width);
+    //      console.log(_heigth);
+    // 	$(".fancybox").fancybox({
+	// 	maxWidth	: 600,
+	// 	maxHeight	: 600,
+	// 	width		: _width,
+	// 	height		: _heigth
+	// });
+    // }
+//    if($(options.optionsSort.seletor).length)
+// 	    {
+// 	    	options.optionsSort.MySortable();
+// 	    }
 
     // if($("#type").length)
 	//     {
