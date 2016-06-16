@@ -30,12 +30,11 @@ abstract class AbstractController extends AbstractActionController {
     protected $NoRecordExist = null;
     protected $RecordExist = null;
     protected $exclude = "";
-
-    protected $result=null;
-    protected $error="MSG_NOT_INFO_LABEL";
-    protected $codigo=0;
-    protected $classe="trigger_error";
-    protected $acao="save";
+    protected $result = null;
+    protected $error = "MSG_NOT_INFO_LABEL";
+    protected $codigo = 0;
+    protected $classe = "trigger_error";
+    protected $acao = "save";
 
     abstract function __construct();
 
@@ -107,7 +106,7 @@ abstract class AbstractController extends AbstractActionController {
             'data' => $this->data,
             'route' => $this->route,
             'controller' => $this->controller,
-             'action' => 'publica',
+            'action' => 'publica',
             'form' => $this->form));
         $view->setTemplate('/admin/admin/inserir');
         return $view;
@@ -122,9 +121,9 @@ abstract class AbstractController extends AbstractActionController {
         if (!$this->data) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => $this->action));
         }
-           $this->form=$this->getForm();
-           $this->form->setData($this->data->toArray());
-           $view = new ViewModel(array(
+        $this->form = $this->getForm();
+        $this->form->setData($this->data->toArray());
+        $view = new ViewModel(array(
             'form' => $this->form,
             'route' => $this->route,
             'controller' => $this->controller,
@@ -136,67 +135,70 @@ abstract class AbstractController extends AbstractActionController {
 
     public function excluirAction() {
         $param = $this->params()->fromRoute('id', '0');
-         if ($param) {
-            if($this->getTableGateway()->delete($param)):
-             $this->classe='trigger_success';
+        if ($param) {
+            if ($this->getTableGateway()->delete($param)):
+                $this->classe = 'trigger_success';
             endif;
-            $this->result=$this->getTableGateway()->getResult();
-            $this->error= $this->getTableGateway()->getError();
-            }
-        return new JsonModel(array('result' => $this->resutl,'acao'=>$this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+            $this->result = $this->getTableGateway()->getResult();
+            $this->error = $this->getTableGateway()->getError();
+        }
+        return new JsonModel(array('result' => $this->resutl, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
             'msg' => $this->error));
     }
 
-    public function publicaAction()
-    {
+    public function publicaAction() {
         $this->form = $this->getForm();
         if ($this->params()->fromPost()) {
-            $this->data =array_merge_recursive($this->params()->fromPost(),$this->params()->fromFiles());
+            $this->data = array_merge_recursive($this->params()->fromPost(), $this->params()->fromFiles());
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
             $this->getValidation();
             if ($this->form->isValid()) {
                 //Se exitir o campo id valido e uma edição
-                
-                if(isset($this->data['id']) && (int)$this->data['id']):
-                    $result = $this->getTableGateway()->update($model);
-                else:
-                    $result = $this->getTableGateway()->insert($model);
-                    $this->data['id']=$result;
-                endif;
-                if ($result) {
-                    $this->classe='trigger_success';
-                    if (isset($this->data['save_close'])):
-                        $this->error=$this->getTableGateway()->getError();
-                        $this->acao='save_close';
-                    elseif (isset($this->data['save_new'])):
-                        $this->error=$this->getTableGateway()->getError();
-                        $this->acao='save_new';
-                    elseif (isset($this->data['save_copy'])):
-                        $this->data['id']='AUTOMATICO';
-                        $this->result=$this->data;
-                        $this->error=$this->getTableGateway()->getError();
-                        $this->acao='save_copy';
+                $result = null;
+                try {
+                    if (isset($this->data['id']) && (int) $this->data['id']):
+                        $result = $this->getTableGateway()->update($model);
                     else:
-                        $this->result=$this->data;
-                        $this->error=$this->getTableGateway()->getError();
+                        $result = $this->getTableGateway()->insert($model);
+                        $this->data['id'] = $result;
                     endif;
+                    if ($result) {
+                        $this->classe = 'trigger_success';
+                        if (isset($this->data['save_close'])):
+                            $this->error = $this->getTableGateway()->getError();
+                            $this->acao = 'save_close';
+                        elseif (isset($this->data['save_new'])):
+                            $this->error = $this->getTableGateway()->getError();
+                            $this->acao = 'save_new';
+                        elseif (isset($this->data['save_copy'])):
+                            $this->data['id'] = 'AUTOMATICO';
+                            $this->result = $this->data;
+                            $this->error = $this->getTableGateway()->getError();
+                            $this->acao = 'save_copy';
+                        else:
+                            $this->result = $this->data;
+                            $this->error = $this->getTableGateway()->getError();
+                        endif;
+                    }
+                    else {
+                        $this->error = $this->getTableGateway()->getError();
+                    }
+                } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
+                    $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
                 }
-                else {
-                    $this->error=$this->getTableGateway()->getError();
-                  }
             } else {
                 foreach ($this->form->getMessages() as $msg):
-                  $msgs=implode(PHP_EOL, $msg);
+                    $msgs = implode(PHP_EOL, $msg);
                 endforeach;
-                $this->result=null;
-                $this->error=$msgs;
-                $this->acao='save';
+                $this->result = null;
+                $this->error = $msgs;
+                $this->acao = 'save';
             }
-        } 
-        return new JsonModel(array('result' => $this->result,'acao'=>$this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-                'msg' => $this->error,'data'=>$this->data));
+        }
+        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error, 'data' => $this->data));
     }
 
     public function setNoRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
