@@ -178,7 +178,7 @@ class App extends SIGAMessages {
                 if (_AppExcluir.resultAction) {
                     _this.parent().parent().parent('.col-box-list').remove();
                 }
-            }, 3000);
+            }, 1000);
 
         }
     }

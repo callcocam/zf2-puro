@@ -158,6 +158,7 @@ abstract class AbstractController extends AbstractActionController {
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
             $this->getValidation();
+            $this->setConstraints();
             if ($this->form->isValid()) {
                 $result = null;
                 if (isset($this->data['save_copy'])):
@@ -170,27 +171,30 @@ abstract class AbstractController extends AbstractActionController {
                         $result = $this->getTableGateway()->update($model);
                     else:
                         $result = $this->getTableGateway()->insert($model);
-                        $this->data['id'] = $result;
-                        $this->id=$this->getTableGateway()->getLastInsert()->getId();
-                        $this->codigo=$this->getTableGateway()->getLastInsert()->getCodigo();
+                        $this->data['id'] =$this->getTableGateway()->getLastInsert()->getId();
                     endif;
                     if ($result) {
                         $this->classe = 'trigger_success';
                         $this->result = $this->getTableGateway()->getResult();
                         $this->error = $this->getTableGateway()->getError();
+                        $this->id=$this->getTableGateway()->getLastInsert()->getId();
+                        $this->codigo=$this->getTableGateway()->getLastInsert()->getCodigo();
                      }
                     else {
                         $this->error = $this->getTableGateway()->getError();
+                        $this->result = null;
                     }
                 } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
                     $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
-                }
+                    $this->result = null;
+                 }
             } else {
+                $msgs="";
                 foreach ($this->form->getMessages() as $msg):
-                    $msgs = implode(PHP_EOL, $msg);
+                    $msgs.= implode("<p> ", $msg);
                 endforeach;
                 $this->result = null;
-                $this->error = json_encode($this->form->getMessages());
+                $this->error =  $msgs;
                 $this->acao = 'save';
             }
         }
@@ -277,6 +281,38 @@ abstract class AbstractController extends AbstractActionController {
 
             endforeach;
         endif;
+    }
+
+    public function setConstraints() {
+       
+            $table=new \Base\MetaData\Table($this->getAdapter());
+            $table->setColumns($this->getTableGateway()->getTable());
+            $constraints=$table->getConstraints();
+            foreach ($constraints['pk'] as $value) {
+                if($value[1]==="UNIQUE"){
+                     $unique=array_filter(explode("_",$value[0]));
+                     if(isset($unique[4])){
+                           $tabela=$this->getTableGateway()->getTable();
+                           $field= $unique[4];
+                           $id=$this->data['id'];
+                            if (isset($this->data['save']) && (int)$id):
+                               $validator=$this->setNoRecordExists($tabela,$field,array('field' =>'id','value'=>$id));
+                               $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}" , 'noRecordFound');
+                               $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                            else:
+                                $validator=$this->setNoRecordExists($tabela,$field);
+                                $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}" , 'noRecordFound');
+                                $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                            endif;
+                          
+                           $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
+                     }
+                  }
+            }
+
+                   
+           
+  
     }
 
 }

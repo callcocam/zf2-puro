@@ -10,7 +10,7 @@ class SIGAMessages {
          _this.classeResult = classe;
         $(_this.carregando).fadeOut('fast');
         $(_this.target).addClass(classe).html(msg).fadeIn('fast', function () {
-            setTimeout(_this.escondeSiga, 5000);
+            setTimeout(_this.escondeSiga, 10000);
         });
     };
     

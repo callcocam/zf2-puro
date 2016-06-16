@@ -121,7 +121,6 @@ class AbstractForm extends \Zend\Form\Form {
                 'value' => 'BTN_SAVE_COPY_LABEL',
                 'title' => 'BTN_SAVE_COPY_DESC',
                 'class' => 'btn btn-blue submitbutton',
-                'disabled'=>true,
                 'id' => 'save_copy',
             ),
         ));

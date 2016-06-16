@@ -16,6 +16,7 @@ abstract class AbstractFilter extends \Zend\InputFilter\InputFilter {
     protected $StripTags;
     protected $StringTrim;
     protected $serviceLocator;
+    public $data;
 
     /**
      * @return Zend\InputFilter

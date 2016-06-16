@@ -44,6 +44,10 @@ abstract class AbstractTable {
         });
         return $resultSelect;
     }
+    public function getTable()
+    {
+        return $this->tableGateway->getTable();
+    }
 
     /**
      * Consulta registro passnaddo o id como paramentro
@@ -85,7 +89,7 @@ abstract class AbstractTable {
         if ($this->tableGateway->insert($data->toArray())):
             $this->result =1;
             $this->last_insert=$this->find($this->tableGateway->getLastInsertValue());
-            $this->error = "O Registro [ {$data->getTitle()} ] Foi Salvo Com Sucesso!";
+            $this->error = "O REGISTRO [ <b>{$data->getTitle()}</b> ] FOI SALVO COM SUCESSO!";
             return $this->result;
         endif;
         $this->error = "Nao Foi Possivel Finalizar a Operação!";
@@ -104,14 +108,15 @@ abstract class AbstractTable {
         if ($oldData) {
             $this->result = $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
             if($this->result){
-                $this->error = "O Registro [ {$oldData->getTitle()} ] Foi Atualizado Com Sucesso!";
+                $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI ATUALIZADO COM SUCESSO!";
+                $this->last_insert=$this->find($data->getId());
             }
             else{
-                 $this->error = "Nenhuma Alteração Foi Realizada No Registro [ {$oldData->getTitle()} ]!";
+                 $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, NENHUMA ALTERAÇÃO FOI DETECTADA NO REGISTRO [ <b>{$oldData->getTitle()}</b> ]!";
             }
             return $this->result;
         }
-        $this->error = "Nenhum Registro Foi Encontrado!";
+        $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
         $this->result = FALSE;
         return $this->result;
     }
@@ -126,12 +131,12 @@ abstract class AbstractTable {
         if ($oldData) {
             if ($this->tableGateway->delete(array('id' => $id))) {
                 $this->result = TRUE;
-                $this->error = "O Registro [ {$oldData->getTitle()} ] Foi Excluido Com Sucesso!";
+                $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
                 return $this->result;
             }
         }
-        $this->error = "Nenhum Registro Foi Encontrado!";
-        $this->result = FALSE;
+         $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
+         $this->result = FALSE;
     }
 
 //    FUNÇÕES EXTRAS
