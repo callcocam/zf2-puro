@@ -23,39 +23,7 @@ class BsUsersUpdateForm extends AbstractForm {
         parent::__construct($serviceLocator, "BsUsersCreateForm");
         $this->setInputFilter(new BsUsersFilter($serviceLocator));
 
-        //############################################ informações da coluna id ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'id',
-                    'options' => array(
-                        'label' => 'FILD_ID_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'id',
-                        'value' => 'AUTOMATICO',
-                    ),
-                )
-        );
-
-
-        //############################################ informações da coluna codigo ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'codigo',
-                    'options' => array(
-                        'label' => 'FILD_CODIGO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'codigo',
-                        'value' => '{codigo}',
-                    ),
-                )
-        );
-
-
-        //############################################ informações da coluna asset_id ##############################################:
+         //############################################ informações da coluna asset_id ##############################################:
         $this->add(
                 array(
                     'type' => 'hidden',
@@ -66,6 +34,8 @@ class BsUsersUpdateForm extends AbstractForm {
                     'attributes' => array(
                         'id' => 'asset_id',
                         'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -81,7 +51,8 @@ class BsUsersUpdateForm extends AbstractForm {
                     ),
                     'attributes' => array(
                         'id' => 'empresa',
-                       
+                        'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -102,6 +73,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'placeholder' => 'FILD_TITLE_PLACEHOLDER',
                         'data-access' => '3',
                         'readonly' => true,
+                        'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
@@ -270,7 +242,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'placeholder' => 'FILD_IMAGES_USERS_PLACEHOLDER',
                         'data-access' => '3',
                         'readonly' => true,
-                        'data-position' => 'geral',
+                        'data-position' => 'images',
                     ),
                 )
         );
@@ -317,7 +289,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ROLE_ID_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -392,7 +364,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'id' => 'modified_by',
                         'value' => $this->authservice['id'],
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -427,7 +399,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_STATE_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -449,7 +421,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -471,7 +443,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'readonly' => true,
                         'data-access' => '3',
                         'value' => date("d-m-Y"),
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -486,7 +458,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -507,7 +479,7 @@ class BsUsersUpdateForm extends AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_UP_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -528,18 +500,22 @@ class BsUsersUpdateForm extends AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
-        
-          $this->add(array(
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
                     'timeout' => 600
                 )
+            ),
+            'attributes' => array(
+                'data-access' => '3',
+                'data-position' => 'geral',
             )
         ));
     }

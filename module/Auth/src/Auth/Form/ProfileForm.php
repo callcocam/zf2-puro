@@ -20,9 +20,9 @@ class ProfileForm extends AbstractForm {
      */
     public function __construct($serviceLocator) {
         // Configurações iniciais do Form
-        parent::__construct($serviceLocator,"BsUsersCreateForm");
+        parent::__construct($serviceLocator, "BsUsersCreateForm");
         $this->setInputFilter(new RegistrationFilter($serviceLocator));
-        
+
 
         //############################################ informações da coluna id ##############################################:
         $this->add(
@@ -454,7 +454,7 @@ class ProfileForm extends AbstractForm {
                         'id' => 'created',
                         'value' => date("d-m-Y"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -472,7 +472,7 @@ class ProfileForm extends AbstractForm {
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -490,7 +490,7 @@ class ProfileForm extends AbstractForm {
                         'id' => 'publish_up',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -508,17 +508,21 @@ class ProfileForm extends AbstractForm {
                         'id' => 'publish_down',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
-          $this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
                     'timeout' => 600
                 )
+            ),
+            'attributes' => array(
+                'data-access' => '3',
+                'data-position' => 'geral',
             )
         ));
     }

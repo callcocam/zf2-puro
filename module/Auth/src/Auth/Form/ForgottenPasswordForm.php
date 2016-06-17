@@ -7,9 +7,9 @@ use Base\Form\AbstractForm;
 class ForgottenPasswordForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
-        parent::__construct($serviceLocator," ForgottenPassword");
+        parent::__construct($serviceLocator, " ForgottenPassword");
         $this->setInputFilter(new ForgottenPasswordFilter($serviceLocator));
-        
+
 
         $this->add(array(
             'name' => 'email',
@@ -28,17 +28,21 @@ class ForgottenPasswordForm extends AbstractForm {
                 'type' => 'submit',
                 'value' => 'Recuperar',
                 'id' => 'submitbutton',
-                'style'=>'margin-top:5px',
+                'style' => 'margin-top:5px',
                 'class' => 'btn btn-blue fl-right'
             ),
         ));
-          $this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
                     'timeout' => 600
                 )
+            ),
+            'attributes' => array(
+                'data-access' => '3',
+                'data-position' => 'geral',
             )
         ));
     }

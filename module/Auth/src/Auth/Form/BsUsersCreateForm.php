@@ -34,6 +34,8 @@ class BsUsersCreateForm extends AbstractForm {
                     'attributes' => array(
                         'id' => 'asset_id',
                         'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
+                         'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -50,6 +52,8 @@ class BsUsersCreateForm extends AbstractForm {
                     'attributes' => array(
                         'id' => 'empresa',
                         'value' => $this->authservice['empresa'],
+                         'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -341,7 +345,9 @@ class BsUsersCreateForm extends AbstractForm {
                         'id' => 'created_by',
                         'data-access' => '3',
                         'data-position' => 'geral',
-                        'value' => $this->authservice['id']
+                        'value' => $this->authservice['id'],
+                         'data-access' => '3',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -377,7 +383,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'id' => 'modified_by',
                         'value' => $this->authservice['id'],
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -390,7 +396,7 @@ class BsUsersCreateForm extends AbstractForm {
                     'attributes' => array(
                         'id' => 'ordering',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -412,7 +418,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'class' => 'form-control',
                         'placeholder' => 'FILD_STATE_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -434,7 +440,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -456,7 +462,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'readonly' => true,
                         'value' => date("d-m-Y"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -471,7 +477,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -492,7 +498,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_UP_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -513,7 +519,7 @@ class BsUsersCreateForm extends AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );

@@ -7,10 +7,10 @@ use Base\Form\AbstractForm;
 class RegistrationForm extends AbstractForm {
 
     public function __construct($serviceLocator) {
-        $this->wordLen=2;
-        parent::__construct($serviceLocator,"Registration");
+        $this->wordLen = 2;
+        parent::__construct($serviceLocator, "Registration");
         $this->setInputFilter(new RegistrationFilter($serviceLocator));
-             
+
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
@@ -465,18 +465,19 @@ class RegistrationForm extends AbstractForm {
             'attributes' => ['class' => 'form-control',
                 'placeholder' => 'Digite O Texto Acima',]
         ]);
-        
-          $this->add(array(
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
                     'timeout' => 600
                 )
+            ), 'attributes' => array(
+                'data-access' => '3',
+                'data-position' => 'geral',
             )
         ));
     }
-    
-    
 
 }
