@@ -1,0 +1,123 @@
+<?php if ($this->pageCount): ?>
+    <div>
+        <ul class="pagination">
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <li>
+                    <a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->previous)) ?>">
+                        <<
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="disabled">
+                    <a href="#">
+                        <<
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <li>
+                        <a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $page)); ?>">
+                            <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="active">
+                        <a href="#"><?php echo $page; ?></a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <li>
+                    <a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->next)); ?>">
+                        >>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="disabled">
+                    <a href="#">
+                        >>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+<?php if ($this->pageCount): ?>
+    <select id="paginationControl" size="1">
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php $selected = ($page == $this->current) ? ' selected="selected"' : ''; ?>
+            <option value="<?= $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $page)); ?>"<?= $selected ?>>
+                <?= $page; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+<?php endif; ?>
+
+<script type="text/javascript"
+        src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js">
+</script>
+<script type="text/javascript">
+    $('paginationControl').observe('change', function () {
+        window.location = this.options[this.selectedIndex].value;
+    })
+</script>
+
+
+<?php if ($this->pageCount): ?>
+    <div class="paginationControl">
+        <ul class="pagination">
+            <li>
+                <a><?= $this->firstItemNumber; ?> - <?= $this->lastItemNumber; ?>
+                    of <?= $this->totalItemCount; ?></a>
+            </li> 
+
+            <!-- First page link -->
+            <?php if (isset($this->previous)): ?>
+                <li>
+                    <a href="<?= $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->first)); ?>">
+                        First
+                    </a> 
+                </li>
+            <?php else: ?>
+                <li>     
+                    <span class="disabled">First</span>
+                </li> 
+            <?php endif; ?>
+
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <li>    
+                    <a href="<?= $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->previous)); ?>">
+                        &lt; Previous
+                    </a> </li> 
+            <?php else: ?>
+                <li>  <span class="disabled">&lt; Previous</span> | </li> 
+            <?php endif; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <li> <a href="<?= $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->next)); ?>">
+                        Next &gt;
+                    </a> </li> 
+            <?php else: ?>
+                <li><span class="disabled">Next &gt;</span> </li> 
+            <?php endif; ?>
+
+            <!-- Last page link -->
+            <?php if (isset($this->next)): ?>
+                <li><a href="<?= $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id, 'page' => $this->last)); ?>">
+                        Last
+                    </a> </li> 
+            <?php else: ?>
+                <li><span class="disabled">Last</span>  </li> 
+                <?php endif; ?>
+
+        </ul>
+    </div>
+<?php endif; ?>

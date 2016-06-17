@@ -3,7 +3,9 @@
 namespace Acl\Controller;
 
 use Base\Controller\AbstractController;
-
+use Zend\I18n\Filter\Alnum as AlnumFilter;
+use Zend\ProgressBar\Adapter;
+use Zend\ProgressBar\Upload;
 /**
  * Acl Controller
  */
@@ -20,6 +22,10 @@ class AclController extends AbstractController {
     }
 
     public function testeAction() {
+
+       $id = $this->params()->fromQuery('id', null);
+    $progress = new Upload\SessionProgress();
+    return new \Zend\View\Model\JsonModel($progress->getProgress($id));
 //        $this->constraints = array("5" => array('_zf_bs_privileges_role', 'UNIQUE'), "6" => array('_zf_bs_privileges_resources', 'UNIQUE'));
 //        $t = $this->getTableGateway()->select(array("resource_id" => 'Acl\Controller\Acl', "title" => 'index'));
 //
@@ -33,14 +39,12 @@ class AclController extends AbstractController {
 //        }
 //
 //        var_dump($ar);
-
 //        var_dump(\Acl\Model\Roles::$ROLES);
 //        $role= (string)$this->params()->fromRoute('id', 1);
 //        $acl = $this->getServiceLocator()->get('Acl\Permissions\Acl');;
 //        $md = 'Admin\Controller\Admin';
 //        $action = 'editar';
 //        $acesso = $acl->isAllowed($role, $md, $action) ? "Tem" : "Não Tem";
-
 //        die(sprintf("O %s %s Permissão de Acesso ao Modulo %s Na Action %s", \Acl\Model\Roles::$ROLES[$role], $acesso, $md, $action));
         //Check that the email address exists in the database
         $validator = new \Zend\Validator\Db\NoRecordExists(array(

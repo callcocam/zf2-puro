@@ -33,7 +33,10 @@ extract($user);
     </ul>
     <div class="tab-content">
         <div id="principal" class="tab-pane ui-state-active">
+            
             <?php
+            echo $this->formFileSessionProgress();
+// Result <input type="hidden" id="progress_key" name="UPLOAD_IDENTIFIER" value="12345abcde">
             $button = array(
                 'EDITAR' => array('type' => 'a', 'label' => 'EDITAR', 'icone' => 'ion ion-compose', 'action' => 'editar', 'class' => 'green', 'page' => $this->page, 'id' => 'editar'),
                 'EXCLUIR' => array('type' => 'a', 'label' => 'EXCLUIR', 'icone' => 'ion ion-ios-trash-outline', 'action' => 'excluir', 'class' => 'blue', 'page' => $this->page, 'id' => 'delete'),
@@ -67,21 +70,21 @@ extract($user);
             endif;
             ?>
             <?php
-//            echo $this->paginationControl(
-//                    // the paginator object
-//                    $this->paginator,
-//                    // the scrolling style
-//                    'sliding',
-//                    // the partial to use to render the control
-//                    'partial/paginator.phtml',
-//                    // the route to link to when a user clicks a control link
-//                    array(
-//                'route' => $this->route,
-//                'controller' => $this->controller,
-//                'action' => 'index',
-//                'id' => "0"
-//                    )
-//            );
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->data,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'route' => $this->route,
+                'controller' => $this->controller,
+                'action' => 'index',
+                'id' => "0"
+                    )
+            );
             ?>
         </div><!-- /.tab-pane -->
           <div class="clear"></div>

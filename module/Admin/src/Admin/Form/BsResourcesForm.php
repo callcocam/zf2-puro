@@ -26,6 +26,8 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                     'attributes' => array(
                         'id' => 'asset_id',
                         'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
+                         'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -42,6 +44,8 @@ class BsResourcesForm extends \Base\Form\AbstractForm {
                     'attributes' => array(
                         'id' => 'empresa',
                         'value' => $this->authservice['empresa'],
+                         'data-access' => '3',
+                        'data-position' => 'geral',
                     ),
                 )
         );

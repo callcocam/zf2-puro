@@ -13,6 +13,7 @@ namespace Base\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel,
     Zend\View\Model\JsonModel;
+use Zend\Paginator\Paginator;
 
 abstract class AbstractController extends AbstractActionController {
 
@@ -34,7 +35,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $result = null;
     protected $error = "MSG_NOT_INFO_LABEL";
     protected $codigo = 0;
-    protected $id=0;
+    protected $id = 0;
     protected $classe = "trigger_error";
     protected $acao = "save";
 
@@ -90,21 +91,29 @@ abstract class AbstractController extends AbstractActionController {
 
     public function indexAction() {
 
+        $view = new ViewModel();
         if (!empty($this->table)):
+            $page = $this->params()->fromRoute('page', 1);
             $this->data = $this->getTableGateway()->findAll();
+            
+            // set the current page to what has been passed in query string, or to 1 if none set
+            $this->data->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+            // set the number of items per page to 10
+            $this->data->setItemCountPerPage(2);
+            $this->data->setCurrentPageNumber($page);
+           
         endif;
-        $view = new ViewModel(array(
-            'data' => $this->data,
-            'route' => $this->route,
-            'controller' => $this->controller,
-            'user' => $this->user));
+        $view->setVariable('data', $this->data);
+        $view->setVariable('route', $this->route);
+        $view->setVariable('controller', $this->controller);
+        $view->setVariable('user', $this->user);
         $view->setTemplate($this->template);
         return $view;
     }
 
     public function inserirAction() {
         $this->form = $this->getForm();
-        $this->form->get('save_copy')->setAttributes(array('disabled'=>'disabled'));
+        $this->form->get('save_copy')->setAttributes(array('disabled' => 'disabled'));
         $view = new ViewModel(array(
             'data' => $this->data,
             'route' => $this->route,
@@ -153,50 +162,45 @@ abstract class AbstractController extends AbstractActionController {
         $this->form = $this->getForm();
         if ($this->params()->fromPost()) {
             $this->data = array_merge_recursive($this->params()->fromPost(), $this->params()->fromFiles());
-            $this->data['ordering'] = '0';
-            $this->data['empresa'] = $this->user['empresa'];
             $model = $this->getModel();
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
-            $this->getValidation();
             $this->setConstraints();
             if ($this->form->isValid()) {
                 $result = null;
                 if (isset($this->data['save_copy'])):
-                $this->data['id'] = 'AUTOMATICO';
-                $model->setId(null);
+                    $this->data['id'] = 'AUTOMATICO';
+                    $model->setId(null);
                 endif;
                 try {
-                     //Se exitir o campo id valido e uma edição
+                    //Se exitir o campo id valido e uma edição
                     if (isset($this->data['id']) && (int) $this->data['id']):
                         $result = $this->getTableGateway()->update($model);
                     else:
                         $result = $this->getTableGateway()->insert($model);
-                       
+
                     endif;
                     if ($result) {
                         $this->classe = 'trigger_success';
                         $this->result = $this->getTableGateway()->getResult();
                         $this->error = $this->getTableGateway()->getError();
-                        $this->id=$this->getTableGateway()->getLastInsert()->getId();
-                        $this->codigo=$this->getTableGateway()->getLastInsert()->getCodigo();
-                        $this->data['id'] =$this->getTableGateway()->getLastInsert()->getId();
-                     }
-                    else {
+                        $this->id = $this->getTableGateway()->getLastInsert()->getId();
+                        $this->codigo = $this->getTableGateway()->getLastInsert()->getCodigo();
+                    } else {
                         $this->error = $this->getTableGateway()->getError();
                         $this->result = null;
                     }
                 } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
                     $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
                     $this->result = null;
-                 }
+                }
             } else {
-                $msgs="";
+                $msgs = "";
                 foreach ($this->form->getMessages() as $msg):
                     $msgs.= implode("<p> ", $msg);
                 endforeach;
                 $this->result = null;
-                $this->error =  $msgs;
+                $this->error = $msgs;
                 $this->acao = 'save';
             }
         }
@@ -234,92 +238,37 @@ abstract class AbstractController extends AbstractActionController {
         return $validator;
     }
 
-    public function getValidation() {
-        if ($this->NoRecordExist):
-            foreach ($this->NoRecordExist as $key => $value):
-
-                if (isset($this->exclude[$key])):
-                    if (is_array($this->exclude[$key])) {
-                        $condicao = "";
-                        foreach ($this->exclude[$key] as $ek => $ev):
-                            if (array_key_exists($ek, $this->data)):
-                                $condicao.="{$ek}{$ev}'{$this->data[$ek]}'";
-                            else:
-                                $condicao.=" {$ek} ";
-                            endif;
-
-                        endforeach;
-                        $value->setOptions(array('exclude' => $condicao));
-                    }
-                    else {
-                        $value->setOptions(array('exclude' => "{$this->exclude[$key]}='{$this->data[$this->exclude[$key]]}'"));
-                    }
-
-                endif;
-                $this->form->getInputFilter()->get($key)->getValidatorChain()->attach($value);
-            endforeach;
-        endif;
-        if ($this->RecordExist):
-            foreach ($this->RecordExist as $key => $value):
-                if (isset($this->exclude[$key])):
-                    if (is_array($this->exclude[$key])) {
-                        $condicao = "";
-                        foreach ($this->exclude[$key] as $ek => $ev):
-                            if (array_key_exists($ek, $this->data)):
-                                $condicao.="{$ek}{$ev}'{$this->data[$ek]}'";
-                            else:
-                                $condicao.=" {$ek} ";
-                            endif;
-
-                        endforeach;
-                        $value->setOptions(array('exclude' => $condicao));
-                    }
-                    else {
-                        $value->setOptions(array('exclude' => "{$this->exclude[$key]}='{$this->data[$this->exclude[$key]]}'"));
-                    }
-
-                endif;
-                $this->form->getInputFilter()->get($key)->getValidatorChain()->attach($value);
-
-            endforeach;
-        endif;
-    }
-
     public function setConstraints() {
-       
-            $table=new \Base\MetaData\Table($this->getAdapter());
-            $table->setColumns($this->getTableGateway()->getTable());
-            $constraints=$table->getConstraints('pk');
-            if($this->constraints):
-            foreach ($this->constraints as $key => $value) {
-                array_push($constraints,$value);
-             }
-            endif;
-            foreach ($constraints as $value) {
-                if($value[1]==="UNIQUE"){
-                     $unique=array_filter(explode("_",$value[0]));
-                     if(isset($unique[4])){
-                           $tabela=$this->getTableGateway()->getTable();
-                           $field= $unique[4];
-                           $id=$this->data['id'];
-                            if (isset($this->data['save']) && (int)$id):
-                               $validator=$this->setNoRecordExists($tabela,$field,array('field' =>'id','value'=>$id));
-                               $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}" , 'noRecordFound');
-                               $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
-                            else:
-                                $validator=$this->setNoRecordExists($tabela,$field);
-                                $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}" , 'noRecordFound');
-                                $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
-                            endif;
-                          
-                           $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
-                     }
-                  }
-            }
 
-                   
-           
-  
+        $table = new \Base\MetaData\Table($this->getAdapter());
+        $table->setColumns($this->getTableGateway()->getTable());
+        $constraints = $table->getConstraints('pk');
+        if ($this->constraints):
+            foreach ($this->constraints as $key => $value) {
+                array_push($constraints, $value);
+            }
+        endif;
+        foreach ($constraints as $value) {
+            if ($value[1] === "UNIQUE") {
+                $unique = array_filter(explode("_", $value[0]));
+                if (isset($unique[4])) {
+                    $tabela = $this->getTableGateway()->getTable();
+                    $field = $unique[4];
+                    $id = $this->data['id'];
+                    if (isset($this->data['save']) && (int) $id):
+                        $validator = $this->setNoRecordExists($tabela, $field, array('field' => 'id', 'value' => $id));
+                        $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
+                        $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                    else:
+                        $validator = $this->setNoRecordExists($tabela, $field);
+                        $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
+                        $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                    endif;
+
+                    $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
+                }
+            }
+        }
     }
 
 }

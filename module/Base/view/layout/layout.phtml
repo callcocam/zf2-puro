@@ -103,6 +103,7 @@ extract($usuario);
         <!-- Scripts -->
         <?php
         echo $this->headScript()
+                ->prependFile($this->basePath('/admin_assets/js/geral/upload.js'))
                 ->prependFile($this->basePath('/admin_assets/js/Manager.js'))
                 ->prependFile($this->basePath('/admin_assets/js/App.js'))
                 ->prependFile($this->basePath('/admin_assets/js/Dlls.js'))

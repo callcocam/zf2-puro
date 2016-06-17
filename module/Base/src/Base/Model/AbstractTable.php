@@ -31,25 +31,40 @@ abstract class AbstractTable {
      * Busca todos os regstros do banco sem nenhuma restrição
      * @return type object table bd
      */
-    public function findALL() {
+    public function findALL($paginated = true) {
         $table = $this->tableGateway->getTable();
+        if ($paginated) {
+            $select = new Select($table);
+            if ($table != 'bs_users'):
+                $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
+            endif;
+            $select->order("{$table}.id DESC");
+            // create a new pagination adapter object
+            $paginatorAdapter = new \Zend\Paginator\Adapter\DbSelect(
+                    // our configured select object
+                    $select,
+                    // the adapter to run it against
+                    $this->tableGateway->getAdapter(),
+                    // the result set to hydrate
+                    $this->tableGateway->getResultSetPrototype()
+            );
+            $paginator = new \Zend\Paginator\Paginator($paginatorAdapter);
+            return $paginator;
+        }
         $resultSelect = $this->tableGateway->select(function(Select $select) use ($table) {
-            $select
-                    ->limit($this->limit)
-                    ->offset($this->offset)
-                    ->order("{$table}.id DESC");
+            $select->order("{$table}.id DESC");
             if ($table != 'bs_users'):
                 $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
             endif;
         });
         return $resultSelect;
     }
+
     /**
      * pega o nome da tabela
      * @return type
      */
-    public function getTable()
-    {
+    public function getTable() {
         return $this->tableGateway->getTable();
     }
 
@@ -91,8 +106,8 @@ abstract class AbstractTable {
     public function insert(AbstractModel $data) {
         $data->setCodigo($this->getMax('codigo'));
         if ($this->tableGateway->insert($data->toArray())):
-            $this->result =1;
-            $this->last_insert=$this->find($this->tableGateway->getLastInsertValue());
+            $this->result = 1;
+            $this->last_insert = $this->find($this->tableGateway->getLastInsertValue());
             $this->error = "O REGISTRO [ <b>{$data->getTitle()}</b> ] FOI SALVO COM SUCESSO!";
             return $this->result;
         endif;
@@ -111,12 +126,11 @@ abstract class AbstractTable {
         $oldData = $this->find($data->getId());
         if ($oldData) {
             $this->result = $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
-            if($this->result){
+            if ($this->result) {
                 $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI ATUALIZADO COM SUCESSO!";
-                $this->last_insert=$this->find($data->getId());
-            }
-            else{
-                 $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, NENHUMA ALTERAÇÃO FOI DETECTADA NO REGISTRO [ <b>{$oldData->getTitle()}</b> ]!";
+                $this->last_insert = $this->find($data->getId());
+            } else {
+                $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, NENHUMA ALTERAÇÃO FOI DETECTADA NO REGISTRO [ <b>{$oldData->getTitle()}</b> ]!";
             }
             return $this->result;
         }
@@ -139,8 +153,8 @@ abstract class AbstractTable {
                 return $this->result;
             }
         }
-         $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
-         $this->result = FALSE;
+        $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
+        $this->result = FALSE;
     }
 
 //    FUNÇÕES EXTRAS
@@ -164,8 +178,7 @@ abstract class AbstractTable {
         return $this->result;
     }
 
-    public function getLastInsert()
-    {
+    public function getLastInsert() {
         return $this->last_insert;
     }
 
