@@ -3,7 +3,7 @@
 namespace Auth\Controller;
 
 use Zend\View\Model\ViewModel;
-use Auth\Form\ForgottenPasswordFilter;
+
 
 class RegistrationController extends AbstractController {
 

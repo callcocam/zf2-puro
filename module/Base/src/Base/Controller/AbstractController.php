@@ -27,6 +27,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $controller = "admin";
     protected $action = "index";
     protected $template = "/admin/admin/index";
+    protected $constraints;
     protected $NoRecordExist = null;
     protected $RecordExist = null;
     protected $exclude = "";
@@ -171,7 +172,7 @@ abstract class AbstractController extends AbstractActionController {
                         $result = $this->getTableGateway()->update($model);
                     else:
                         $result = $this->getTableGateway()->insert($model);
-                        $this->data['id'] =$this->getTableGateway()->getLastInsert()->getId();
+                       
                     endif;
                     if ($result) {
                         $this->classe = 'trigger_success';
@@ -179,6 +180,7 @@ abstract class AbstractController extends AbstractActionController {
                         $this->error = $this->getTableGateway()->getError();
                         $this->id=$this->getTableGateway()->getLastInsert()->getId();
                         $this->codigo=$this->getTableGateway()->getLastInsert()->getCodigo();
+                        $this->data['id'] =$this->getTableGateway()->getLastInsert()->getId();
                      }
                     else {
                         $this->error = $this->getTableGateway()->getError();
@@ -287,8 +289,13 @@ abstract class AbstractController extends AbstractActionController {
        
             $table=new \Base\MetaData\Table($this->getAdapter());
             $table->setColumns($this->getTableGateway()->getTable());
-            $constraints=$table->getConstraints();
-            foreach ($constraints['pk'] as $value) {
+            $constraints=$table->getConstraints('pk');
+            if($this->constraints):
+            foreach ($this->constraints as $key => $value) {
+                array_push($constraints,$value);
+             }
+            endif;
+            foreach ($constraints as $value) {
                 if($value[1]==="UNIQUE"){
                      $unique=array_filter(explode("_",$value[0]));
                      if(isset($unique[4])){

@@ -10,40 +10,10 @@ namespace Acl\Form;
 class BsPrivilegesForm extends \Base\Form\AbstractForm {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator,'BsPrivilegesForm', $options);
+        parent::__construct($serviceLocator, 'BsPrivilegesForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new BsPrivilegesFilter($serviceLocator));
-        
-        //############################################ informações da coluna id ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'id',
-                    'options' => array(
-                        'label' => 'FILD_ID_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'id',
-                        'value' => 'AUTOMATICO',
-                    ),
-                )
-        );
 
-
-        //############################################ informações da coluna codigo ##############################################:
-        $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'codigo',
-                    'options' => array(
-                        'label' => 'FILD_CODIGO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'codigo',
-                        'value' => '{codigo}',
-                    ),
-                )
-        );
 
 
         //############################################ informações da coluna asset_id ##############################################:
@@ -92,12 +62,12 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_TITLE_PLACEHOLDER',
                         'data-access' => '3',
-                         'data-position' => 'geral',
+                        'data-position' => 'geral',
                     ),
                 )
         );
-        
-          //############################################ informações da coluna role_id ##############################################:
+
+        //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
                     'type' => 'select',
@@ -113,12 +83,12 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ROLE_ID_PLACEHOLDER',
                         'data-access' => '3',
-                        'value'=>$this->authservice['role_id'],
+                        'value' => $this->authservice['role_id'],
                         'data-position' => 'geral',
                     ),
                 )
         );
-        
+
         //############################################ informações da coluna resources_id ##############################################:
         $this->add(
                 array(
@@ -139,8 +109,8 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                     ),
                 )
         );
-        
-      
+
+
 
 
         //put your code here
@@ -174,7 +144,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                     'attributes' => array(
                         'id' => 'created_by',
                         'data-access' => '3',
-                        'value'=>$this->authservice['id'],
+                        'value' => $this->authservice['id'],
                         'data-position' => 'geral',
                     ),
                 )
@@ -195,7 +165,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ALIAS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -209,9 +179,9 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                     ),
                     'attributes' => array(
                         'id' => 'modified_by',
-                        'value'=>$this->authservice['id'],
+                        'value' => $this->authservice['id'],
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -224,7 +194,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                     'attributes' => array(
                         'id' => 'ordering',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -246,7 +216,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_STATE_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -268,7 +238,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'controle',
                     ),
                 )
         );
@@ -290,7 +260,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'readonly' => true,
                         'data-access' => '3',
                         'value' => date("d-m-Y"),
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -305,7 +275,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'id' => 'modified',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -326,7 +296,7 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_UP_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
@@ -347,21 +317,24 @@ class BsPrivilegesForm extends \Base\Form\AbstractForm {
                         'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
                         'value' => date("d-m-Y H:i:s"),
                         'data-access' => '3',
-                        'data-position' => 'geral',
+                        'data-position' => 'datas',
                     ),
                 )
         );
-          $this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'security',
             'options' => array(
                 'csrf_options' => array(
-                    'timeout' => 600
+                    'timeout' => 6000
                 )
+            ),
+            'attributes' => array(
+                'id' => 'security',
+                'data-access' => '5',
+                'data-position' => 'geral',
             )
         ));
-
-       
     }
 
 }

@@ -33,8 +33,11 @@ class Table {
         return $this->columns;
     }
 
-    public function getConstraints() {
+    public function getConstraints($key="") {
+        if(empty($key)):
         return $this->constraints;
+        endif;
+        return $this->constraints[$key];
     }
 
     public function getTablenames() {

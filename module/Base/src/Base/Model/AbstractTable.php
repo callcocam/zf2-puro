@@ -44,6 +44,10 @@ abstract class AbstractTable {
         });
         return $resultSelect;
     }
+    /**
+     * pega o nome da tabela
+     * @return type
+     */
     public function getTable()
     {
         return $this->tableGateway->getTable();
