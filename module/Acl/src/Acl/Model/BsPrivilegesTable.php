@@ -22,7 +22,7 @@ class BsPrivilegesTable extends AbstractTable {
             'adapter' => $this->tableGateway->getAdapter(),
             'exclude' => "title='{$data->getTitle()}'"
         ));
-        if (!$validator->isValid('Acl\Controller\Acl')) {
+        if (!$validator->isValid($data->getResourceId())) {
             $this->result = NULL;
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, EXISTE UMA PERMISSÃO CADASTRADA NESSA CONDIÇÂO!!";
             return null;
@@ -39,7 +39,7 @@ class BsPrivilegesTable extends AbstractTable {
             'adapter' => $this->tableGateway->getAdapter(),
             'exclude' => "title='{$data->getTitle()}' AND id<>{$data->getId()}"
         ));
-        if (!$validator->isValid('Acl\Controller\Acl')) {
+        if (!$validator->isValid($data->getResourceId())) {
             $this->result = NULL;
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, EXISTE UMA PERMISSÃO CADASTRADA NESSA CONDIÇÂO!!";
             return null;
