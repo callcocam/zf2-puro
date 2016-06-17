@@ -93,6 +93,17 @@ return array(// ToDO make it dynamic - comes from the DB
                         'icone' => 'fa fa-angle-double-right',
                         'title' => '',
                     ),
+                    array(
+                        'label' => 'Upload',
+                        'route' => 'upload/default',
+                        'controller' => 'upload',
+                        'resource' => 'Upload\Controller\Upload',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'fa fa-angle-double-right',
+                        'title' => '',
+                    ),
+                  
                 )
             ),
             array(

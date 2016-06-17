@@ -21,7 +21,19 @@ class Acl extends ZendAcl {
      * @return void
      */
     public function __construct($resourcesModel, $privileges) {
-        $resources = $resourcesModel->getResources();
+        $resources=[];
+        $invokables = $resourcesModel->getResources('invokables');
+        $factories = $resourcesModel->getResources('factories');
+        if($invokables):
+            foreach ($invokables as $key => $value) {
+                $resources[$key]=$value;
+            }
+        endif;
+          if($factories):
+            foreach ($factories as $key => $value) {
+                $resources[$key]=$value;
+            }
+        endif;
         $roles = \Acl\Model\Roles::$ROLES;
         $this->is_admin = \Acl\Model\Roles::$IS_ADMIM;
         $this->parent = \Acl\Model\Roles::$PARENT;

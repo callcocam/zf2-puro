@@ -18,6 +18,9 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
      * @var FilesOptions
      */
     protected $options;
+    protected $messages;
+    protected $data;
+    protected $result;
 
     /**
      * @var InputFilter
@@ -25,10 +28,10 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     protected $inputFilter;
 
     public function __construct(FilesOptions $options, InputFilter $inputFilter = null) {
-       
+
         $this->options = $options;
         $this->inputFilter = $inputFilter;
-      
+        $this->result=FALSE;
     }
 
     /**
@@ -64,23 +67,67 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     }
 
     public function persistFiles(array $files) {
+        
         foreach ($files as $file) {
             $filter = clone $this->getInputFilter();
             $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
             try {
                 if (!$filter->isValid()) {
+                    $this->setMessages($filter->getMessages());
                     return self::CODE_ERROR;
                 }
-                $data = $filter->getValues();
+                $this->setData($filter->getValues());
             } catch (InvalidArgumentException $e) {
+                $this->setMessages($e->getMessage());
                 return self::CODE_ERROR;
             }
         }
+        $this->result=TRUE;
+        return self::CODE_SUCCESS;
+    }
+
+    public function persistFile(array $file) {
+
+        $filter = clone $this->getInputFilter();
+        $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
+        try {
+            if (!$filter->isValid()) {
+                $this->setMessages($filter->getMessages());
+                return self::CODE_ERROR;
+            }
+            $this->setData($filter->getValues());
+        } catch (InvalidArgumentException $e) {
+            $this->setMessages($e->getMessage());
+            return self::CODE_ERROR;
+        }
+        $this->result=TRUE;
         return self::CODE_SUCCESS;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
         $this->inputFilter = $inputFilter;
+        return $this;
+    }
+
+    public function getData() {
+        return $this->data;
+    }
+
+    public function setData($data) {
+        $this->data = $data;
+        return $this;
+    }
+
+    public function getResult() {
+        return $this->result;
+    }
+
+    public function getMessages() {
+        return $this->messages;
+    }
+
+    public function setMessages($mgs) {
+        $this->messages = $mgs;
         return $this;
     }
 

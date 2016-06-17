@@ -31,10 +31,27 @@ class UploadController extends AbstractActionController {
         return $model;
     }
 
-    public function uploadAction() {
+    public function fooAction() {
+        $model = new ViewModel([
+            'files' => $this->filesService->getFiles()
+        ]);
+        return $model;
+    }
+
+    public function uploadsAction() {
         $files = $this->params()->fromFiles('files');
         $code = $this->filesService->persistFiles($files);
-        return new JsonModel([
+        return new JsonModel(['result' => $files, 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
+            'msg' => $this->filesService->getMessages(), 'data' => $files,
+            'code' => $code
+        ]);
+    }
+
+    public function uploadAction() {
+        $file = $this->params()->fromFiles('files');
+        $code = $this->filesService->persistFile($file);
+        return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
+            'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),
             'code' => $code
         ]);
     }

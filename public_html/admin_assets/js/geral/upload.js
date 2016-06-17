@@ -55,6 +55,11 @@ var acelaya = {
         }).done(function (resp) {
             if (resp.code === 'success') {
                 acelaya.refreshFilesList();
+                 $form.after(
+                    '<div class="alert trigger trigger_success" style="margin-top: 20px">' +
+                         '<div>Images enviadas com sucesso</div>' +
+                    '</div>'
+                )
             } else {
                 $form.after(
                     '<div class="alert trigger trigger_error" style="margin-top: 20px">' +
