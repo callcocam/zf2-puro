@@ -1,0 +1,107 @@
+class Uploads extends SIGAMessages {
+
+    constructor() {
+        super();
+        this.formUpload = $("#uploadFiles");
+        this.alert = '.container .alert';
+        this.filesList = $('#files');
+    }
+
+    initFileUpload(_Upload) {
+
+        if (_Upload.formUpload.size() === 0) {
+            return;
+        }
+
+        _Upload.formUpload.submit(function (e) {
+            e.preventDefault();
+            $(_Upload.alert).remove();
+
+            _Upload.uploadFiles(_Upload);
+
+        });
+    }
+
+    uploadFiles(_Upload) {
+
+        var action = _Upload.formUpload.attr('action');
+        var method = _Upload.formUpload.attr('method');
+        $.ajax({
+            url: action,
+            type: method,
+            data: new FormData(_Upload.formUpload[0]),
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function () {
+                // This will make the ajax request to use a custom XHR object which will handle the progress
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    var progressBar = _Upload.initProgressBar(_Upload);
+                    // Add progress event handler
+                    myXhr.upload.addEventListener('progress', function (e) {
+                        _Upload.handleUploadProgress(e, progressBar);
+                    }, false);
+                    myXhr.upload.addEventListener('load', function () {
+                        // Firefox does not trigger the 'progress' event when upload is 100%.
+                        // This forces progress to end when upload is successful
+                        progressBar.find('.progress-bar').css({ width: '100%' });
+                    }, false);
+                }
+                return myXhr;
+            }
+        }).done(function (resp) {
+            if (resp.code === 'success') {
+                _Upload.rercaregaFilesList(_Upload);
+                _Upload.formUpload.after(
+                    '<div class="alert trigger trigger_success" style="margin-top: 20px">' +
+                    '<div>'+resp.msg+'</div>' +
+                    '</div>'
+                )
+            } else {
+               _Upload.formUpload.after(
+                    '<div class="alert trigger trigger_error" style="margin-top: 20px">' +
+                    '<div>'+resp.msg+'</div>' +
+                    '</div>'
+                )
+            }
+
+        });
+    }
+
+   
+    handleUploadProgress(e, progressBar) {
+        if (!e.lengthComputable) {
+            return;
+        }
+        var percent = e.total > 0 ? e.loaded * 100 / e.total : 100;
+        progressBar.find('.progress-bar').css({ width: percent + '%' });
+        progressBar.find('.progress-bar').text(parseInt(percent) + '%');
+    }
+
+  
+    initProgressBar(_Upload) {
+        var _fieldset = _Upload.formUpload.closest('fieldset'),
+            progressBar =
+                '<div class="progress">' +
+                '<div class="progress-bar progress-bar-striped active" role="progressbar">0%</div>' +
+                '</div>';
+        _fieldset.find('.progress').remove();
+        _fieldset.append(progressBar);
+
+        return _fieldset.find('.progress');
+    }
+    rercaregaFilesList(_Upload) {
+        var url = _Upload.filesList.data('contentUrl');
+        _Upload.filesList.load(url);
+    }
+
+}
+
+$(function () {
+    _Up = new Uploads();
+     _Up.uploadFiles= $("#uploadFiles");
+    _Up.initFileUpload(_Up);
+    _Up.uploadFiles= $("#uploadFile");
+    _Up.initFileUpload(_Up);
+})

@@ -27,9 +27,7 @@ class Module {
         return array(
             'factories' => array(
                 'Upload\Files\FilesOptions' => function ($sm) {
-                    $config = $sm->get('Config');
-                    
-                    return new \Upload\Files\FilesOptions(isset($config['files']) ? $config['files'] : [],$sm->get('request')->getServer('DOCUMENT_ROOT'));
+                   return new \Upload\Files\FilesOptions($sm);
                 },
                     'Upload\Files\FilesService' => function ($sm) {
                     $options = $sm->get('Upload\Files\FilesOptions');

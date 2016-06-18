@@ -82,6 +82,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
                 return self::CODE_ERROR;
             }
         }
+        $this->setMessages("ARQUIVOS ENVIADO COM SUCESSO!");
         $this->result=TRUE;
         return self::CODE_SUCCESS;
     }
@@ -100,6 +101,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
             $this->setMessages($e->getMessage());
             return self::CODE_ERROR;
         }
+        $this->setMessages("ARQUIVO ENVIADO COM SUCESSO!");
         $this->result=TRUE;
         return self::CODE_SUCCESS;
     }

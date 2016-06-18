@@ -28,18 +28,25 @@ class FilesOptions extends AbstractOptions {
      */
     protected $basePath = '';
     protected $ds = DIRECTORY_SEPARATOR;
+    protected $mimetype;
 
     /**
      * @var string
      */
     protected $maxSize = '1536MB';
 
-    public function __construct(array $options = [], $basePath = "",$type='images') {
-
-        $this->CheckFolder("{$basePath}{$this->ds}dist{$this->ds}{$type}");
+    public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $sm) {
+       
+        $config = $sm->get('Config');
+        $serviceMimeTypes = new MimeTypes($sm->get('servicemanager'));
+        $this->setMimetype($serviceMimeTypes->getMimeTypeImage('ext-image-min'));
+        $options = isset($config['files']) ? $config['files'] : [];
+        $type = 'images';
+        $this->CheckFolder("{$sm->get('request')->getServer('DOCUMENT_ROOT')}{$this->ds}dist{$this->ds}{$type}");
         $options['base_path'] = $this->basePath;
-        
+
         parent::__construct($options);
+       
     }
 
     /**
@@ -68,7 +75,16 @@ class FilesOptions extends AbstractOptions {
     public function getMaxSize() {
         return $this->maxSize;
     }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getMimetype() {
+        return $this->mimetype;
+    }
 
+    
     /**
      * @param string $maxSize
      * @return $this
@@ -77,7 +93,18 @@ class FilesOptions extends AbstractOptions {
         $this->maxSize = $maxSize;
         return $this;
     }
+    
+    /**
+     * 
+     * @param type $mimetype
+     * @return \Upload\Files\FilesOptions
+     */
+    public function setMimetype($mimetype) {
+        $this->mimetype = $mimetype;
+        return $this;
+    }
 
+    
     //Verifica e cria os diretórios com base em tipo de arquivo, ano e mês!
     private function CheckFolder($Folder) {
         list($y, $m) = explode('/', date('Y/m'));
