@@ -39,7 +39,8 @@ class UploadController extends AbstractActionController {
     }
 
     public function uploadsAction() {
-        $files = $this->params()->fromFiles('files');
+        //$data =  array_merge_recursive($this->params()->fromFiles('files'),$this->params()->fromPost());
+        $files =  $this->params()->fromFiles('files');
         $code = $this->filesService->persistFiles($files);
         return new JsonModel(['result' => $files, 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
             'msg' => $this->filesService->getMessages(), 'data' => $files,
@@ -48,7 +49,8 @@ class UploadController extends AbstractActionController {
     }
 
     public function uploadAction() {
-        $file = $this->params()->fromFiles('files');
+       //$data =  array_merge_recursive($this->params()->fromFiles('files'),$this->params()->fromPost());
+        $file =  $this->params()->fromFiles('files');
         $code = $this->filesService->persistFile($file);
         return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
             'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),

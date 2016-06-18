@@ -27,26 +27,40 @@ class FilesOptions extends AbstractOptions {
      * @var string
      */
     protected $basePath = '';
-    protected $ds = DIRECTORY_SEPARATOR;
+    public $ds = DIRECTORY_SEPARATOR;
     protected $mimetype;
+    public $Name;
 
     /**
      * @var string
      */
     protected $maxSize = '1536MB';
+    protected $FileAccept = [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/pdf',
+        'application/x-rar-compressed',
+        'application/octet-stream',
+        'application/zip'
+    ];
+    protected $MidiaAccept = [
+        'audio/mp3',
+        'video/mp4',
+        'video/x-mpeg',
+        'video/mp4',
+        'audio/mpeg'
+    ];
+    protected $ImageAccept = [
+        'image/jpg',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+        'image/x-png'];
 
     public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $sm) {
-       
         $config = $sm->get('Config');
-        $serviceMimeTypes = new MimeTypes($sm->get('servicemanager'));
-        $this->setMimetype($serviceMimeTypes->getMimeTypeImage('ext-image-min'));
         $options = isset($config['files']) ? $config['files'] : [];
-        $type = 'images';
-        $this->CheckFolder("{$sm->get('request')->getServer('DOCUMENT_ROOT')}{$this->ds}dist{$this->ds}{$type}");
-        $options['base_path'] = $this->basePath;
-
+        $options['base_path'] = $sm->get('request')->getServer('DOCUMENT_ROOT');
         parent::__construct($options);
-       
     }
 
     /**
@@ -75,7 +89,7 @@ class FilesOptions extends AbstractOptions {
     public function getMaxSize() {
         return $this->maxSize;
     }
-    
+
     /**
      * 
      * @return type
@@ -84,7 +98,30 @@ class FilesOptions extends AbstractOptions {
         return $this->mimetype;
     }
 
-    
+    /**
+     * Tipos de files [Arquivos]
+     * @return type array
+     */
+    public function getFileAccept() {
+        return $this->FileAccept;
+    }
+
+    /**
+     * Tipos de Midia
+     * @return type array
+     */
+    public function getMidiaAccept() {
+        return $this->MidiaAccept;
+    }
+
+    /**
+     * Tipos de files Images
+     * @return type array
+     */
+    public function getImageAccept() {
+        return $this->ImageAccept;
+    }
+
     /**
      * @param string $maxSize
      * @return $this
@@ -93,7 +130,7 @@ class FilesOptions extends AbstractOptions {
         $this->maxSize = $maxSize;
         return $this;
     }
-    
+
     /**
      * 
      * @param type $mimetype
@@ -104,9 +141,8 @@ class FilesOptions extends AbstractOptions {
         return $this;
     }
 
-    
     //Verifica e cria os diretórios com base em tipo de arquivo, ano e mês!
-    private function CheckFolder($Folder) {
+    public function CheckFolder($Folder) {
         list($y, $m) = explode('/', date('Y/m'));
         $this->CreateFolder("{$Folder}");
         $this->CreateFolder("{$Folder}{$this->ds}{$y}");
@@ -115,10 +151,29 @@ class FilesOptions extends AbstractOptions {
     }
 
     //Verifica e cria o diretório base!
-    private function CreateFolder($Folder) {
+    public function CreateFolder($Folder) {
         if (!file_exists($Folder) && !is_dir($Folder)):
             mkdir($Folder, 0777);
         endif;
+    }
+
+    //Verifica e monta o nome dos arquivos tratando a string!
+    public function setFileName($Name) {
+        $FileName = $this->setName(substr($Name, 0, strrpos($Name, '.')));
+        return strtolower($FileName) . strrchr($Name, '.');
+    }
+
+    /**
+     * <b>Tranforma URL:</b> Retira acentos e caracteres especias!
+     * @param STRING $Name = Uma string qualquer
+     * @return STRING um nome tratado
+     */
+    public function setName($Name) {
+        $var = strtolower(utf8_encode($Name));
+        return preg_replace('{\W}', '', preg_replace('{ +}', '_', strtr(
+        utf8_decode(html_entity_decode($var)),
+        utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'),
+        'AAAAEEIOOOUUCNaaaaeeiooouucn')));
     }
 
 }

@@ -31,7 +31,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
 
         $this->options = $options;
         $this->inputFilter = $inputFilter;
-        $this->result=FALSE;
+        $this->result = FALSE;
     }
 
     /**
@@ -44,17 +44,23 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     }
 
     public function getFiles() {
-        $iterator = new \DirectoryIterator($this->options->getBasePath());
+        $folders = ['images', 'files', 'midias'];
+        $path = $this->options->getBasePath();
         $files = [];
-        /** @var \SplFileInfo $file */
-        foreach ($iterator as $file) {
-            $file = $file->getFileInfo();
-            if ($file->isDir() || $this->isFileHidden($file)) {
-                continue;
-            }
+        foreach ($folders as $folder):
+            $this->options->CheckFolder("{$path}{$this->options->ds}dist{$this->options->ds}{$folder}");
+            $iterator = new \DirectoryIterator($this->options->getBasePath());
 
-            $files[] = $file;
-        }
+            /** @var \SplFileInfo $file */
+            foreach ($iterator as $file) {
+                $file = $file->getFileInfo();
+                if ($file->isDir() || $this->isFileHidden($file)) {
+                    continue;
+                }
+
+                $files[] = $file;
+            }
+        endforeach;
         return $files;
     }
 
@@ -67,8 +73,20 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     }
 
     public function persistFiles(array $files) {
-        
+
         foreach ($files as $file) {
+            if (array_search($file['type'], $this->options->getFileAccept())):
+                $this->options->setMimetype($this->options->getFileAccept());
+                $type = "files";
+            elseif (array_search($file['type'], $this->options->getMidiaAccept())):
+                $this->options->setMimetype($this->options->getMidiaAccept());
+                $type = "midias";
+            else:
+                $this->options->setMimetype($this->options->getImageAccept());
+                $type = "images";
+            endif;
+            $file['name'] = $this->options->setFileName($file['name']);
+            $this->options->CheckFolder("{$this->options->getBasePath()}{$this->options->ds}dist{$this->options->ds}{$type}");
             $filter = clone $this->getInputFilter();
             $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
             try {
@@ -83,14 +101,26 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
             }
         }
         $this->setMessages("ARQUIVOS ENVIADO COM SUCESSO!");
-        $this->result=TRUE;
+        $this->result = TRUE;
         return self::CODE_SUCCESS;
     }
 
     public function persistFile(array $file) {
-
+        if (array_search($file['type'], $this->options->getFileAccept())):
+            $this->options->setMimetype($this->options->getFileAccept());
+            $type = "files";
+        elseif (array_search($file['type'], $this->options->getMidiaAccept())):
+            $this->options->setMimetype($this->options->getMidiaAccept());
+            $type = "midias";
+        else:
+            $this->options->setMimetype($this->options->getImageAccept());
+            $type = "images";
+        endif;
+        $file['name'] = $this->options->setFileName($file['name']);
+        $this->options->CheckFolder("{$this->options->getBasePath()}{$this->options->ds}dist{$this->options->ds}{$type}");
         $filter = clone $this->getInputFilter();
         $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
+        
         try {
             if (!$filter->isValid()) {
                 $this->setMessages($filter->getMessages());
@@ -102,7 +132,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
             return self::CODE_ERROR;
         }
         $this->setMessages("ARQUIVO ENVIADO COM SUCESSO!");
-        $this->result=TRUE;
+        $this->result = TRUE;
         return self::CODE_SUCCESS;
     }
 

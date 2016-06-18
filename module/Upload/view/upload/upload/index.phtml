@@ -8,9 +8,9 @@
 <p>
 <fieldset>
     <legend>Upload new files</legend>
-    <form name="uploadFile" id="uploadFiles" method="post"
+    <form name="uploadFile" id="uploadFiles" class="uploadFile" method="post"
           action="<?php echo $this->url('upload/default',array('controller'=>'upload','action'=>'uploads')) ?>" enctype="multipart/form-data">
-        <input type="file" name="files[]" multiple>
+         <input type="file" name="files[]" multiple>
         <button type="submit" class="btn btn-primary">Upload files</button>
         
     </form>
@@ -19,7 +19,7 @@
 <hr>
 <fieldset>
     <legend>Upload new file</legend>
-    <form name="uploadFile" class="" id="uploadFile" method="post"
+    <form name="uploadFile" class="uploadFile" id="uploadFile" method="post"
           action="<?php echo $this->url('upload/default',array('controller'=>'upload','action'=>'upload')) ?>" enctype="multipart/form-data">
         <input type="file" name="files">
         <button type="submit" class="btn btn-primary">Upload file</button>

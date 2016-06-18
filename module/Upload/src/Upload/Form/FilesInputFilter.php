@@ -33,9 +33,11 @@ class FilesInputFilter extends InputFilter {
         ));
         $mimetype->setMimeType($options->getMimetype());
         $input->getValidatorChain()->attach($mimetype);
-        $renameUpload=new RenameUpload([
+        $renameUpload = new RenameUpload([
             'overwrite' => false,
             'use_upload_name' => true,
+            //'use_upload_extension' => true,
+            //'randomize'=>true,
             'target' => $options->getBasePath()
         ]);
         $input->getFilterChain()->attach($renameUpload);
