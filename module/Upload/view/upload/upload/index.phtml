@@ -1,27 +1,46 @@
 <h1>Upload</h1>
 <fieldset>
     <legend>Files list</legend>
-    <div id="files" data-content-url="<?php echo $this->url('upload/default',array('controller'=>'upload','action'=>'list')) ?>">
+    <div id="files" data-content-url="<?php echo $this->url('upload/default', array('controller' => 'upload', 'action' => 'list')) ?>">
         <?php echo $this->partial('/list'); ?>
     </div>
 </fieldset>
 <p>
 <fieldset>
     <legend>Upload new files</legend>
-    <form name="uploadFile" id="uploadFiles" class="uploadFile" method="post"
-          action="<?php echo $this->url('upload/default',array('controller'=>'upload','action'=>'uploads')) ?>" enctype="multipart/form-data">
-         <input type="file" name="files[]" multiple>
-        <button type="submit" class="btn btn-primary">Upload files</button>
-        
-    </form>
+    <?php
+    // filename : module/Test/view/test/profile/add.phtml
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('upload/default', array('controller' => 'upload', 'action' => 'uploads')));
+    $form->prepare();
+    $form->get('files')->setAttribute('multiple', TRUE);
+    $form->get('files')->setAttribute('id', 'files');
+    $form->setAttribute('id', 'uploadFiles');
+    $form->setAttribute('enctype', 'multipart/form-data');
+    $form->setAttribute('name', 'uploadFiles');
+    echo $this->form()->openTag($form);
+    echo $this->formCollection($form);
+    echo $this->form()->closeTag();
+    ?>
+
 </fieldset>
 <p>
 <hr>
 <fieldset>
     <legend>Upload new file</legend>
-    <form name="uploadFile" class="uploadFile" id="uploadFile" method="post"
-          action="<?php echo $this->url('upload/default',array('controller'=>'upload','action'=>'upload')) ?>" enctype="multipart/form-data">
-        <input type="file" name="files">
-        <button type="submit" class="btn btn-primary">Upload file</button>
-    </form>
+    <?php
+    // filename : module/Test/view/test/profile/add.phtml
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('upload/default', array('controller' => 'upload', 'action' => 'upload')));
+    $form->prepare();
+    $form->get('files')->setAttribute('multiple', FALSE);
+    $form->get('files')->setAttribute('id', 'file');
+    $form->setAttribute('id', 'uploadFile');
+    $form->setAttribute('enctype', 'multipart/form-data');
+    $form->setAttribute('name', 'uploadFile');
+    echo $this->form()->openTag($form);
+    echo $this->formCollection($form);
+    echo $this->form()->closeTag();
+    ?>
+
 </fieldset>

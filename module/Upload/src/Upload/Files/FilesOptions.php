@@ -29,7 +29,8 @@ class FilesOptions extends AbstractOptions {
     protected $basePath = '';
     public $ds = DIRECTORY_SEPARATOR;
     protected $mimetype;
-    public $Name;
+    protected $send;
+    protected $servicelocator;
 
     /**
      * @var string
@@ -60,6 +61,7 @@ class FilesOptions extends AbstractOptions {
         $config = $sm->get('Config');
         $options = isset($config['files']) ? $config['files'] : [];
         $options['base_path'] = $sm->get('request')->getServer('DOCUMENT_ROOT');
+        $this->servicelocator = $sm;
         parent::__construct($options);
     }
 
@@ -77,7 +79,7 @@ class FilesOptions extends AbstractOptions {
      */
     public function setBasePath($basePath) {
         if (!is_dir($basePath)) {
-            throw new \InvalidArgumentException('Provided base path is not a valid directory');
+            throw new \InvalidArgumentException('Provided base path is not a valid directory ' . $basePath);
         }
         $this->basePath = realpath($basePath);
         return $this;
@@ -122,6 +124,14 @@ class FilesOptions extends AbstractOptions {
         return $this->ImageAccept;
     }
 
+    public function getSend() {
+        return $this->send;
+    }
+
+    public function getServicelocator() {
+        return $this->servicelocator;
+    }
+
     /**
      * @param string $maxSize
      * @return $this
@@ -144,10 +154,11 @@ class FilesOptions extends AbstractOptions {
     //Verifica e cria os diretórios com base em tipo de arquivo, ano e mês!
     public function CheckFolder($Folder) {
         list($y, $m) = explode('/', date('Y/m'));
-        $this->CreateFolder("{$Folder}");
-        $this->CreateFolder("{$Folder}{$this->ds}{$y}");
-        $this->CreateFolder("{$Folder}{$this->ds}{$y}{$this->ds}{$m}{$this->ds}");
-        $this->basePath = "{$Folder}{$this->ds}{$y}{$this->ds}{$m}{$this->ds}";
+        $this->CreateFolder("{$this->basePath}{$this->ds}dist{$this->ds}{$Folder}");
+        $this->CreateFolder("{$this->basePath}{$this->ds}dist{$this->ds}{$Folder}{$this->ds}{$y}");
+        $this->CreateFolder("{$this->basePath}{$this->ds}dist{$this->ds}{$Folder}{$this->ds}{$y}{$this->ds}{$m}{$this->ds}");
+        $this->basePath = "{$this->basePath}{$this->ds}dist{$this->ds}{$Folder}{$this->ds}{$y}{$this->ds}{$m}{$this->ds}";
+        $this->send="{$Folder}{$this->ds}{$y}{$this->ds}{$m}{$this->ds}";
     }
 
     //Verifica e cria o diretório base!
@@ -171,9 +182,7 @@ class FilesOptions extends AbstractOptions {
     public function setName($Name) {
         $var = strtolower(utf8_encode($Name));
         return preg_replace('{\W}', '', preg_replace('{ +}', '_', strtr(
-        utf8_decode(html_entity_decode($var)),
-        utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'),
-        'AAAAEEIOOOUUCNaaaaeeiooouucn')));
+                                utf8_decode(html_entity_decode($var)), utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'), 'AAAAEEIOOOUUCNaaaaeeiooouucn')));
     }
 
 }

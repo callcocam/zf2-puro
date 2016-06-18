@@ -52,7 +52,7 @@ class Uploads extends SIGAMessages {
         }).done(function (resp) {
             if (resp.code === 'success') {
                 _Upload.rercaregaFilesList(_Upload);
-                _this.after(
+                          _this.after(
                     '<div class="alert trigger trigger_success" style="margin-top: 20px">' +
                     '<div>'+resp.msg+'</div>' +
                     '</div>'

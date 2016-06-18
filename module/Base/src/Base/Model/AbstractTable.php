@@ -24,6 +24,7 @@ abstract class AbstractTable {
     protected $error;
     protected $result;
     protected $last_insert;
+    protected $class;
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -150,11 +151,13 @@ abstract class AbstractTable {
             if ($this->tableGateway->delete(array('id' => $id))) {
                 $this->result = TRUE;
                 $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
+                $this->class="success";
                 return $this->result;
             }
         }
         $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
         $this->result = FALSE;
+        $this->class="error";
     }
 
 //    FUNÇÕES EXTRAS
@@ -181,5 +184,11 @@ abstract class AbstractTable {
     public function getLastInsert() {
         return $this->last_insert;
     }
+    
+    public function getClass() {
+        return $this->class;
+    }
+
+
 
 }

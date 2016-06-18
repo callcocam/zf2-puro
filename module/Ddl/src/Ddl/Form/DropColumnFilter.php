@@ -32,12 +32,12 @@ class DropColumnFilter extends InputFilter {
         $this->add($tabela);
 
         // Informação para a coluna name:
-        $name = new Input("name");
-        $name->setRequired(true);
-        $name->getFilterChain()->attach($StringTrim);
-        $name->getFilterChain()->attach($StripTags);
-        $name->getValidatorChain()->attach($emptyfilter);
-        $this->add($name);
+        $colunms = new Input("colunms");
+        $colunms->setRequired(true);
+        $colunms->getFilterChain()->attach($StringTrim);
+        $colunms->getFilterChain()->attach($StripTags);
+        $colunms->getValidatorChain()->attach($emptyfilter);
+        $this->add($colunms);
     }
 
 }

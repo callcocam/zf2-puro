@@ -3,7 +3,6 @@
 namespace Upload\Controller;
 
 use Upload\Files\FilesServiceInterface;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Http;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -13,57 +12,91 @@ use Zend\View\Model\ViewModel;
  * @author ALejandro Celaya Alastrué
  * @link http://www.alejandrocelaya.com
  */
-class UploadController extends AbstractActionController {
+class UploadController extends \Base\Controller\AbstractController {
 
     /**
      * @var FilesServiceInterface
      */
     protected $filesService;
 
-    public function __construct(FilesServiceInterface $filesService) {
-        $this->filesService = $filesService;
+    public function __construct() {
+        $this->route = "upload/default";
+        $this->controller = "upload";
+        $this->action = "index";
+        $this->form = "Upload\Form\BsUploadForm";
+        $this->model = "Upload\Model\BsImages";
+        $this->table = "Upload\Model\BsImagesTable";
+        $this->template = "upload/upload/index";
     }
 
     public function indexAction() {
+        $this->filesService = $this->getServiceLocator()->get("Upload\Files\FilesService");
+        $this->form = $this->getForm();
+        $this->form->get('empresa')->setValue($this->user['empresa']);
+        $this->form->get('created_by')->setValue($this->user['id']);
+        $this->form->get('modified_by')->setValue($this->user['id']);
+        $this->form->get('access')->setValue($this->user['role_id']);
         $model = new ViewModel([
-            'files' => $this->filesService->getFiles()
-        ]);
-        return $model;
-    }
-
-    public function fooAction() {
-        $model = new ViewModel([
-            'files' => $this->filesService->getFiles()
+            'files' => $this->filesService,
+            'form' => $this->form
         ]);
         return $model;
     }
 
     public function uploadsAction() {
-        //$data =  array_merge_recursive($this->params()->fromFiles('files'),$this->params()->fromPost());
-        $files =  $this->params()->fromFiles('files');
-        $code = $this->filesService->persistFiles($files);
-        return new JsonModel(['result' => $files, 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
-            'msg' => $this->filesService->getMessages(), 'data' => $files,
-            'code' => $code
-        ]);
+        if ($this->params()->fromPost()):
+            $this->filesService = $this->getServiceLocator()->get("Upload\Files\FilesService");
+            $data = $this->params()->fromPost();
+            $files = $this->params()->fromFiles('files');
+            $code = $this->filesService->persistFiles($files, $data);
+            return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => $this->filesService->getCodigo(), 'id' => $this->filesService->getId(), 'class' => $code,
+                'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),
+                'code' => $code
+            ]);
+        endif;
+        return $this->redirect()->toRoute($this->route);
     }
 
     public function uploadAction() {
-       //$data =  array_merge_recursive($this->params()->fromFiles('files'),$this->params()->fromPost());
-        $file =  $this->params()->fromFiles('files');
-        $code = $this->filesService->persistFile($file);
-        return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => "0", 'id' => "", 'class' => $code,
-            'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),
-            'code' => $code
-        ]);
+        if ($this->params()->fromPost()):
+            $this->filesService = $this->getServiceLocator()->get("Upload\Files\FilesService");
+            $data = $this->params()->fromPost();
+            $file = $this->params()->fromFiles('files');
+            $code = $this->filesService->persistFile($file, $data);
+            return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => $this->filesService->getCodigo(), 'id' => $this->filesService->getId(), 'class' => $code,
+                'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),
+                'code' => $code
+            ]);
+        endif;
+        return $this->redirect()->toRoute($this->route);
+    }
+
+    public function removeAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id) {
+            $files = $this->getTableGateway()->find($id);
+            if($files):
+            $this->getTableGateway()->delete($id);
+            endif;
+            return new JsonModel(['result' => $this->getTableGateway()->getResult(), 'acao' => "", 'codigo' =>"0", 'id' =>"0", 'class' => $this->getTableGateway()->getClass(),
+                'msg' => $this->getTableGateway()->getError(), 'data' => $files->toArray(),
+                'code' => 'success'
+            ]);
+        }
+        return new JsonModel(['result' =>FALSE, 'acao' => "", 'codigo' =>"0", 'id' =>"0", 'class' => "error",
+                'msg' => 'MSG_DEFAULT_LABEL', 'data' => array(),
+                'code' => 'error'
+            ]);
+        
     }
 
     public function listAction() {
+        $this->filesService = $this->getServiceLocator()->get("Upload\Files\FilesService");
         /** @var Http\Request $request */
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
             $model = new ViewModel([
-                'files' => $this->filesService->getFiles()
+                'files' => $this->filesService
             ]);
             $model->setTerminal(true);
             return $model;

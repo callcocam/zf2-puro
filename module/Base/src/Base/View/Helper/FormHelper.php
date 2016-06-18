@@ -27,7 +27,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $this->ServiceLocator = $ServiceLocator;
     }
 
-    public function getInstanceForm($name, $action = "index", $labelSubmit = "Create New Table") {
+    public function getInstanceForm($name, $action = "index", $labelSubmit = "Create New Table",$fildIgnore=array('default','id','codigo')) {
         $form = $this->ServiceLocator->getServiceLocator()->get($name);
         $form->setAttribute('action', $this->view->url('ddl/default', array('controller' => 'ddl', 'action' => $action)));
         $form->setAttribute("class", "form-horizontal formulario-configuracao formDdl");
@@ -37,6 +37,9 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         $htmlHead = [];
         $linha = '<td>#fild#</td>';
         foreach ($form->getElements() as $element):
+            if(array_search($element->getName(), $fildIgnore)):
+                continue;
+            endif;
             if ($element->getAttribute('type') == "hidden"):
                 echo $this->view->formHidden($element);
             elseif ($element->getAttribute('type') == "submit"):

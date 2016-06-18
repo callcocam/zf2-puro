@@ -21,6 +21,10 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     protected $messages;
     protected $data;
     protected $result;
+    protected $temp = "";
+    protected $realFolder;
+    protected $id;
+    protected $codigo;
 
     /**
      * @var InputFilter
@@ -44,23 +48,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
     }
 
     public function getFiles() {
-        $folders = ['images', 'files', 'midias'];
-        $path = $this->options->getBasePath();
-        $files = [];
-        foreach ($folders as $folder):
-            $this->options->CheckFolder("{$path}{$this->options->ds}dist{$this->options->ds}{$folder}");
-            $iterator = new \DirectoryIterator($this->options->getBasePath());
-
-            /** @var \SplFileInfo $file */
-            foreach ($iterator as $file) {
-                $file = $file->getFileInfo();
-                if ($file->isDir() || $this->isFileHidden($file)) {
-                    continue;
-                }
-
-                $files[] = $file;
-            }
-        endforeach;
+        $files = $this->options->getServicelocator()->get("Upload\Model\BsImagesTable")->findAll(FALSE);
         return $files;
     }
 
@@ -68,12 +56,11 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
         if (!isset($this->inputFilter)) {
             $this->setInputFilter(new \Upload\Form\FilesInputFilter($this->options));
         }
-
         return $this->inputFilter;
     }
 
-    public function persistFiles(array $files) {
-
+    public function persistFiles(array $files, array $data = array()) {
+        $path = $this->options->getBasePath();
         foreach ($files as $file) {
             if (array_search($file['type'], $this->options->getFileAccept())):
                 $this->options->setMimetype($this->options->getFileAccept());
@@ -86,7 +73,7 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
                 $type = "images";
             endif;
             $file['name'] = $this->options->setFileName($file['name']);
-            $this->options->CheckFolder("{$this->options->getBasePath()}{$this->options->ds}dist{$this->options->ds}{$type}");
+            $this->options->CheckFolder($type);
             $filter = clone $this->getInputFilter();
             $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
             try {
@@ -94,18 +81,38 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
                     $this->setMessages($filter->getMessages());
                     return self::CODE_ERROR;
                 }
-                $this->setData($filter->getValues());
+                $filter->getValues();
+                $table = $this->options->getServicelocator()->get("Upload\Model\BsImagesTable");
+                $model = $this->options->getServicelocator()->get("Upload\Model\BsImages");
+                $data['title'] = sprintf("%s%s", $this->options->getSend(), $file['name']);
+                $data['alias'] = $this->options->getBasePath();
+                $data['extension'] = str_replace('.', '', strrchr($file['name'], '.'));
+                $data['size'] = $file['size'];
+                $data['mimetype'] = $file['type'];
+
+
+                $model->exchangeArray($data);
+                if (isset($data['id']) && (int) $data['id']):
+                    $table->update($model);
+                else:
+                    $table->insert($model);
+                    $model->setId($table->getLastInsert()->getId());
+                endif;
+
+                $this->setData($model->toArray());
             } catch (InvalidArgumentException $e) {
                 $this->setMessages($e->getMessage());
                 return self::CODE_ERROR;
             }
+            $this->options->setBasePath($path);
         }
         $this->setMessages("ARQUIVOS ENVIADO COM SUCESSO!");
         $this->result = TRUE;
         return self::CODE_SUCCESS;
     }
 
-    public function persistFile(array $file) {
+    public function persistFile(array $file, array $data = array()) {
+
         if (array_search($file['type'], $this->options->getFileAccept())):
             $this->options->setMimetype($this->options->getFileAccept());
             $type = "files";
@@ -117,16 +124,33 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
             $type = "images";
         endif;
         $file['name'] = $this->options->setFileName($file['name']);
-        $this->options->CheckFolder("{$this->options->getBasePath()}{$this->options->ds}dist{$this->options->ds}{$type}");
+        $this->options->CheckFolder($type);
         $filter = clone $this->getInputFilter();
         $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
-        
         try {
             if (!$filter->isValid()) {
                 $this->setMessages($filter->getMessages());
                 return self::CODE_ERROR;
             }
-            $this->setData($filter->getValues());
+            $filter->getValues();
+            $table = $this->options->getServicelocator()->get("Upload\Model\BsImagesTable");
+            $model = $this->options->getServicelocator()->get("Upload\Model\BsImages");
+            $data['title'] = sprintf("%s%s", $this->options->getSend(), $file['name']);
+            $data['alias'] = $this->options->getBasePath();
+            $data['extension'] = str_replace('.', '', strrchr($file['name'], '.'));
+            $data['size'] = $file['size'];
+            $data['mimetype'] = $file['type'];
+            $model->exchangeArray($data);
+            if (isset($data['id']) && (int) $data['id']):
+                $table->update($model);
+            else:
+                $table->insert($model);
+                $model->setId($table->getLastInsert()->getId());
+                $this->id = $table->getLastInsert()->getId();
+                $this->codigo = $table->getLastInsert()->getCodigo();
+            endif;
+
+            $this->setData($model->toArray());
         } catch (InvalidArgumentException $e) {
             $this->setMessages($e->getMessage());
             return self::CODE_ERROR;
@@ -162,5 +186,18 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
         $this->messages = $mgs;
         return $this;
     }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getCodigo() {
+        return $this->codigo;
+    }
+    public function getOptions() {
+        return $this->options;
+    }
+
+
 
 }

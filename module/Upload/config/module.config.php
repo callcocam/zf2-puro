@@ -40,7 +40,10 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
-            'Upload\Controller\Upload' => 'Upload\Factory\FilesFactory'
+           
+        ),
+        'invokables'=>array(
+             'Upload\Controller\Upload' => 'Upload\Controller\UploadController'
         )
     ),
     'view_manager' => array(

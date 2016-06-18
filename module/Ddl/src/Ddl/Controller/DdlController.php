@@ -40,7 +40,7 @@ class DdlController extends \Base\Controller\AbstractController {
             $table->addColumn(new Column\Integer(
                     'id', true, null, ['auto_increment' => true]
             ));
-            $table->addColumn(new Column\Varchar("codigo", 250));
+            $table->addColumn(new Column\Integer("codigo", 11));
             $table->addColumn(new Column\Integer("empresa", TRUE, "0"));
             $table->addColumn(new Column\Varchar('title', 255));
             $table->addColumn(new Column\Varchar('asset_id', 255));
