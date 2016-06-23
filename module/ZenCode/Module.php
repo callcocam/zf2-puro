@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -7,17 +8,16 @@
  */
 
 namespace ZenCode;
+
 use Zend\Db\TableGateway\TableGateway;
-class Module
-{
-    
-    public function getConfig()
-    {
+
+class Module {
+
+    public function getConfig() {
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig()
-    {
+    public function getAutoloaderConfig() {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -27,18 +27,29 @@ class Module
         );
     }
 
-    		 public function getServiceConfig() {
-    	        return array(
-    	            'factories' => array(
-    	               	 'ZenCode\Model\BsResourcesTable' => function($sm) {
-    	                           $tableGateway = $sm->get('BsResourcesTableGateway');
-    	                           return new \ZenCode\Model\BsResourcesTable($tableGateway);
-    	                       }
-    	                          
-    	            ),
-    	            'invokables' => array(
-    	              
-    	            )
-    	        );
-        }
+    public function getServiceConfig() {
+        return array(
+            'factories' => array(
+                'FormularioForm' => function ($sm) {
+                    return new Form\FormularioForm($sm);
+                },
+                'ModelForm' => function ($sm) {
+                    return new Form\ModelForm($sm);
+                },
+                'TableForm' => function ($sm) {
+                    return new Form\TableForm($sm);
+                },
+                'FilterForm' => function ($sm) {
+                    return new Form\FilterForm($sm);
+                },
+               'ZenCode\Model\BsResourcesTable' => function($sm) {
+                    $tableGateway = $sm->get('BsResourcesTableGateway');
+                    return new \ZenCode\Model\BsResourcesTable($tableGateway);
+                }
+            ),
+            'invokables' => array(
+            )
+        );
+    }
+
 }

@@ -60,7 +60,7 @@ class GerarTable extends Options {
                 ->addConstants($this->getConstants())
                 ->addMethods($this->getMethod());
         $this->setGenerateClasse($class);
-        $this->generateClass();
+       
     }
 
 }

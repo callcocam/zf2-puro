@@ -46,7 +46,7 @@ class App extends SIGAMessages {
         //FIM
     }
 
-     myTabs(_AppTab) {
+    myTabs(_AppTab) {
         // Cachear el contenedor de los links
         var linksParent = _AppTab.navTabs;
         // Cachear cada uno de los links
@@ -247,6 +247,8 @@ class App extends SIGAMessages {
     }
 
    
+
+
 }
 
 
@@ -291,6 +293,8 @@ $(function () {
         return false;
     });
 
+    
+
 
     $("#created, #publish_down").datetimepicker({
         timepicker: false,
@@ -312,7 +316,7 @@ $(function () {
         var _width = "70%";
         var _heigth = "70%";
         if ($(window).outerWidth() < 500) {
-          	 _width = "90%";
+            _width = "90%";
             _heigth = "90%";
         }
         $(".fancybox").fancybox({

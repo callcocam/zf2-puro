@@ -2,12 +2,12 @@
 
 namespace Auth\Form;
 
-use Base\Form\AbstractForm;
 
-class AuthForm extends AbstractForm {
+
+class AuthForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator) {
-        parent::__construct($serviceLocator,'auth');
+        parent::__construct('auth');
     
         $this->add(array(
             'name' => 'email',

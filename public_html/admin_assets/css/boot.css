@@ -288,6 +288,7 @@ form .disabled{display:none;}
 .comment-box-row .comment-close{display:none;}
 .comment-box-row .comment-status-on a{color: green;}
 .comment-box-row .comment-status-off a{color: red;}
+.warning{background-color: red;color: #000000;}
 
 
 .table {

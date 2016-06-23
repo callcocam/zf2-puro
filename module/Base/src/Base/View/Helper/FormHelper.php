@@ -64,6 +64,43 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
 
         return sprintf("%s%s%s", $this->view->form()->openTag($form), $body, $this->view->form()->closeTag());
     }
+    
+    public function getZenCodeForm($name, $action = "index", $labelSubmit = "Create New Table",$fildIgnore=array('default','id','codigo')) {
+        $form = $this->ServiceLocator->getServiceLocator()->get($name);
+        $form->setAttribute('action', $this->view->url('zen-code/default', array('controller' => 'zen-code', 'action' => $action)));
+        $form->setAttribute("class", "form-horizontal formulario-configuracao form-zen-code");
+        $this->view->formElementErrors()
+                ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+                ->setMessageSeparatorString('</li>')->render($form);
+        $htmlHead = [];
+        $linha = '<tr><th>#label#</th></tr><tr><td>#fild#</td></tr>';
+        foreach ($form->getElements() as $element):
+            if(array_search($element->getName(), $fildIgnore)):
+                continue;
+            endif;
+            if ($element->getAttribute('type') == "hidden"):
+                echo $this->view->formHidden($element);
+            elseif ($element->getAttribute('type') == "submit"):
+            
+            elseif ($element->getName() == "security"):
+
+            else:
+                $label = $this->view->translate($element->getLabel());
+                $elementArray = array(
+                    '#fild#' => $this->view->formRow($element->setLabel("")),
+                    '#label#' => $label,
+                    '#title#' => $element->getName(),
+                );
+                $html[] = str_replace(array_keys($elementArray), array_values($elementArray), $linha);
+            endif;
+
+        endforeach;
+//        $html[] = $this->view->formRow($form->get('save')->setValue($labelSubmit));
+        $html[] = $this->view->form()->closeTag();
+        $body = sprintf("<table class='table table-condensed'>%s<tr><td>%s</td></tr></table>", implode("", $html), $this->view->formRow($form->get('save')->setValue($labelSubmit)));
+
+        return sprintf("%s%s%s", $this->view->form()->openTag($form), $body, $this->view->form()->closeTag());
+    }
     /**
      * 
      * @param type $data os valores que foram passados como filtros

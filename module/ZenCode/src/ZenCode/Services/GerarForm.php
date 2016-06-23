@@ -54,11 +54,11 @@ class GerarForm extends Options {
         $this->setMethod($methodConstruct);
         $this->setBody("limpa");
         
-        if ($this->tabelaElements):
-            foreach ($this->tabelaElements as $value):
-                 $this->setBody($this->addElement(array_filter($value)));
-            endforeach;
-        endif;
+//        if ($this->tabelaElements):
+//            foreach ($this->tabelaElements as $value):
+//                 $this->setBody($this->addElement(array_filter($value)));
+//            endforeach;
+//        endif;
 
         $class->setName($this->getName())
                 ->setNamespaceName($this->getNameSpace())

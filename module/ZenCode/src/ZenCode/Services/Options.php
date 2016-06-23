@@ -273,12 +273,10 @@ class Options {
         return $fileGenerate->generate();
     }
 
-    public function generateFile(array $options = array('body' => null, 'shortDescription' => null, 'longDescription' => null)) {
+    public function generateFile(array $options = array('caminho'=>'teste.txt','description' => null, 'shortDescription' => null, 'longDescription' => null)) {
         extract($options);
-        $ds = DIRECTORY_SEPARATOR;
-        $fileName = sprintf("%s{$ds}%s{$ds}%s.php", $this->getBaseDir(), $this->getSubDir(), $this->getName());
         $fileGenerate = new FileGenerator();
-        $fileGenerate->setNamespace($this->getNameSpace())->setFilename($fileName)->setDocBlock($this->getDocblock())->setBody(implode(PHP_EOL, $this->getBody()))->write();
+        $fileGenerate->setFilename($caminho)->setBody($description)->write();
         return $fileGenerate->generate();
     }
 

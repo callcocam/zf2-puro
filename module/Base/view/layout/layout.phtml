@@ -103,6 +103,7 @@ extract($usuario);
         <!-- Scripts -->
         <?php
         echo $this->headScript()
+                ->prependFile($this->basePath('/admin_assets/js/zencode.js'))
                 ->prependFile($this->basePath('/admin_assets/js/Uploads.js'))
                 ->prependFile($this->basePath('/admin_assets/js/Manager.js'))
                 ->prependFile($this->basePath('/admin_assets/js/App.js'))
