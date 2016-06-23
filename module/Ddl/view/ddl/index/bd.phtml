@@ -28,11 +28,12 @@ extract($user);
         <div id="principal" class="tab-pane ui-state-active">
             <input type="hidden" id="change">
             <?php
-            $CreateTableForm = $this->FormHelper()->getInstanceForm('CreateTableForm', 'creating', 'GERAR TABELA');
-            $DropTableForm = $this->FormHelper()->getInstanceForm('DropTableForm', 'droptable', 'DELETE TABELA');
-            $DropColumnForm = $this->FormHelper()->getInstanceForm('DropColumnForm', 'dropcolumn', 'DELETE COLUNA');
-            $ColumnForm = $this->FormHelper()->getInstanceForm('AddColumnForm', 'addcolumn', 'ADICIONAR COLUNA');
-            $ColumnChangeForm = $this->FormHelper()->getInstanceForm('ChangeColumnForm', 'change', 'ALTERAR COLUNA');
+            $ignore=array('default','id','codigo','asset_id','empresa','description','created','created_by','state','ordering','access','publish_up','publish_down','alias','title','modified_by','modified','security');
+            $CreateTableForm = $this->FormHelper()->getInstanceForm('CreateTableForm', 'creating', 'GERAR TABELA',$ignore);
+            $DropTableForm = $this->FormHelper()->getInstanceForm('DropTableForm', 'droptable', 'DELETE TABELA',$ignore);
+            $DropColumnForm = $this->FormHelper()->getInstanceForm('DropColumnForm', 'dropcolumn', 'DELETE COLUNA',$ignore);
+            $ColumnForm = $this->FormHelper()->getInstanceForm('AddColumnForm', 'addcolumn', 'ADICIONAR COLUNA',$ignore);
+            $ColumnChangeForm = $this->FormHelper()->getInstanceForm('ChangeColumnForm', 'change', 'ALTERAR COLUNA',$ignore);
 
             $box1 = $this->FormHelper()->boxWidgets(array('body' => $CreateTableForm, "title" => "CRIAR UMA NOVA TABELA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
             $box2 = $this->FormHelper()->boxWidgets(array('body' => $DropTableForm, "title" => "APAGAR A TABELA", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));

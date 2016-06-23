@@ -7,10 +7,10 @@ namespace Ddl\Form;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class AddColumnForm extends \Base\Form\AbstractForm {
+class AddColumnForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator, 'ColumnForm', $options);
+        parent::__construct('ColumnForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new AddColumnFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
@@ -21,7 +21,7 @@ class AddColumnForm extends \Base\Form\AbstractForm {
                     'name' => 'tabela',
                     'options' => array(
                         'label' => 'TABELA:',
-                        'value_options' => $this->getTabelas(),
+                        'value_options' => $this->getTabelas($serviceLocator),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -60,7 +60,7 @@ class AddColumnForm extends \Base\Form\AbstractForm {
             'options' => array(
                 'label' => 'TYPE:',
                 'value_options' => array(
-                   'Blob' => 'Blob',
+                    'Blob' => 'Blob',
                     'Boolean' => 'Boolean',
                     'Char' => 'Char',
                     'Date' => 'Date',
@@ -97,7 +97,7 @@ class AddColumnForm extends \Base\Form\AbstractForm {
                 'id' => 'length',
                 'title' => 'FILD_LENGTH_DESC',
                 'placeholder' => 'FILD_LENGTH_PLACEHOLDER',
-                'value'=>'11',
+                'value' => '11',
                 'class' => 'form-control input-sm',
                 'data-access' => '3',
                 'data-position' => 'geral',
@@ -176,6 +176,28 @@ class AddColumnForm extends \Base\Form\AbstractForm {
                 'title' => 'FILD_AUTO_INCREMENT_DESC',
             )
         ));
+
+        $this->add(array(
+            'name' => 'save',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_SAVE_LABEL',
+                'title' => 'BTN_SAVE_DESC',
+                'class' => 'btn btn-green submitbutton',
+                'id' => 'save',
+            ),
+        ));
+    }
+
+    public function getTabelas($serviceLocator) {
+        $table = $serviceLocator->get('Table');
+        $tableNames[''] = '--Selecione--';
+        if ($table->getTablenames()):
+            foreach ($table->getTablenames() as $value):
+                $tableNames[$value] = $value;
+            endforeach;
+        endif;
+        return $tableNames;
     }
 
 }

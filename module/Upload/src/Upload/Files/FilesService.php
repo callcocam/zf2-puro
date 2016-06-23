@@ -78,7 +78,15 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
             $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
             try {
                 if (!$filter->isValid()) {
-                    $this->setMessages($filter->getMessages());
+                    $msg="";
+                    if(is_array($filter->getMessages())):
+                    foreach ($filter->getMessages() as $key => $value) {
+                         $msg.=implode(PHP_EOL,$value);
+                    }
+                    else:
+                    $msg=$filter->getMessages();
+                    endif;
+                    $this->setMessages($msg);
                     return self::CODE_ERROR;
                 }
                 $filter->getValues();
@@ -129,7 +137,15 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface {
         $filter->setData([\Upload\Form\FilesInputFilter::FILE => $file]);
         try {
             if (!$filter->isValid()) {
-                $this->setMessages($filter->getMessages());
+                 $msg="";
+                if(is_array($filter->getMessages())):
+                    foreach ($filter->getMessages() as $key => $value) {
+                       $msg.=implode(PHP_EOL,$value);
+                    }
+                    else:
+                    $msg=$filter->getMessages();
+                    endif;
+                    $this->setMessages($msg);
                 return self::CODE_ERROR;
             }
             $filter->getValues();

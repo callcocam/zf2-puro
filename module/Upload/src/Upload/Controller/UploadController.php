@@ -75,19 +75,23 @@ class UploadController extends \Base\Controller\AbstractController {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id) {
             $files = $this->getTableGateway()->find($id);
-            if($files):
-            $this->getTableGateway()->delete($id);
+            if ($files):
+                $this->getTableGateway()->delete($id);
+                if ($this->getTableGateway()->getResult()) {
+                    if (file_exists(sprintf("%s%s%s%s%s", $this->getRequest()->getServer('DOCUMENT_ROOT'), DIRECTORY_SEPARATOR, 'dist', DIRECTORY_SEPARATOR, $files->getTitle()))) {
+                        unlink(sprintf("%s%s%s%s%s", $this->getRequest()->getServer('DOCUMENT_ROOT'), DIRECTORY_SEPARATOR, 'dist', DIRECTORY_SEPARATOR, $files->getTitle()));
+                    }
+                }
+                return new JsonModel(['result' => $this->getTableGateway()->getResult(), 'acao' => "", 'codigo' => "0", 'id' => "0", 'class' => $this->getTableGateway()->getClass(),
+                    'msg' => $this->getTableGateway()->getError(), 'data' => $files->toArray(),
+                    'code' => 'success'
+                ]);
             endif;
-            return new JsonModel(['result' => $this->getTableGateway()->getResult(), 'acao' => "", 'codigo' =>"0", 'id' =>"0", 'class' => $this->getTableGateway()->getClass(),
-                'msg' => $this->getTableGateway()->getError(), 'data' => $files->toArray(),
-                'code' => 'success'
-            ]);
         }
-        return new JsonModel(['result' =>FALSE, 'acao' => "", 'codigo' =>"0", 'id' =>"0", 'class' => "error",
-                'msg' => 'MSG_DEFAULT_LABEL', 'data' => array(),
-                'code' => 'error'
-            ]);
-        
+        return new JsonModel(['result' => FALSE, 'acao' => "", 'codigo' => "0", 'id' => "0", 'class' => "error",
+            'msg' => 'MSG_DEFAULT_LABEL', 'data' => array(),
+            'code' => 'error'
+        ]);
     }
 
     public function listAction() {

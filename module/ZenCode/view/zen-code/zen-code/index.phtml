@@ -1,0 +1,71 @@
+<?php echo $this->messages(); ?>
+<?=
+$this->headTitle(strtoupper(substr($this->controller, 3)));
+extract($user);
+?>
+<section class="content-header">
+    <h1>
+        Bem Vindo <?php echo $title ?>
+    </h1>
+    <div class="breadcrumb">
+        <ul class="breadcrumbs-item">
+            <li>Admin</li>
+            <li class="divisor"> / </li>
+            <li>Panel</li>
+            <li class="divisor"> / </li>
+            <li><a href="<?php echo $this->url($route, array('controller' => $controller, 'action' => "index")) ?>"><?= ucfirst($controller) ?> </a></li>
+        </ul>
+        <?php echo $this->FormHelper()->filterForm($this->filtro); ?>
+    </div>
+</section>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <?php echo $this->ZFListarHelper()->setNavigation(); ?>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="tabs" class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class=""><a class="tabLink" href="#model"><?php echo $this->translate('TAB_GERAR_MODEL_LABEL') ?></a></li>
+         <li class=""><a class="tabLink" href="#table"><?php echo $this->translate('TAB_GERARTABLE_LABEL') ?></a></li>
+          <li class=""><a class="tabLink" href="#form"><?php echo $this->translate('TAB_GERAR_FORM_LABEL') ?></a></li>
+           <li class=""><a class="tabLink" href="#module"><?php echo $this->translate('TAB_GERAR_MODULE_LABEL') ?></a></li>
+        <li class="pull-right"><i class="ion ion-gear-b"></i></li>
+    </ul>
+    <div class="tab-content">
+        <div id="model" class="tab-pane ui-state-active">
+           <table class="table">
+           <tr><th>NOME/MODULO</th><th>ROUTE</th><th>CONTROLLER</th><th>TEMPLATE</th><th>#</th></tr>
+           <?php $this->table->setColumns('bs_companies');?>
+               <?php foreach ($this->data as $r):?>
+                   <tr>
+                   <td> <?php echo $r->getTitle()?> </td>
+                    <td> <?php echo $r->getRoute()?> </td>
+                     <td> <?php echo $r->getController()?> </td>
+                      <td> <?php echo $r->getTemplate()?> </td>
+                      <td>
+                      <a class="btn btn-green" href="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-model','id'=>$r->getId()));
+                                 ?>">GERAR MODEL</a></td>
+                   </tr>
+               <?php endforeach; ?>
+           </table>
+            
+        </div><!-- /.tab-pane -->
+        <div id="table" class="tab-pane ">
+           table
+            
+        </div><!-- /.tab-pane -->
+        <div id="form" class="tab-pane ">
+           
+            form
+        </div><!-- /.tab-pane -->
+        <div id="module" class="tab-pane ">
+           module
+            
+        </div><!-- /.tab-pane -->
+       
+          <div class="clear"></div>
+    </div><!-- /.tab-content -->
+</div>

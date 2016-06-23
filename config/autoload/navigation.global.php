@@ -102,6 +102,16 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'fa fa-angle-double-right',
                         'title' => '',
+                    ),  
+                    array(
+                        'label' => 'Zen Code',
+                        'route' => 'zen-code/default',
+                        'controller' => 'zen-code',
+                        'resource' => 'ZenCode\Controller\ZenCode',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'fa fa-angle-double-right',
+                        'title' => '',
                     ),
                   
                 )

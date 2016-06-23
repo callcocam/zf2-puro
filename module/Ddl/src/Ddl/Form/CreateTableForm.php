@@ -1,14 +1,16 @@
 <?php
+
 namespace Ddl\Form;
+
 /**
  * CreateTableForm [CreateTableForm]
  *
  * @copyright (c) year, Claudio Coelho
  */
-class CreateTableForm extends \Base\Form\AbstractForm {
+class CreateTableForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator, 'CreateTableForm', $options);
+        parent::__construct('CreateTableForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new TableFilter($serviceLocator));
         //############################################ informações da coluna title ##############################################:
@@ -30,6 +32,27 @@ class CreateTableForm extends \Base\Form\AbstractForm {
                 )
         );
 
-   }
+        $this->add(array(
+            'name' => 'save',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_SAVE_LABEL',
+                'title' => 'BTN_SAVE_DESC',
+                'class' => 'btn btn-green submitbutton',
+                'id' => 'save',
+            ),
+        ));
+    }
+
+    public function getTabelas($serviceLocator) {
+        $table = $serviceLocator->get('Table');
+        $tableNames[''] = '--Selecione--';
+        if ($table->getTablenames()):
+            foreach ($table->getTablenames() as $value):
+                $tableNames[$value] = $value;
+            endforeach;
+        endif;
+        return $tableNames;
+    }
 
 }

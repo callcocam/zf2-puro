@@ -105,15 +105,23 @@ abstract class AbstractTable {
      * @return type bool
      */
     public function insert(AbstractModel $data) {
-        $data->setCodigo($this->getMax('codigo'));
-        if ($this->tableGateway->insert($data->toArray())):
-            $this->result = 1;
-            $this->last_insert = $this->find($this->tableGateway->getLastInsertValue());
-            $this->error = "O REGISTRO [ <b>{$data->getTitle()}</b> ] FOI SALVO COM SUCESSO!";
-            return $this->result;
-        endif;
-        $this->error = "Nao Foi Possivel Finalizar a Operação!";
-        $this->result = FALSE;
+        try {
+            $data->setCodigo($this->getMax('codigo'));
+            if ($this->tableGateway->insert($data->toArray())):
+                $this->result = 1;
+                $this->last_insert = $this->find($this->tableGateway->getLastInsertValue());
+                $this->error = "O REGISTRO [ <b>{$data->getTitle()}</b> ] FOI SALVO COM SUCESSO!";
+                $this->class = "trigger_success";
+                return $this->result;
+            endif;
+            $this->error = "Nao Foi Possivel Finalizar a Operação!";
+            $this->result = FALSE;
+            $this->class = "trigger_error";
+        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
+            $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
+            $this->result = null;
+            $this->msg.=$this->error;
+        }
         return $this->result;
     }
 
@@ -124,19 +132,27 @@ abstract class AbstractTable {
      */
     public function update(AbstractModel $data) {
         //Verifica se o registro existe no banco
-        $oldData = $this->find($data->getId());
-        if ($oldData) {
-            $this->result = $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
-            if ($this->result) {
-                $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI ATUALIZADO COM SUCESSO!";
-                $this->last_insert = $this->find($data->getId());
-            } else {
-                $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, NENHUMA ALTERAÇÃO FOI DETECTADA NO REGISTRO [ <b>{$oldData->getTitle()}</b> ]!";
+        try {
+            $oldData = $this->find($data->getId());
+            if ($oldData) {
+                $this->result = $this->tableGateway->update($data->toArray(), ['id' => $data->getId()]);
+                if ($this->result) {
+                    $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI ATUALIZADO COM SUCESSO!";
+                    $this->last_insert = $this->find($data->getId());
+                    $this->class = "trigger_success";
+                } else {
+                    $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, NENHUMA ALTERAÇÃO FOI DETECTADA NO REGISTRO [ <b>{$oldData->getTitle()}</b> ]!";
+                }
+                return $this->result;
             }
-            return $this->result;
+            $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
+            $this->result = FALSE;
+            $this->class = "trigger_error";
+        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
+            $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
+            $this->result = null;
+            $this->msg.=$this->error;
         }
-        $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
-        $this->result = FALSE;
         return $this->result;
     }
 
@@ -146,18 +162,50 @@ abstract class AbstractTable {
      * @return type bool
      */
     public function delete($id) {
-        $oldData = $this->find($id);
-        if ($oldData) {
-            if ($this->tableGateway->delete(array('id' => $id))) {
-                $this->result = TRUE;
-                $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
-                $this->class="success";
-                return $this->result;
+        try {
+            $oldData = $this->find($id);
+            if ($oldData) {
+                if ($this->tableGateway->delete(array('id' => $id))) {
+                    $this->result = TRUE;
+                    $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
+                    $this->class = "trigger_success";
+                    return $this->result;
+                }
             }
+            $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
+            $this->result = FALSE;
+            $this->class = "trigger_error";
+        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
+            $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
+            $this->result = null;
+            $this->msg.=$this->error;
         }
-        $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
-        $this->result = FALSE;
-        $this->class="error";
+    }
+
+    /**
+     * Excluir um registro do banco passando id como parametro
+     * @param type $id
+     * @return type bool
+     */
+    public function deleteBy($by = array()) {
+        try {
+            $oldData = $this->findBy($by);
+            if ($oldData) {
+                if ($this->tableGateway->delete($by)) {
+                    $this->result = TRUE;
+                    $this->error = "O REGISTRO FOI EXCLUIDO COM SUCESSO!";
+                    $this->class = "trigger_success";
+                    return $this->result;
+                }
+            }
+            $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
+            $this->result = FALSE;
+            $this->class = "trigger_error";
+        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
+            $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
+            $this->result = null;
+            $this->msg.=$this->error;
+        }
     }
 
 //    FUNÇÕES EXTRAS
@@ -184,11 +232,9 @@ abstract class AbstractTable {
     public function getLastInsert() {
         return $this->last_insert;
     }
-    
+
     public function getClass() {
         return $this->class;
     }
-
-
 
 }

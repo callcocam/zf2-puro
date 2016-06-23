@@ -49,6 +49,11 @@ class Module {
         return array(
             'factories' => array(
                 // For Yable data Gateway
+                'Table' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new \Base\MetaData\Table($dbAdapter);
+                    return $table;
+                },
                 'Admin\Model\BsCompaniesTable' => function($sm) {
                     $tableGateway = $sm->get('CompaniesTableGateway');
                     $table = new \Admin\Model\BsCompaniesTable($tableGateway);
@@ -59,13 +64,7 @@ class Module {
                     $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCompanies()); // Notice what is set here
                     return new TableGateway('bs_companies', $dbAdapter, null, $resultSetPrototype);
-                },
-                'CompaniesTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCompanies()); // Notice what is set here
-                    return new TableGateway('bs_companies', $dbAdapter, null, $resultSetPrototype);
-                },
+                }
             ),
             'invokables' => array(
                 'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',

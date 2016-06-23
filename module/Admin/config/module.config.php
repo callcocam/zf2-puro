@@ -53,6 +53,7 @@ return array(
     'service_manager' => array(
         'factories' => array(// !!! aliases not alias
             'Admin\Form\BsResourcesForm' => 'Admin\Factory\ResourcesFactory',
+              'Admin\Form\BsCompaniesForm' => 'Admin\Factory\CompaniesFactory',
            
         ),
         'aliases' => array(// !!! aliases not alias

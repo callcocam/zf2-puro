@@ -64,6 +64,48 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
 
         return sprintf("%s%s%s", $this->view->form()->openTag($form), $body, $this->view->form()->closeTag());
     }
+    /**
+     * 
+     * @param type $data os valores que foram passados como filtros
+     * @return um formulario de pesquisa com filtro de state, data perildo, title e descrição
+     */
+    public function getForm($formString, $repository) {
+        $ressult = $this->ServiceLocator->getServiceLocator()->get('Admin\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
+        $form = $this->ServiceLocator->getServiceLocator()->get($formString);
+        if ($ressult):
+            $dataResult = array();
+            foreach ($ressult->toArray() as $key => $value) {
+                if ($value instanceof \DateTime) {
+                    $dataResult[$key] = $value->format("d-m-Y H:i:s");
+                } elseif (json_decode($value, true)) {
+                    $dataResult[$key] = json_decode($value, true);
+                } else {
+                    $dataResult[$key] = $value;
+                }
+            }
+            $form->setData($dataResult);
+        endif;
+        return $form;
+    }
+
+     public function getCompanies() {
+        $ressult = $this->ServiceLocator->getServiceLocator()->get('Admin\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
+        $form = $this->ServiceLocator->getServiceLocator()->get('Admin\Form\BsCompaniesForm');
+        if ($ressult):
+            $dataResult = array();
+            foreach ($ressult->toArray() as $key => $value) {
+                if ($value instanceof \DateTime) {
+                    $dataResult[$key] = $value->format("d-m-Y H:i:s");
+                } elseif (json_decode($value, true)) {
+                    $dataResult[$key] = json_decode($value, true);
+                } else {
+                    $dataResult[$key] = $value;
+                }
+            }
+            $form->setData($dataResult);
+        endif;
+        return $form;
+    }
 
     public function getFormulario($data) {
         $route = $this->view->RouteHelper()->getRoute();
@@ -206,16 +248,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         self::$html[] = $coll->appendText($carousel_example_generic);
     }
 
-    // public function btnAlimentation($data) {
-    //     $html = array();
-    //     if (isset($data['alimentation'])) {
-    //         foreach ($data['alimentation'] as $value) :
-    //             extract($value);
-    //             $html[] = $this->view->HtmlTag('button')->setAttributes($attr)->setText($this->view->HtmlTag('i')->setClass($icone))->appendText($this->view->translate($label));
-    //         endforeach;
-    //     }
-    //     return implode("", $html);
-    // }
+  
     public function btnAlimentation($btn) {
         $html = array();
         extract($btn);
@@ -286,29 +319,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
         return implode("", $html);
     }
 
-    /**
-     * 
-     * @param type $data os valores que foram passados como filtros
-     * @return um formulario de pesquisa com filtro de state, data perildo, title e descrição
-     */
-    public function getForm($formString, $repository) {
-        $ressult = $this->ServiceLocator->getServiceLocator()->get('Doctrine\ORM\EntityManager')->getRepository($repository)->findOneBy(array('state' => '0'));
-        $form = $this->ServiceLocator->getServiceLocator()->get($formString);
-        if ($ressult):
-            $dataResult = array();
-            foreach ($ressult->toArray() as $key => $value) {
-                if ($value instanceof \DateTime) {
-                    $dataResult[$key] = $value->format("d-m-Y H:i:s");
-                } elseif (json_decode($value, true)) {
-                    $dataResult[$key] = json_decode($value, true);
-                } else {
-                    $dataResult[$key] = $value;
-                }
-            }
-            $form->setData($dataResult);
-        endif;
-        return $form;
-    }
+    
 
     public function boxWidgets($options = array('body' => "", 'title' => "GEARL", 'class' => "box-green", 'icone' => 'clipboard')) {
         extract($options);

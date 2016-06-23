@@ -7,10 +7,10 @@ namespace Ddl\Form;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class DropColumnForm extends \Base\Form\AbstractForm {
+class DropColumnForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator, 'DropColumnForm', $options);
+        parent::__construct('DropColumnForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new DropColumnFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
@@ -21,7 +21,7 @@ class DropColumnForm extends \Base\Form\AbstractForm {
                     'name' => 'tabela',
                     'options' => array(
                         'label' => 'TABELA:',
-                        'value_options' => $this->getTabelas(),
+                        'value_options' => $this->getTabelas($serviceLocator),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -35,13 +35,13 @@ class DropColumnForm extends \Base\Form\AbstractForm {
                 )
         );
         //############################################ informações da coluna title ##############################################:
-         $this->add(
+        $this->add(
                 array(
                     'type' => 'select',
                     'name' => 'colunms',
                     'options' => array(
                         'label' => 'COLUMNS:',
-                        'value_options' => array(''=>'--Selecione--'),
+                        'value_options' => array('' => '--Selecione--'),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -53,8 +53,28 @@ class DropColumnForm extends \Base\Form\AbstractForm {
                     ),
                 )
         );
-        
-    
+
+        $this->add(array(
+            'name' => 'save',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_SAVE_LABEL',
+                'title' => 'BTN_SAVE_DESC',
+                'class' => 'btn btn-green submitbutton',
+                'id' => 'save',
+            ),
+        ));
+    }
+
+    public function getTabelas($serviceLocator) {
+        $table = $serviceLocator->get('Table');
+        $tableNames[''] = '--Selecione--';
+        if ($table->getTablenames()):
+            foreach ($table->getTablenames() as $value):
+                $tableNames[$value] = $value;
+            endforeach;
+        endif;
+        return $tableNames;
     }
 
 }

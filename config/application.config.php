@@ -16,7 +16,8 @@ return array(
         'Mail',
         'Navigation',
         'Ddl',
-        'Upload'
+        'Upload',
+        'ZenCode'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -42,11 +42,22 @@ class Module {
                     $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsResources());
                     return new TableGateway('bs_resources', $dbAdapter, NULL, $resultSetPrototype);
+                },
+                'Admin\Model\BsElementsTable' => function ($sm) {
+                    $tableGateway = $sm->get('BsElementsTableGateway');
+                    return new \Admin\Model\BsElementsTable($tableGateway);
+                },
+                'BsElementsTableGateway' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = $sm->get('resultSetPrototype');
+                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsElements());
+                    return new TableGateway('bs_elements', $dbAdapter, NULL, $resultSetPrototype);
                 }
             ),
             'invokables' => array(
                 'Admin\Model\BsResources' => 'Admin\Model\BsResources',
-                'Admin\Model\BsResources' => 'Admin\Model\BsResources',
+                'Admin\Model\BsCidades' => 'Admin\Model\BsCidades',
+                'Admin\Model\BsElements' => 'Admin\Model\BsElements',
             )
         );
     }

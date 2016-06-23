@@ -13,7 +13,6 @@ namespace Base\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel,
     Zend\View\Model\JsonModel;
-use Zend\Paginator\Paginator;
 
 abstract class AbstractController extends AbstractActionController {
 
@@ -75,10 +74,8 @@ abstract class AbstractController extends AbstractActionController {
     }
 
     public function getForm() {
-        if (!empty($this->form) && is_string($this->form)):
-            return $this->getServiceLocator()->get($this->form);
-        endif;
-        return $this->form;
+
+        return $this->getServiceLocator()->get($this->form);
     }
 
     public function getTableGateway() {
@@ -95,14 +92,16 @@ abstract class AbstractController extends AbstractActionController {
         if (!empty($this->table)):
             $page = $this->params()->fromRoute('page', 1);
             $this->data = $this->getTableGateway()->findAll();
-            
+
             // set the current page to what has been passed in query string, or to 1 if none set
             $this->data->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
             // set the number of items per page to 10
-            $this->data->setItemCountPerPage(2);
+            $this->data->setItemCountPerPage(10);
             $this->data->setCurrentPageNumber($page);
-           
+
         endif;
+        $table = $this->getServiceLocator()->get('Table');
+        $view->setVariable('table', $table);
         $view->setVariable('data', $this->data);
         $view->setVariable('route', $this->route);
         $view->setVariable('controller', $this->controller);
@@ -167,31 +166,25 @@ abstract class AbstractController extends AbstractActionController {
             $this->form->setData($this->data);
             $this->setConstraints();
             if ($this->form->isValid()) {
-                $result = null;
                 if (isset($this->data['save_copy'])):
                     $this->data['id'] = 'AUTOMATICO';
                     $model->setId(null);
                 endif;
-                try {
-                    //Se exitir o campo id valido e uma edição
-                    if (isset($this->data['id']) && (int) $this->data['id']):
-                        $result = $this->getTableGateway()->update($model);
-                    else:
-                        $result = $this->getTableGateway()->insert($model);
+                //Se exitir o campo id valido e uma edição
+                if (isset($this->data['id']) && (int) $this->data['id']):
+                     $this->getTableGateway()->update($model);
+                else:
+                     $this->getTableGateway()->insert($model);
 
-                    endif;
-                    if ($result) {
-                        $this->classe = 'trigger_success';
-                        $this->result = $this->getTableGateway()->getResult();
-                        $this->error = $this->getTableGateway()->getError();
-                        $this->id = $this->getTableGateway()->getLastInsert()->getId();
-                        $this->codigo = $this->getTableGateway()->getLastInsert()->getCodigo();
-                    } else {
-                        $this->error = $this->getTableGateway()->getError();
-                        $this->result = null;
-                    }
-                } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
-                    $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
+                endif;
+                if ($this->getTableGateway()->getResult()) {
+                    $this->classe = 'trigger_success';
+                    $this->result = $this->getTableGateway()->getResult();
+                    $this->error = $this->getTableGateway()->getError();
+                    $this->id = $this->getTableGateway()->getLastInsert()->getId();
+                    $this->codigo = $this->getTableGateway()->getLastInsert()->getCodigo();
+                } else {
+                    $this->error = $this->getTableGateway()->getError();
                     $this->result = null;
                 }
             } else {

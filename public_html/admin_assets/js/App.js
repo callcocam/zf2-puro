@@ -42,8 +42,30 @@ class App extends SIGAMessages {
         this.navTabs = $('.nav-tabs');
         this.contentTabs = $('.tab-pane');
         this.activeTabs = 'ui-state-active';
-        this.parentLinksTabs = ".tabLink";
+        this.parentLinks = ".tabLink";
         //FIM
+    }
+
+     myTabs(_AppTab) {
+        // Cachear el contenedor de los links
+        var linksParent = _AppTab.navTabs;
+        // Cachear cada uno de los links
+        var links = linksParent.find('a');
+        // Cachear cada uno de los items
+        var items = _AppTab.contentTabs;
+        // Añadir la clase "active" al primer link y al primer contenido 
+        links.eq(0).add(items.eq(0)).parent('li').addClass(_AppTab.activeTabs);
+        // Evento clic en el contendor de los links, delegado a los links 
+        linksParent.on('click', _AppTab.parentLinks, function (event) {
+            event.preventDefault();
+            // Cachear el link en el que se hace clic 
+            var t = $(this).parent('li');
+            // Cachear la posición del link en el que se ha hecho clic
+            var i = t.index();
+            // Al link y a su respectivo contenido se le añade la clase
+            // active y a sus hermanos se les quita dicha clase 
+            t.add(items.eq(i)).addClass(_AppTab.activeTabs).siblings().removeClass(_AppTab.activeTabs);
+        });
     }
 
     open() {
@@ -224,27 +246,7 @@ class App extends SIGAMessages {
             }).disableSelection();
     }
 
-    myTabs(_AppTab) {
-        // Cachear el contenedor de los links
-        var linksParent = _AppTab.navTabs;
-        // Cachear cada uno de los links
-        var links = linksParent.find('a');
-        // Cachear cada uno de los items
-        var items = _AppTab.contentTabs;
-        // Añadir la clase "active" al primer link y al primer contenido 
-        links.eq(0).add(items.eq(0)).parent('li').addClass(_AppTab.activeTabs);
-        // Evento clic en el contendor de los links, delegado a los links 
-        linksParent.on('click', _AppTab.parentLinks, function (event) {
-            event.preventDefault();
-            // Cachear el link en el que se hace clic 
-            var t = $(this).parent('li');
-            // Cachear la posición del link en el que se ha hecho clic
-            var i = t.index();
-            // Al link y a su respectivo contenido se le añade la clase
-            // active y a sus hermanos se les quita dicha clase 
-            t.add(items.eq(i)).addClass(_AppTab.activeTabs).siblings().removeClass(_AppTab.activeTabs);
-        });
-    }
+   
 }
 
 

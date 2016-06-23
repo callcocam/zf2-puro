@@ -7,10 +7,10 @@ namespace Ddl\Form;
  *
  * @copyright (c) year, Claudio Coelho
  */
-class ChangeColumnForm extends \Base\Form\AbstractForm {
+class ChangeColumnForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator, $name = null, $options = array()) {
-        parent::__construct($serviceLocator, 'ChangeColumnForm', $options);
+        parent::__construct('ChangeColumnForm', $options);
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new ChangeColumnFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
@@ -21,7 +21,7 @@ class ChangeColumnForm extends \Base\Form\AbstractForm {
                     'name' => 'tabela',
                     'options' => array(
                         'label' => 'TABELA:',
-                        'value_options' => $this->getTabelas(),
+                        'value_options' => $this->getTabelas($serviceLocator),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
@@ -195,6 +195,28 @@ class ChangeColumnForm extends \Base\Form\AbstractForm {
                 'title' => 'FILD_AUTO_INCREMENT_DESC',
             )
         ));
+
+        $this->add(array(
+            'name' => 'save',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'BTN_SAVE_LABEL',
+                'title' => 'BTN_SAVE_DESC',
+                'class' => 'btn btn-green submitbutton',
+                'id' => 'save',
+            ),
+        ));
+    }
+
+    public function getTabelas($serviceLocator) {
+        $table = $serviceLocator->get('Table');
+        $tableNames[''] = '--Selecione--';
+        if ($table->getTablenames()):
+            foreach ($table->getTablenames() as $value):
+                $tableNames[$value] = $value;
+            endforeach;
+        endif;
+        return $tableNames;
     }
 
 }

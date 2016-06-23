@@ -68,8 +68,8 @@ class Table {
                 'isNullable' => $column->getIsNullable(),
                 'dataType' => $column->getDataType(),
                 'characterMaximumLength' => $column->getCharacterMaximumLength(),
-                'characterOctetLength' => $column->getName(),
-                'numericPrecision' => $column->getCharacterOctetLength(),
+                'characterOctetLength' => $column->getCharacterOctetLength(),
+                'numericPrecision' => $column->getNumericPrecision(),
                 'numericScale' => $column->getNumericScale(),
                 'numericUnsigned' => $column->getNumericUnsigned()
             ];

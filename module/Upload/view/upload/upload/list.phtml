@@ -10,7 +10,6 @@ if (!isset($filesList) || count($filesList) === 0):
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Real Path</th>
                 <th>Extension</th>
                 <th>Size</th>
                 <th>MimeType</th>
@@ -33,11 +32,10 @@ if (!isset($filesList) || count($filesList) === 0):
                             <img alt="[<?= $file->getTitle(); ?>]" title="<?= $file->getTitle(); ?>" src="/dist/tim.php?src=/dist/<?php echo $file->getTitle() ?>&w=100&h=100">
                         <?php endif; ?>
                     </td>
-                    <td><?php echo $file->getAlias() ?></td>
-                    <td><?php echo $file->getExtension() ?></td>
+                   <td><?php echo $file->getExtension() ?></td>
                     <td><?php echo $file->getSize() ?></td>
                     <td><?php echo $file->getMimetype() ?></td>
-                    <td><a href="<?php echo $this->url('upload/default', array('controller' => 'upload', 'action' => 'remove','id'=>$file->getId())) ?>" class="btn btn-red" title="Excluir Resgistro">EXCLUIR</a></td>
+                    <td><a href="<?php echo $this->url('upload/default', array('controller' => 'upload', 'action' => 'remove','id'=>$file->getId())) ?>" class="btn btn-blue remove-file" title="Excluir Resgistro">EXCLUIR</a></td>
                 </tr><?php endforeach; ?>
         </tbody>
     </table><?php

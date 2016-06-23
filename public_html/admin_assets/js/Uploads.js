@@ -7,7 +7,7 @@ class Uploads extends SIGAMessages {
         this.filesList = $('#files');
     }
 
-    initFileUpload(_Upload,_this) {
+    initFileUpload(_Upload, _this) {
 
         if (_this.size() === 0) {
             return;
@@ -16,12 +16,12 @@ class Uploads extends SIGAMessages {
         _this.submit(function (e) {
             e.preventDefault();
             $(_Upload.alert).remove();
-            _Upload.uploadFiles(_Upload,$(this));
+            _Upload.uploadFiles(_Upload, $(this));
 
         });
     }
 
-    uploadFiles(_Upload,_this) {
+    uploadFiles(_Upload, _this) {
 
         var action = _this.attr('action');
         var method = _this.attr('method');
@@ -36,7 +36,7 @@ class Uploads extends SIGAMessages {
                 // This will make the ajax request to use a custom XHR object which will handle the progress
                 var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) {
-                    var progressBar = _Upload.initProgressBar(_Upload,_this);
+                    var progressBar = _Upload.initProgressBar(_Upload, _this);
                     // Add progress event handler
                     myXhr.upload.addEventListener('progress', function (e) {
                         _Upload.handleUploadProgress(e, progressBar);
@@ -52,15 +52,15 @@ class Uploads extends SIGAMessages {
         }).done(function (resp) {
             if (resp.code === 'success') {
                 _Upload.rercaregaFilesList(_Upload);
-                          _this.after(
+                _this.after(
                     '<div class="alert trigger trigger_success" style="margin-top: 20px">' +
-                    '<div>'+resp.msg+'</div>' +
+                    '<div>' + resp.msg + '</div>' +
                     '</div>'
                 )
             } else {
-               _this.after(
+                _this.after(
                     '<div class="alert trigger trigger_error" style="margin-top: 20px">' +
-                    '<div>'+resp.msg+'</div>' +
+                    '<div>' + resp.msg + '</div>' +
                     '</div>'
                 )
             }
@@ -68,7 +68,7 @@ class Uploads extends SIGAMessages {
         });
     }
 
-   
+
     handleUploadProgress(e, progressBar) {
         if (!e.lengthComputable) {
             return;
@@ -78,8 +78,8 @@ class Uploads extends SIGAMessages {
         progressBar.find('.progress-bar').text(parseInt(percent) + '%');
     }
 
-  
-    initProgressBar(_Upload,_this) {
+
+    initProgressBar(_Upload, _this) {
         var _fieldset = _this.closest('fieldset'),
             progressBar =
                 '<div class="progress">' +
@@ -95,10 +95,36 @@ class Uploads extends SIGAMessages {
         _Upload.filesList.load(url);
     }
 
+    removeFile(_this,_UpExcluir) {
+        
+        if (_this.hasClass('btn-blue')) {
+            _this.removeClass('btn-blue');
+            _this.addClass('btn-red');
+            _this.children('.hidden-xs').text('CONFIMAR');
+            setTimeout(function () {
+                _this.addClass('btn-blue');
+                _this.removeClass('btn-red');
+                _this.children('.hidden-xs').text('EXCLUIR');
+            }, 10000);
+        } else {
+            _UpExcluir.ajaxFunction(_this.attr('href'), 'get', 'json', '', _UpExcluir);
+            setTimeout(function () {
+                if (_UpExcluir.resultAction) {
+                    _this.parent().parent('tr').remove();
+                }
+            }, 1000);
+
+        }
+    }
 }
 
 $(function () {
     _Up = new Uploads();
-     _Up.initFileUpload(_Up,$(".uploadFile"));
+    _Up.initFileUpload(_Up, $(".uploadFile"));
     //  _Up.initFileUpload(_Up,$(".uploadFile"));
+    $('.remove-file').click(function(e){
+        _UpExcluir=new App();
+        e.preventDefault();
+        _Up.removeFile($(this),_UpExcluir);
+    })
 })
