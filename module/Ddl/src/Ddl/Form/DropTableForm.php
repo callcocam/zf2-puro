@@ -24,7 +24,7 @@ class DropTableForm extends \Zend\Form\Form {
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'tabela',
+                        'id' => 'tabela-drop-table',
                         'title' => 'TABELA_DESC',
                         'class' => 'form-control input-sm drop-table',
                         'placeholder' => 'TABELA_PLACEHOLDER',

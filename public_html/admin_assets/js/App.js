@@ -206,6 +206,7 @@ class App extends SIGAMessages {
     }
 
     ajaxFunction(url, method, type, data, _AppAjax) {
+      var dataReturn=null;
         $.ajax({
             url: url, //$(this).attr('href'),
             type: method, //'GET',
@@ -220,8 +221,10 @@ class App extends SIGAMessages {
                 $(_AppAjax.boxCarregando).fadeIn('fast');
                 _AppAjax.messageSiga(data.msg, data.class);
                 _AppAjax.resultAction = data.result;
+                dataReturn=data;
             }
         });
+        return dataReturn;
     }
 
     MySortable(_AppSortable) {
@@ -265,14 +268,14 @@ $(function () {
     });
     _App.treeview(_App.menuTreeview);
 
-    if (_App.seletorElements.length) {
-        _App.escondeElements();
-    }
+    // if (_App.seletorElements.length) {
+    //     _App.escondeElements();
+    // }
 
-    $(_App.seletorElements).on('change', function (event) {
-        event.preventDefault();
-        options.escondeElements();
-    });
+    // $(_App.seletorElements).on('change', function (event) {
+    //     event.preventDefault();
+    //     options.escondeElements();
+    // });
 
     if (_App.seletorSortable.length) {
         _App.MySortable(_App);

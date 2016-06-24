@@ -25,7 +25,7 @@ class ChangeColumnForm extends \Zend\Form\Form {
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'tabela',
+                        'id' => 'tabela-change',
                         'title' => 'FILD_TABELA_DESC',
                         'class' => 'form-control input-sm change-column',
                         'placeholder' => 'FILD_TABELA_PLACEHOLDER',
@@ -35,23 +35,27 @@ class ChangeColumnForm extends \Zend\Form\Form {
                 )
         );
         //############################################ informações da coluna name ##############################################:
-        $this->add(
+       
+         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'select',
                     'name' => 'name',
                     'options' => array(
                         'label' => 'NAME:',
+                        'value_options' => array('' => '--Selecione--'),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'name',
+                        'id' => 'name-change',
                         'title' => 'FILD_NAME_DESC',
-                        'class' => 'form-control input-sm',
+                        'class' => 'form-control input-sm coluna-change',
                         'placeholder' => 'FILD_NAME_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
+
 
         //############################################ informações da coluna new_name ##############################################:
         $this->add(
@@ -195,6 +199,26 @@ class ChangeColumnForm extends \Zend\Form\Form {
                 'title' => 'FILD_AUTO_INCREMENT_DESC',
             )
         ));
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'after',
+                    'options' => array(
+                        'label' => 'DEPOIS:',
+                        'value_options' => array('' => '--Selecione--'),
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'after-change',
+                        'title' => 'FILD_TABELA_DESC',
+                        'class' => 'form-control input-sm  coluna-change',
+                        'placeholder' => 'FILD_TABELA_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
 
         $this->add(array(
             'name' => 'save',

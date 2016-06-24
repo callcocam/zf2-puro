@@ -25,7 +25,7 @@ class DropColumnForm extends \Zend\Form\Form {
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'tabela',
+                        'id' => 'tabela-brop-coluna',
                         'title' => 'FILD_TABELA_DESC',
                         'class' => 'form-control select-tabela drop-column',
                         'placeholder' => 'FILD_TABELA_PLACEHOLDER',

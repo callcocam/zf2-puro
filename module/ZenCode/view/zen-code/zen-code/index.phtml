@@ -3,6 +3,7 @@
 $this->headTitle(strtoupper(substr($this->controller, 3)));
 extract($user);
 ?>
+
 <section class="content-header">
     <h1>
         Bem Vindo <?php echo $title ?>
@@ -29,73 +30,29 @@ extract($user);
 <div id="tabs" class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         <li class=""><a class="tabLink" href="#principal"><?php echo $this->translate('TAB_GERAR_CLASS_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#model"><?php echo $this->translate('TAB_GERAR_MODEL_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#table-model"><?php echo $this->translate('TAB_GERARTABLE_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#form"><?php echo $this->translate('TAB_GERAR_FORM_LABEL') ?></a></li>
-        <li class=""><a class="tabLink" href="#filter"><?php echo $this->translate('TAB_GERAR_FILTER_LABEL') ?></a></li>
         <li class="pull-right"><i class="ion ion-gear-b"></i></li>
     </ul>
     <div class="tab-content">
         <div id="principal" class="tab-pane ui-state-active">
-            <table class="table">
-                <tr><th colspan="6"><div class="trigger trigger_alert">Atenção: a geração das classes vai restaurar a mesmo para o seu estado padrão original. todas a alterações feitas serão perdidas.</div></th></tr>
-                <tr><th>Select</th><th>NOME/MODULO</th><th>ROUTE</th><th>CONTROLLER</th><th>TEMPLATE</th><th>#</th></tr>
-                <?php $this->table->setColumns('bs_companies'); ?>
-                <?php foreach ($this->data as $r): ?>
-                    <tr>
-                        <td><label style="margin: 0;">
-                                <input style="margin-bottom: 3px" name="select-table[]" class="select-table" type="radio"
-                                       value="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'get-class', 'id' => $r->getId()));
-                    ?>">
-                        <?php echo $r->getTitle() ?></label> </td>
-                        <td> <?php echo $r->getTitle() ?> </td>
-                        <td> <?php echo $r->getRoute() ?> </td>
-                        <td> <?php echo $r->getController() ?> </td>
-                        <td> <?php echo $r->getTemplate() ?> </td>
-                        <td>
-                            <a title="Gerar Model" class="btn btn-green  generate" href="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-model', 'id' => $r->getId()));
-                                ?>">MODEL</a>
-                        <a title="Gerar Table" class="btn btn-info generate" href="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-table', 'id' => $r->getId()));
-                                ?>">TABLE</a>
-                        <a title="Gerar Formulario" class="btn btn-blue generate" href="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-form', 'id' => $r->getId()));
-                                ?>">FORM</a>
-                        <a title="Gerar Filter" class="btn btn-black generate" href="<?php echo $this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-filter', 'id' => $r->getId()));
-                                ?>">FILTER</a></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-
-        </div><!-- /.tab-pane -->
-        <div id="model" class="tab-pane ">
-
+            <?php 
+            $options=[''=>'--Selecione--'];
+            foreach ($this->data as $r):
+                       $options[$r->getId()]=$r->getTitle();
+             endforeach; ?>
+            
             <?php
-            $ignore = array('default', 'id', 'codigo', 'asset_id', 'empresa', 'created', 'created_by', 'state', 'ordering', 'access', 'publish_up', 'publish_down', 'alias', 'title', 'modified_by', 'modified', 'security');
-            $ModelForm = $this->FormHelper()->getZenCodeForm('ModelForm', 'update', 'EDITAR MODEL', $ignore);
-            $box1 = $this->FormHelper()->boxWidgets(array('body' => $ModelForm, "title" => "ATUALIZAR MODEL", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
+            $actions['']="--Selecione--";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-controller'))]="Gerar Controller";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-model'))]="Gerar Model";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-table'))]="Gera Table";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-form'))]="Gerar Form";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-filter'))]="Gerar Fitel";
+            
+            $alert =$this->HtmlTag('div')->setClass("trigger trigger_alert")->setText('Atenção: a geração das classes vai restaurar a mesmo para o seu estado padrão original. todas a alterações feitas serão perdidas.');
+            $ModelForm[] =$this->HtmlTag('p')->setText($alert);
+            $ModelForm[] = $this->FormHelper()->getZenCodeForm('ModelForm', 'update', 'EDITAR MODEL', $options,$actions);
+            $box1 = $this->FormHelper()->boxWidgets(array('body' =>implode("<p>",$ModelForm), "title" => "ATUALIZAR MODEL", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
             echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box1);
-            ?>
-        </div><!-- /.tab-pane -->
-        
-        <div id="table-model" class="tab-pane ">
-            <?php
-            $TableForm = $this->FormHelper()->getZenCodeForm('TableForm', 'update', 'EDITANDO TABLE MODEL', $ignore);
-            $box2 = $this->FormHelper()->boxWidgets(array('body' => $TableForm, "title" => "ATUALIZAR TABLE MODEL", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
-            echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box2);
-            ?>
-        </div><!-- /.tab-pane -->
-        <div id="form" class="tab-pane ">
-            <?php
-            $FormularioForm = $this->FormHelper()->getZenCodeForm('FormularioForm', 'update', 'EDITAR FORMULARIO', $ignore);
-            $box3 = $this->FormHelper()->boxWidgets(array('body' => $FormularioForm, "title" => "ATUALIZAR FORMULARIO", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
-            echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box3);
-            ?>
-        </div><!-- /.tab-pane -->
-        
-        <div id="filter" class="tab-pane ">
-            <?php
-            $FilterForm = $this->FormHelper()->getZenCodeForm('FilterForm', 'update', 'EDITAR FILTER', $ignore);
-            $box4 = $this->FormHelper()->boxWidgets(array('body' => $FilterForm, "title" => "ATUALIZAR FILTER", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));
-            echo $this->HtmlTag('div')->setClass('box box-full-12')->setText($box4);
             ?>
         </div><!-- /.tab-pane -->
 

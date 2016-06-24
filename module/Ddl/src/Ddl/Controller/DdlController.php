@@ -14,8 +14,7 @@ use Zend\Db\Sql\Sql;
 class DdlController extends \Base\Controller\AbstractController {
 
     protected $result = 0;
-    protected $class = 'trigger_error';
-    protected $msg = "MSG_DEFAULT_LABEL";
+     protected $msg = "MSG_DEFAULT_LABEL";
     protected $insert;
 
     public function __construct() {
@@ -46,10 +45,10 @@ class DdlController extends \Base\Controller\AbstractController {
                 $this->gerarcampos($tabela, "codigo", "text", "Codigo Unico", "controle");
                 $table->addColumn(new Column\Integer("empresa", TRUE, "0"));
                 $this->gerarcampos($tabela, "empresa", "hidden");
-                $table->addColumn(new Column\Varchar('title', 255));
-                $this->gerarcampos($tabela, "title", "text", "Titulo do Artigo", "geral");
                 $table->addColumn(new Column\Varchar('asset_id', 255));
                 $this->gerarcampos($tabela, "asset_id", "text", "Campo Opcinal", "geral");
+                $table->addColumn(new Column\Varchar('title', 255));
+                $this->gerarcampos($tabela, "title", "text", "Titulo do Artigo", "geral");
                 $table->addColumn(new Column\Text('description'));
                 $this->gerarcampos($tabela, "description", "textarea", "Descrição Do Artigo", "geral");
                 $table->addColumn(new Column\Integer("ordering", TRUE, "0"));
@@ -87,17 +86,17 @@ class DdlController extends \Base\Controller\AbstractController {
                             $this->result = null;
                             $this->msg.=$this->error;
                         }
-                       endforeach;
+                    endforeach;
                 endif;
             else:
                 $msg = "";
                 foreach ($this->form->getMessages() as $key => $value) {
-                    $msg = implode(PHP_EOL, $value);
+                    $msg.= $key . " - " . implode(PHP_EOL, $value);
                 }
                 $this->msg = $msg;
             endif;
         }
-        return new \Zend\View\Model\JsonModel(array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg));
+        return new \Zend\View\Model\JsonModel(array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg));
     }
 
     private function execute($table) {
@@ -107,7 +106,7 @@ class DdlController extends \Base\Controller\AbstractController {
             $adapter->query(
                     $sql->getSqlStringForSqlObject($table), $adapter::QUERY_MODE_EXECUTE
             );
-            $this->class = "trigger_success";
+            $this->classe = "trigger_success";
             $Tablenames = new \Base\MetaData\Table($this->getAdapter());
             $this->result = $Tablenames->getTablenames();
             $this->msg = $sql->getSqlStringForSqlObject($table);
@@ -139,13 +138,13 @@ class DdlController extends \Base\Controller\AbstractController {
             else:
                 $msg = "";
                 foreach ($this->form->getMessages() as $key => $value) {
-                    $msg = implode(PHP_EOL, $value);
+                    $msg.= $key . " - " . implode(PHP_EOL, $value);
                 }
                 $this->msg = $msg;
             endif;
         }
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'action' => '#change', 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
@@ -160,7 +159,9 @@ class DdlController extends \Base\Controller\AbstractController {
             if ($this->form->isValid()):
                 extract($data);
                 $table = new \Zend\Db\Sql\Ddl\AlterTable($tabela);
-                $table->addColumn($this->setOptions($data));
+                $column = $this->setOptions($data);
+                $column->setOption('after', $after);
+                $table->addColumn($column);
                 $this->gerarcampos($tabela, $data['new_name'], "text", $data['new_name'], "geral");
                 $this->execute($table);
                 $model = $this->getModel();
@@ -178,13 +179,13 @@ class DdlController extends \Base\Controller\AbstractController {
             else:
                 $msg = "";
                 foreach ($this->form->getMessages() as $key => $value) {
-                    $msg = implode(PHP_EOL, $value);
+                    $msg.= $key . " - " . implode(PHP_EOL, $value);
                 }
                 $this->msg = $msg;
             endif;
         }
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'action' => '.select-tabela', 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'action' => '.select-tabela', 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
@@ -199,18 +200,47 @@ class DdlController extends \Base\Controller\AbstractController {
             if ($this->form->isValid()):
                 extract($data);
                 $table = new \Zend\Db\Sql\Ddl\AlterTable($tabela);
-                $table->changeColumn($name, $this->setOptions($data));
+                $column = $this->setOptions($data);
+                $column->setOption('after', $after);
+                $table->changeColumn($name, $column);
                 $this->execute($table);
+                //Se altero
+                if ($this->result):
+                    //Pesquisa pra ver se o campo existe na tabela de elements
+                    $this->data = $this->getTableGateway()->findOneBy(['asset_id' => md5($tabela), 'name' => $name]);
+                    //se existir
+                    if ($this->data):
+                        //alterar o nome
+                        $this->data->setName($new_name);
+                        //aterar a laebel
+                        $this->data->setLabel(sprintf("FILD_%s_LABEL", strtoupper($new_name)));
+                        //alterar o placehoder
+                        $this->data->setPlaceholder(sprintf("FILD_%s_PLACEHOLDER", strtoupper($new_name)));
+                        //alterar o alias
+                        $this->data->setAlias(ucwords(str_replace("_", " ", $new_name)));
+                        //carregar a model
+                        $model = $this->getModel();
+                        $model->exchangeArray($this->data->toArray());
+                        //atualizar o campo
+                        $this->getTableGateway()->update($model);
+                        if (!$this->getTableGateway()->getResult()) {
+                            $this->error = $this->getTableGateway()->getError();
+                            $this->result = null;
+                            $this->msg.=$this->error;
+                        }
+                    endif;
+                endif;
+
             else:
                 $msg = "";
                 foreach ($this->form->getMessages() as $key => $value) {
-                    $msg = implode(PHP_EOL, $value);
+                    $msg.= $key . " - " . implode(PHP_EOL, $value);
                 }
                 $this->msg = $msg;
             endif;
         }
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'action' => '.select-tabela', 'tabela' => $tabela, 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'action' => '#tabela-change', 'tabela' => $tabela, 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
@@ -231,25 +261,26 @@ class DdlController extends \Base\Controller\AbstractController {
                     if (!$this->getTableGateway()->getResult()) {
                         $this->error = $this->getTableGateway()->getError();
                         $this->result = null;
-                        $this->msg.=$this->error;
+                        $this->msg = $this->error;
                     }
                 endif;
 
             else:
                 $msg = "";
                 foreach ($this->form->getMessages() as $key => $value) {
-                    $msg = implode(PHP_EOL, $value);
+                    $msg.= $key . " - " . implode(PHP_EOL, $value);
                 }
                 $this->msg = $msg;
             endif;
         }
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'action' => '.select-tabela', 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'action' => '.select-tabela', 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
     private function setOptions($data) {
         extract($data);
+
         switch ($type) {
             case "Blob":
                 $column = new \Zend\Db\Sql\Ddl\Column\Blob($new_name);
@@ -271,6 +302,7 @@ class DdlController extends \Base\Controller\AbstractController {
                 break;
             case "Integer":
                 $column = new \Zend\Db\Sql\Ddl\Column\Integer($new_name, boolval($nullable));
+                $column->setOption('unsigned', true);
                 break;
             case "Time":
                 $column = new \Zend\Db\Sql\Ddl\Column\Time($new_name, boolval($nullable));
@@ -283,8 +315,10 @@ class DdlController extends \Base\Controller\AbstractController {
                 break;
             case "Text":
                 $column = new \Zend\Db\Sql\Ddl\Column\Text($new_name);
+
                 break;
         }
+
         return $column;
     }
 
@@ -294,9 +328,11 @@ class DdlController extends \Base\Controller\AbstractController {
             $table = new \Base\MetaData\Table($this->getAdapter());
             $table->setColumns($tabela);
             $this->result = $table->getColumnsName();
+            $this->classe="trigger_success";
+            $this->msg="CAMPOS SLECIONADOS COM SUCESSO";
         endif;
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
@@ -306,9 +342,11 @@ class DdlController extends \Base\Controller\AbstractController {
             $table = new \Base\MetaData\Table($this->getAdapter());
             $table->setColumns($tabela);
             $this->result = $table->getColumnsName();
+            $this->classe="trigger_success";
+            $this->msg="CAMPOS SLECIONADOS COM SUCESSO";
         endif;
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'codigo' => "0", 'class' => $this->class, 'msg' => $this->msg)
+                array('result' => $this->result, 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 
@@ -324,8 +362,8 @@ class DdlController extends \Base\Controller\AbstractController {
             'label' => sprintf("FILD_%s_LABEL", strtoupper($fild)),
             'class' => 'form-control',
             'placeholder' => sprintf("FILD_%s_PLACEHOLDER", strtoupper($fild)),
-            'rows' => '10',
-            'cols' => '20',
+            'rows' => $type == "textarea" ? '10' : '',
+            'cols' => $type == "textarea" ? '20' : '',
             'valor_padrao' => '',
             'value_options' => '',
             'requerid' => '1',
@@ -333,12 +371,12 @@ class DdlController extends \Base\Controller\AbstractController {
             'multiple' => '0',
             'position' => $pos,
             'description' => $desc,
-            'ordering' => '2',
+            'ordering' => count($this->insert),
             'state' => '0',
             'access' => '3',
             'created_by' => $this->user['id'],
             'modified_by' => $this->user['id'],
-            'alias' => 'Empresa',
+            'alias' => ucwords(str_replace("_", " ", $fild)),
             'created' => date("d-m-Y"),
             'modified' => date("d-m-Y H:i:s"),
             'publish_up' => date("d-m-Y H:i:s"),

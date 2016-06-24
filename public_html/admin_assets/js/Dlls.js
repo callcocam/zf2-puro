@@ -4,6 +4,9 @@ class Dlls extends SIGAMessages {
         this.formDdl = $(".formDdl");
         this.input = $('.select-tabela');
         this.colunm = $("#colunas");
+        this.tabelaAdd=$("#tabela-add");
+        this.tabelaChange=$("#tabela-change");
+        this.tabelaDropCol=$("#tabela-brop-coluna");
         this.action = "";
         this.result = null;
         this.tabelasBd = ".select-tabela";
@@ -67,6 +70,7 @@ class Dlls extends SIGAMessages {
         _this.result = responseText.result;
         //console.log(responseText.action);
         if ($(responseText.action).length) {
+            //responseText.action vem do controller
             if (responseText.result) {
                 $(responseText.action).change();
             }
@@ -85,6 +89,16 @@ _this.formDdl.ajaxForm(_this.ajaxFormOption);
 _this.input.change(function () {
     _this.colunms($(this), _this.colunm);
 });
+//Aciona o event change do input
+_this.tabelaAdd.change(function () {
+    _this.colunms($(this), "#after-add");
+});
+
+//Aciona o event change do input
+_this.tabelaChange.change(function () {
+    _this.colunms($(this), ".coluna-change");
+});
+
 
 //Cria um atalho para regarregar os select de tabela
 $("#change").change(function () {

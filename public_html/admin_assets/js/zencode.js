@@ -9,27 +9,16 @@ class ZenCode extends SIGAMessages {
             dataType: 'json' // 'xml', 'script', or 'json' (expected server response type) 
         };
     }
-    selectClass(_this) {
-        if (_this.prop('checked')) {
-            $.getJSON(_this.val(), function (data) {
-                $("#form-class").val(data.form);
-                $("#caminho-form").val(data.caminhoform);
-
-                $("#model-class").val(data.model);
-                $("#caminho-model").val(data.caminhomodel);
-
-                $("#table-class").val(data.table);
-                $("#caminho-table").val(data.caminhotable);
-                
-                $("#filter-class").val(data.filter);
-                $("#caminho-filter").val(data.caminhofilter);
-
+    selectArquivo(_this) {
+        if (_this.val()!=="" && $("#modulo").val()) {
+           var url=_this.val()+"/"+$("#modulo").val();
+            $.getJSON(url, function (data) {
+                var new_file= {id:data.acao, text: data.data, syntax: 'php'};
+			    editAreaLoader.openFile('description', new_file);
+                $("#caminho").val(data.caminho);
             });
-        } else {
-            console.log("No Chek");
         }
     }
-
     showRequest(formData, jqForm, options) {
         $(_this.carregando).fadeIn('fast');
         $(_this.target).empty().removeClass(_this.classeResult);
@@ -55,6 +44,10 @@ $(function () {
         _Zen.selectClass($(this));
     });
 
+    $('#class').on('change', function () {
+        _Zen.selectArquivo($(this));
+    });
+
     $('.generate').on('click', function (event) {
         event.preventDefault();
         if ($(this).hasClass('warning')) {
@@ -64,10 +57,16 @@ $(function () {
             _AppZen.ajaxFunction($(this).attr('href'), 'get', 'json', '', _AppZen);
             $(this).removeClass('warning');
             $(this).text('GERAR');
+            _Zen.selectClass($('.select-table'));
         }
         else{
             $(this).addClass('warning');
-            $(this).text('RESTAURAR CLASS?');
+            $(this).children('.hidden-xs').text('RESTAURAR CLASS?');
+            var eu=$(this);
+             setTimeout(function () {
+               eu.removeClass('warning');
+                eu.children('.hidden-xs').text('GERAR');
+            }, 10000);
         }
 
     });
@@ -76,3 +75,8 @@ $(function () {
     _Zen.ZenCodeFormOption.success = _Zen.showResponse;
     _Zen.formZenCode.ajaxForm(_Zen.ZenCodeFormOption);
 })
+
+// callback functions
+		function my_save(id, content){
+			alert("Here is the content of the EditArea '"+ id +"' as received by the save callback function:\n"+content);
+		}

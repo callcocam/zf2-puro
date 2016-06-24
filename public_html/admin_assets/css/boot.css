@@ -182,7 +182,8 @@ form .disabled{display:none;}
 .btn-default{background-color: #ccc;text-shadow: 1px 1px #ccc;}
 .btn-default:hover{background-color: #ccc;}
 
-
+.warning{background-color: #F45563;text-shadow: 1px 1px #C54550;}
+.warning:hover{background-color: #C54550;}
 
 /*TRIGGER*/
 
@@ -288,7 +289,7 @@ form .disabled{display:none;}
 .comment-box-row .comment-close{display:none;}
 .comment-box-row .comment-status-on a{color: green;}
 .comment-box-row .comment-status-off a{color: red;}
-.warning{background-color: red;color: #000000;}
+
 
 
 .table {

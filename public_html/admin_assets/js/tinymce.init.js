@@ -15,7 +15,7 @@
             "save table contextmenu directionality emoticons template paste textcolor media"
         ],
         toolbar: "styleselect | forecolor | backcolor | pastetext | removeformat |  bold | italic | underline | strikethrough | bullist | numlist | alignleft | aligncenter | alignright |  link | unlink | btnimage | media |  outdent | indent | forecolor | fullscreen | preview | code",
-        content_css: "/dist/css/tinyMCE.css",
+        content_css: "/admin_assets/css/tinyMCE.css",
         style_formats: [
             {title: 'Normal', block: 'p'},
             {title: 'Titulo 3', block: 'h3'},
@@ -45,6 +45,11 @@
         relative_urls: true,
         remove_script_host: false
     });
-
-	}
+}
+$(function ()
+{
+    intTinymce("#table-class");
+    intTinymce("#model-class");
+    intTinymce("#form-class");
+})
 	 

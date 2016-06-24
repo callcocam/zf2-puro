@@ -27,6 +27,7 @@ class FormularioForm extends \Zend\Form\Form {
                         'id' => 'form-class',
                         'title' => 'Edita classe de formulario',
                         'class' => 'form-control',
+                        'style'=>'height: 350px; width: 100%;',
                         'placeholder' => 'Use este campo para criar e editar formularios',
                         'rows'=>'50'
                     ),

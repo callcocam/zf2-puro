@@ -16,23 +16,11 @@ use Base\Model\AbstractModel;
 class BsClientes extends AbstractModel
 {
 
-    protected $endereco = '';
-
     protected $bairro = '';
 
-    protected $cidade = '';
+    protected $email = '';
 
-    protected $images = '';
-
-    /**
-     * get endereco
-     *
-     * @return varchar
-     */
-    public function getEndereco()
-    {
-        return $this->endereco;
-    }
+    protected $imagesG = '';
 
     /**
      * get bairro
@@ -45,34 +33,23 @@ class BsClientes extends AbstractModel
     }
 
     /**
-     * get cidade
-     *
-     * @return int
-     */
-    public function getCidade()
-    {
-        return $this->cidade;
-    }
-
-    /**
-     * get images
+     * get email
      *
      * @return varchar
      */
-    public function getImages()
+    public function getEmail()
     {
-        return $this->images;
+        return $this->email;
     }
 
     /**
-     * set endereco
+     * get imagesG
      *
-     * @return varchar
+     * @return blob
      */
-    public function setEndereco($endereco = null)
+    public function getImagesg()
     {
-        $this->endereco=$endereco;
-        return $this;
+        return $this->imagesG;
     }
 
     /**
@@ -87,24 +64,24 @@ class BsClientes extends AbstractModel
     }
 
     /**
-     * set cidade
+     * set email
      *
-     * @return int
+     * @return varchar
      */
-    public function setCidade($cidade = null)
+    public function setEmail($email = null)
     {
-        $this->cidade=$cidade;
+        $this->email=$email;
         return $this;
     }
 
     /**
-     * set images
+     * set imagesG
      *
-     * @return varchar
+     * @return blob
      */
-    public function setImages($images = null)
+    public function setImagesg($imagesG = null)
     {
-        $this->images=$images;
+        $this->imagesG=$imagesG;
         return $this;
     }
 

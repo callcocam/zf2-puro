@@ -14,6 +14,44 @@ class ModelForm extends \Zend\Form\Form {
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new UpdateFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'modulo',
+                    'options' => array(
+                        'label' => 'MODULO:',
+                        'value_options' => array(),
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'modulo',
+                        'title' => 'FILD_MODULO_DESC',
+                        'class' => 'form-control input-sm add-column',
+                        'placeholder' => 'FILD_MODULO_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'class',
+                    'options' => array(
+                        'label' => 'TIPO DE ARQUIVO:',
+                        'value_options' =>[''=>'--Selecione--','model'=>"Model","table"=>"Table","controller"=>"Controller","form"=>"Form","filter"=>"Filter"],
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'class',
+                        'title' => 'FILD_CLASS_DESC',
+                        'class' => 'form-control input-sm add-column',
+                        'placeholder' => 'FILD_CLASS_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
         //############################################ informações da coluna tabela ##############################################:
         $this->add(
                 array(
@@ -23,7 +61,7 @@ class ModelForm extends \Zend\Form\Form {
                         'label' => 'DESCRIÇÃO DA MODEL:',
                     ),
                     'attributes' => array(
-                        'id' => 'model-class',
+                        'id' => 'description',
                         'title' => 'Edita classe de model',
                         'class' => 'form-control',
                         'placeholder' => 'Use este campo para criar e editar modelos',
@@ -40,7 +78,7 @@ class ModelForm extends \Zend\Form\Form {
                         'label' => 'CAMINHO DA PASTA:',
                     ),
                     'attributes' => array(
-                        'id' => 'caminho-model',
+                        'id' => 'caminho',
                         'class' => 'form-control',
                         'readonly'=>true
                     ),

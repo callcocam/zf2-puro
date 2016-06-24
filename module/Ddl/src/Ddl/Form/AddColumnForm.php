@@ -25,7 +25,7 @@ class AddColumnForm extends \Zend\Form\Form {
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'tabela',
+                        'id' => 'tabela-add',
                         'title' => 'FILD_TABELA_DESC',
                         'class' => 'form-control input-sm add-column',
                         'placeholder' => 'FILD_TABELA_PLACEHOLDER',
@@ -176,6 +176,25 @@ class AddColumnForm extends \Zend\Form\Form {
                 'title' => 'FILD_AUTO_INCREMENT_DESC',
             )
         ));
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'after',
+                    'options' => array(
+                        'label' => 'DEPOIS:',
+                        'value_options' => array('' => '--Selecione--'),
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'after-add',
+                        'title' => 'FILD_TABELA_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_TABELA_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
         $this->add(array(
             'name' => 'save',

@@ -97,6 +97,14 @@ class ChangeColumnFilter extends InputFilter {
         //$auto_increment->getFilterChain()->attach($StripTags);
         //$auto_increment->getValidatorChain()->attach($emptyfilter);
         $this->add($auto_increment);
+        
+         // Informação para a coluna after:
+        $after = new Input("after");
+        $after->setRequired(false);
+        $after->getFilterChain()->attach($StringTrim);
+        //$auto_increment->getFilterChain()->attach($StripTags);
+        //$auto_increment->getValidatorChain()->attach($emptyfilter);
+        $this->add($after);
     }
 
 }

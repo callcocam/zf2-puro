@@ -28,7 +28,7 @@ extract($user);
         <div id="principal" class="tab-pane ui-state-active">
             <input type="hidden" id="change">
             <?php
-            $ignore=array('default','id','codigo','asset_id','empresa','description','created','created_by','state','ordering','access','publish_up','publish_down','alias','title','modified_by','modified','security');
+            $ignore=array('default','id','codigo','asset_id','empresa','created','created_by','state','ordering','access','publish_up','publish_down','alias','title','modified_by','modified','security');
             $CreateTableForm = $this->FormHelper()->getInstanceForm('CreateTableForm', 'creating', 'GERAR TABELA',$ignore);
             $DropTableForm = $this->FormHelper()->getInstanceForm('DropTableForm', 'droptable', 'DELETE TABELA',$ignore);
             $DropColumnForm = $this->FormHelper()->getInstanceForm('DropColumnForm', 'dropcolumn', 'DELETE COLUNA',$ignore);
