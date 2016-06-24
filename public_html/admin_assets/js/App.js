@@ -206,7 +206,7 @@ class App extends SIGAMessages {
     }
 
     ajaxFunction(url, method, type, data, _AppAjax) {
-      var dataReturn=null;
+        var dataReturn = null;
         $.ajax({
             url: url, //$(this).attr('href'),
             type: method, //'GET',
@@ -221,7 +221,12 @@ class App extends SIGAMessages {
                 $(_AppAjax.boxCarregando).fadeIn('fast');
                 _AppAjax.messageSiga(data.msg, data.class);
                 _AppAjax.resultAction = data.result;
-                dataReturn=data;
+                if ($(data.action).length) {
+                    if (data.result) {
+                        $(data.action).change();
+                    }
+                }
+                dataReturn = data;
             }
         });
         return dataReturn;
@@ -249,7 +254,7 @@ class App extends SIGAMessages {
             }).disableSelection();
     }
 
-   
+
 
 
 }
@@ -296,7 +301,7 @@ $(function () {
         return false;
     });
 
-    
+
 
 
     $("#created, #publish_down").datetimepicker({

@@ -9,13 +9,28 @@ class ZenCode extends SIGAMessages {
             dataType: 'json' // 'xml', 'script', or 'json' (expected server response type) 
         };
     }
-    selectArquivo(_this) {
-        if (_this.val()!=="" && $("#modulo").val()) {
-           var url=_this.val()+"/"+$("#modulo").val();
-            $.getJSON(url, function (data) {
-                var new_file= {id:data.acao, text: data.data, syntax: 'php'};
-			    editAreaLoader.openFile('description', new_file);
-                $("#caminho").val(data.caminho);
+    selectArquivo(_this, _AppAjax) {
+        if (_this.val() !== "" && $("#modulo").val()) {
+            var url = _this.val() + "/" + $("#modulo").val();
+            $.ajax({
+                url: url, //$(this).attr('href'),
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function (xhr) {
+
+                    $(_AppAjax.carregando).fadeIn('fast');
+                },
+                success: function (data) {
+                    $(_AppAjax.carregando).hide('fast');
+                    $(_AppAjax.boxCarregando).fadeIn('fast');
+                    _AppAjax.messageSiga(data.msg, data.class);
+                    _AppAjax.resultAction = data.result;
+                    editAreaLoader.setValue('description', data.data);
+                    $("#caminho").val(data.caminho);
+                    $("#id").val(data.id);
+                    // var new_file= {id:data.acao, text: data.data, syntax: 'php', title: data.caminho};
+                    // editAreaLoader.openFile('description', new_file);
+                }
             });
         }
     }
@@ -40,34 +55,33 @@ class ZenCode extends SIGAMessages {
 
 $(function () {
     _Zen = new ZenCode();
-    $('.select-table').on('change', function () {
-        _Zen.selectClass($(this));
-    });
-
     $('#class').on('change', function () {
-        _Zen.selectArquivo($(this));
+        if (typeof _AppZen == "undefined") {
+            _AppZen = new App();
+        }
+        _Zen.selectArquivo($(this), _AppZen);
     });
 
-    $('.generate').on('click', function (event) {
-        event.preventDefault();
+    $('#refresh-zen-code').on('click', function () {
+        if ($("#class").val() !== "" && $("#modulo").val()) {
         if ($(this).hasClass('warning')) {
             if (typeof _AppZen == "undefined") {
                 _AppZen = new App();
             }
-            _AppZen.ajaxFunction($(this).attr('href'), 'get', 'json', '', _AppZen);
+            _AppZen.ajaxFunction("/zen-code/zen-code/refresh", 'post', 'json', _Zen.formZenCode.serialize(), _AppZen);
             $(this).removeClass('warning');
-            $(this).text('GERAR');
-            _Zen.selectClass($('.select-table'));
+            $(this).val('RESTAURAR');
+            //_Zen.selectClass($('.select-table'));
         }
-        else{
+        else {
             $(this).addClass('warning');
-            $(this).children('.hidden-xs').text('RESTAURAR CLASS?');
-            var eu=$(this);
-             setTimeout(function () {
-               eu.removeClass('warning');
-                eu.children('.hidden-xs').text('GERAR');
+            $(this).val('RESTAURAR CLASS?');
+            var eu = $(this);
+            setTimeout(function () {
+                eu.removeClass('warning');
+                eu.val('RESTAURAR');
             }, 10000);
-        }
+        }}
 
     });
     //Instania o formulario
@@ -77,6 +91,9 @@ $(function () {
 })
 
 // callback functions
-		function my_save(id, content){
-			alert("Here is the content of the EditArea '"+ id +"' as received by the save callback function:\n"+content);
-		}
+function my_save(id, content) {
+    if ($("#class").val() !== "" && $("#modulo").val()) {
+    $("#" + id).val($.trim(content));
+    _Zen.formZenCode.submit();
+    }
+}

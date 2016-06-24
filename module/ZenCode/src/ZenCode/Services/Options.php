@@ -276,7 +276,7 @@ class Options {
     public function generateFile(array $options = array('caminho'=>'teste.txt','description' => null, 'shortDescription' => null, 'longDescription' => null)) {
         extract($options);
         $fileGenerate = new FileGenerator();
-        $fileGenerate->setFilename($caminho)->setBody($description)->write();
+        $fileGenerate->setFilename($caminho)->setBody(trim($description))->write();
         return $fileGenerate->generate();
     }
 

@@ -19,6 +19,7 @@ class BsResources extends \Base\Model\AbstractModel {
     protected $template;
     protected $tipo_modulo;
     protected $controller;
+    protected $action_default;
     protected $route;
     protected $arquivo;
     protected $module_id;
@@ -39,6 +40,10 @@ class BsResources extends \Base\Model\AbstractModel {
 
     function getController() {
         return $this->controller;
+    }
+
+    function getActionDefault() {
+        return $this->action_default;
     }
 
     function getRoute() {
@@ -79,6 +84,12 @@ class BsResources extends \Base\Model\AbstractModel {
 
     function setController($controller) {
         $this->controller = $controller;
+    }
+
+    function setActioDefault($action_default)
+    {
+      $this->action_default=$action_default;
+      return $this;
     }
 
     function setRoute($route) {

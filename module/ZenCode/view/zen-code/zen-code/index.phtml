@@ -48,7 +48,7 @@ extract($user);
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-form'))]="Gerar Form";
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-filter'))]="Gerar Fitel";
             
-            $alert =$this->HtmlTag('div')->setClass("trigger trigger_alert")->setText('Atenção: a geração das classes vai restaurar a mesmo para o seu estado padrão original. todas a alterações feitas serão perdidas.');
+            $alert =$this->HtmlTag('div')->setClass("trigger trigger_alert")->setText('<b>ATENÇÃO</b>: Ao Restaurar O Arquivo Ou Class Ao Seu Estado Original, Todas As Alterações Feitas Serão Perdidas.');
             $ModelForm[] =$this->HtmlTag('p')->setText($alert);
             $ModelForm[] = $this->FormHelper()->getZenCodeForm('ModelForm', 'update', 'EDITAR MODEL', $options,$actions);
             $box1 = $this->FormHelper()->boxWidgets(array('body' =>implode("<p>",$ModelForm), "title" => "ATUALIZAR MODEL", "class" => "box-default", 'footer' => "", 'icone' => 'clipboard'));

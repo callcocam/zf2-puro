@@ -46,12 +46,12 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                $model = $modeG->generateClass();
                $this->error = "ARQUIVO MODEL {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-             $this->acao=$this->data->getArquivo();
+             $this->action=$this->data->getArquivo();
              $this->result = TRUE;
              $this->classe = "trigger_success";
         endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$model,'caminho'=>$caminho));
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$model,'caminho'=>$caminho,'id'=>$id));
     }
 
     public function gerartableAction() {
@@ -67,17 +67,18 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                $table = $tableG->generateClass();
                $this->error = "ARQUIVO TABLE {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->acao=sprintf("%s%s",$this->data->getArquivo(),"Table");            
+            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Table");            
             $this->result = TRUE;
             $this->classe = "trigger_success";
         endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$table,'caminho'=>$caminho));
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$table,'caminho'=>$caminho,'id'=>$id));
     }
 
     public function gerarformAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
             $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sForm%s{$this->data->getArquivo()}Form.php");
             if (file_exists($caminho)) {
                 $form = file_get_contents($caminho);
@@ -86,13 +87,13 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                $formG = new \ZenCode\Services\GerarForm($this->data, $this->getServiceLocator());
                $form = $formG->generateClass();
             }
-            $this->acao=sprintf("%s%s",$this->data->getArquivo(),"Form"); 
+            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Form"); 
             $this->result = TRUE;
             $this->error = "ARQUIVO FORM {$this->data->getArquivo()} GERADO COM SUCESSO!";
             $this->classe = "trigger_success";
         endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$form,'caminho'=>$caminho));
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$form,'caminho'=>$caminho,'id'=>$id));
     }
     
     public function gerarfilterAction() {
@@ -108,12 +109,12 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 $filter = $filterG->generateClass();
                 $this->error = "ARQUIVO FILTER {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->acao=sprintf("%s%s",$this->data->getArquivo(),"Filter");
+            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Filter");
             $this->result = TRUE;
             $this->classe = "trigger_success";
          endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$filter,'caminho'=>$caminho));
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$filter,'caminho'=>$caminho,'id'=>$id));
     }
 
     public function gerarcontrollerAction() {
@@ -129,12 +130,12 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 $controller = $controllerG->generateClass();
                 $this->error = "ARQUIVO CONTROLLER {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->acao=sprintf("%s%s",$this->data->getArquivo(),"Controller");
+            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Controller");
             $this->result = TRUE;
             $this->classe = "trigger_success";
          endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$controller,'caminho'=>$caminho));
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$controller,'caminho'=>$caminho,'id'=>$id));
     }
 
 
@@ -142,13 +143,37 @@ class ZenCodeController extends \Base\Controller\AbstractController {
 
         if ($this->params()->fromPost()):
             $zencode = new \ZenCode\Services\Options();
-            $zencode->generateFile($this->params()->fromPost());
+            $data['description']=trim($this->params()->fromPost('description'));
+            $data['caminho']=trim($this->params()->fromPost('caminho'));
+            $zencode->generateFile($data);
             $this->result = TRUE;
             $this->error = "ARQUIVO {$this->params()->fromPost('caminho')} ATUALIZADO COM SUCESSO!";
             $this->classe = "trigger_success";
         endif;
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
             'msg' => $this->error));
+    }
+
+    public function refreshAction()
+    {
+         if ($this->params()->fromPost()):
+            $data=$this->params()->fromPost();
+            extract($data);
+            if (file_exists($caminho)) {
+                unlink($caminho);
+                $this->error = "ARQUIVO {$caminho} EXCLUIDO!";
+                $this->result = TRUE;
+                $this->classe = "trigger_success";
+                $this->action="#class";
+            } else {
+                $this->error = "ARQUIVO {$caminho} NÂO FOI ENCONTRADO!";
+                $this->result = FALSE;
+                $this->classe = "trigger_error";
+                $this->action="not_class";
+            }
+        endif;
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$data));
     }
 
 }

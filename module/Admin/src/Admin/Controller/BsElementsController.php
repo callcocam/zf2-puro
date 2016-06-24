@@ -13,7 +13,7 @@ use Base\Controller\AbstractController;
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsClientesController extends AbstractController
+class BsElementsController extends AbstractController
 {
 
     /**
@@ -25,10 +25,10 @@ class BsClientesController extends AbstractController
     {
         // Configurações iniciais do Controller
         $this->route = "admin/default";
-        $this->controller = "bs-clientes";
+        $this->controller = "bs-elements";
         $this->action = "";
-        $this->model = "Admin\Model\BsClientes";
-        $this->table = "Admin\Model\BsClientesTable";
+        $this->model = "Admin\Model\BsElements";
+        $this->table = "Admin\Model\BsElementsTable";
         $this->template = "/admin/admin/listar";
     }
 

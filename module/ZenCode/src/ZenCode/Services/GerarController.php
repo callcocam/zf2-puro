@@ -38,13 +38,14 @@ class GerarController extends Options {
                 $class->addUse($key, $value);
             }
         }
+
         $this->setBody('// Configurações iniciais do Controller');
-        $this->setBody('$this->route = "zen-code/default";');
-        $this->setBody('$this->controller = "zen-code";');
-        $this->setBody('$this->action = "index";');
-        $this->setBody('$this->model = "ZenCode\Model\BsResources";');
-        $this->setBody('$this->table = "ZenCode\Model\BsResourcesTable";');
-        $this->setBody('$this->template = "/zen-code/zen-code/index";');
+        $this->setBody('$this->route = "%s";');
+        $this->setBody('$this->controller = "%s";');
+        $this->setBody('$this->action = "%s";');
+        $this->setBody('$this->model = "%s\Model\%s";');
+        $this->setBody('$this->table = "%s\Model\%sTable";');
+        $this->setBody('$this->template = "%s";');
       
         // gera os methods podemos erar mais de um repetindo o codigo
         $methodOption = array('name' => "__construct",
@@ -52,7 +53,7 @@ class GerarController extends Options {
             'shortDescription' => "construct do Table",
             'longDescription' => null,
             'datatype' => 'Base\Controller\AbstractController',
-            'body' => implode(PHP_EOL, $this->getBody()));
+            'body' =>sprintf(implode(PHP_EOL, $this->getBody()),$route,$controller,$action_default,$alias,$arquivo,$alias,$arquivo,$template));
         $methodConstruct = new Methods($methodOption);
         $this->setMethod($methodConstruct);
         $this->setBody("limpa");

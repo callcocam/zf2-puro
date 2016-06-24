@@ -14,6 +14,16 @@ class ModelForm extends \Zend\Form\Form {
         //Não se esqueça de setar o inputFilter
         $this->setInputFilter(new UpdateFilter($serviceLocator));
         //$name, $length, $nullable = false, $default = null, array $options = array()
+         //############################################ informações da coluna caminho ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'id',
+                    'attributes' => array(
+                        'id' => 'id',
+                      ),
+                )
+        );
         $this->add(
                 array(
                     'type' => 'select',
@@ -86,13 +96,16 @@ class ModelForm extends \Zend\Form\Form {
         );
 
         $this->add(array(
-            'name' => 'save',
+            'name' => 'refresh',
+            'options' => array(
+                        'label' => 'RESTAURAR:',
+                    ),
             'attributes' => array(
-                'type' => 'submit',
-                'value' => 'BTN_SAVE_LABEL',
-                'title' => 'BTN_SAVE_DESC',
-                'class' => 'btn btn-green submitbutton',
-                'id' => 'save',
+                'type' => 'button',
+                'value' => 'BTN_REFRESH_LABEL',
+                'title' => 'BTN_REFRESH_DESC',
+                'class' => 'btn btn-blue refresh-zen-code',
+                'id' => 'refresh-zen-code',
             ),
         ));
     }
