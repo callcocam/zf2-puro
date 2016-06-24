@@ -86,7 +86,7 @@ class BsResources extends \Base\Model\AbstractModel {
         $this->controller = $controller;
     }
 
-    function setActioDefault($action_default)
+    function setActionDefault($action_default)
     {
       $this->action_default=$action_default;
       return $this;

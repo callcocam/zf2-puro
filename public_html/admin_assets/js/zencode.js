@@ -25,7 +25,7 @@ class ZenCode extends SIGAMessages {
                     $(_AppAjax.boxCarregando).fadeIn('fast');
                     _AppAjax.messageSiga(data.msg, data.class);
                     _AppAjax.resultAction = data.result;
-                    editAreaLoader.setValue('description', data.data);
+                    editAreaLoader.setValue('description-edit-area', data.data);
                     $("#caminho").val(data.caminho);
                     $("#id").val(data.id);
                     // var new_file= {id:data.acao, text: data.data, syntax: 'php', title: data.caminho};

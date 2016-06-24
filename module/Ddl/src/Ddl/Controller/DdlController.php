@@ -85,6 +85,7 @@ class DdlController extends \Base\Controller\AbstractController {
                             $this->error = $this->getTableGateway()->getError();
                             $this->result = null;
                             $this->msg.=$this->error;
+                            $this->classe=$this->getTableGateway()->getClass();
                         }
                     endforeach;
                 endif;
@@ -132,6 +133,7 @@ class DdlController extends \Base\Controller\AbstractController {
                     if (!$this->getTableGateway()->getResult()) {
                         $this->error = $this->getTableGateway()->getError();
                         $this->result = null;
+                        $this->classe=$this->getTableGateway()->getClass();
                         $this->msg.=$this->error;
                     }
                 endif;
@@ -171,6 +173,7 @@ class DdlController extends \Base\Controller\AbstractController {
                     if (!$this->getTableGateway()->getResult()) {
                         $this->error = $this->getTableGateway()->getError();
                         $this->result = null;
+                        $this->classe=$this->getTableGateway()->getClass();
                         $this->msg.=$this->error;
                     }
                 endif;
@@ -226,6 +229,7 @@ class DdlController extends \Base\Controller\AbstractController {
                         if (!$this->getTableGateway()->getResult()) {
                             $this->error = $this->getTableGateway()->getError();
                             $this->result = null;
+                            $this->classe=$this->getTableGateway()->getClass();
                             $this->msg.=$this->error;
                         }
                     endif;
@@ -261,6 +265,7 @@ class DdlController extends \Base\Controller\AbstractController {
                     if (!$this->getTableGateway()->getResult()) {
                         $this->error = $this->getTableGateway()->getError();
                         $this->result = null;
+                        $this->classe=$this->getTableGateway()->getClass();
                         $this->msg = $this->error;
                     }
                 endif;

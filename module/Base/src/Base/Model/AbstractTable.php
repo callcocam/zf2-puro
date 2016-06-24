@@ -25,6 +25,7 @@ abstract class AbstractTable {
     protected $result;
     protected $last_insert;
     protected $class;
+    protected $msg;
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -175,10 +176,12 @@ abstract class AbstractTable {
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
             $this->result = FALSE;
             $this->class = "trigger_error";
+            return $this->result;
         } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
             $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
             $this->result = null;
             $this->msg.=$this->error;
+            return $this->result;
         }
     }
 
@@ -199,12 +202,14 @@ abstract class AbstractTable {
                 }
             }
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
-            $this->result = FALSE;
-            $this->class = "trigger_error";
+            $this->result = TRUE;
+            $this->class = "trigger_success";
+             return $this->result;
         } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
             $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
             $this->result = null;
             $this->msg.=$this->error;
+            return $this->result;
         }
     }
 

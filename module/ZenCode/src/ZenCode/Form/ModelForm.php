@@ -71,7 +71,7 @@ class ModelForm extends \Zend\Form\Form {
                         'label' => 'DESCRIÇÃO DA MODEL:',
                     ),
                     'attributes' => array(
-                        'id' => 'description',
+                        'id' => 'description-edit-area',
                         'title' => 'Edita classe de model',
                         'class' => 'form-control',
                         'placeholder' => 'Use este campo para criar e editar modelos',

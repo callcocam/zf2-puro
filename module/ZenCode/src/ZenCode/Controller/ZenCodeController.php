@@ -138,6 +138,49 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             'msg' => $this->error,'data'=>$controller,'caminho'=>$caminho,'id'=>$id));
     }
 
+      public function gerarmoduleAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sModule.php");
+            if (file_exists($caminho)) {
+                $smodule = file_get_contents($caminho);
+                 $this->error = "ARQUIVO MODULE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            } else {
+                $smoduleG = new \ZenCode\Services\GerarModule($this->data, $this->getServiceLocator());
+                $smodule = $controllerG->generateClass();
+                $this->error = "ARQUIVO MODULE {$this->data->getArquivo()} GERADO COM SUCESSO!";
+            }
+            $this->action=sprintf("%s","Module");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+         endif;
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$smodule,'caminho'=>$caminho,'id'=>$id));
+    }
+
+
+     public function gerarmoduleconfigAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sconfig%smodule.config.php");
+            if (file_exists($caminho)) {
+                $moduleconfig = file_get_contents($caminho);
+                 $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            } else {
+                $moduleconfigG = new \ZenCode\Services\GerarModuleConfig($this->data, $this->getServiceLocator());
+                $moduleconfig = $controllerG->generateClass();
+                $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} GERADO COM SUCESSO!";
+            }
+            $this->action=sprintf("%s","module.config");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+         endif;
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$moduleconfig,'caminho'=>$caminho,'id'=>$id));
+    }
+
 
     public function updateAction() {
 

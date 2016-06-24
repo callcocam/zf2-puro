@@ -196,4 +196,3 @@ class BsClientesFiter extends AbstractFilter
 
 
 }
-

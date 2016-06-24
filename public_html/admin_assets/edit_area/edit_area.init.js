@@ -1,9 +1,9 @@
 $(function ()
 {
 
-    if ($("#description").length) {
+    if ($("#description-edit-area").length) {
         editAreaLoader.init({
-            id: "description"	// id of the textarea to transform	
+            id: "description-edit-area"	// id of the textarea to transform	
             , start_highlight: false
             ,show_line_colors: false
             , font_size: "8"
