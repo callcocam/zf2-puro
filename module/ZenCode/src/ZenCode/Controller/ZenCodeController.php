@@ -17,8 +17,9 @@ use Zend\View\Model\JsonModel;
  * @author Call
  */
 class ZenCodeController extends \Base\Controller\AbstractController {
-    
-    protected $restaura=false;
+
+    protected $restaura = false;
+
     public function __construct() {
         $this->route = "zen-code/default";
         $this->controller = "zen-code";
@@ -27,6 +28,7 @@ class ZenCodeController extends \Base\Controller\AbstractController {
         $this->table = "ZenCode\Model\BsResourcesTable";
         $this->template = "/zen-code/zen-code/index";
     }
+
 //    public function indexAction() {
 //        $table=  $this->getServiceLocator()->get("Table");
 //          $table->setColumns('bs_clientes');
@@ -38,180 +40,191 @@ class ZenCodeController extends \Base\Controller\AbstractController {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-             $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sModel%s{$this->data->getArquivo()}.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sModel%s{$this->data->getArquivo()}.php");
             if (file_exists($caminho)) {
-                 $model = file_get_contents($caminho);
-                 $this->error = "ARQUIVO MODEL {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $model = file_get_contents($caminho);
+                $this->error = "ARQUIVO MODEL {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-               $modeG = new \ZenCode\Services\GerarModel($this->data, $this->getServiceLocator());
-               $model = $modeG->generateClass();
-               $this->error = "ARQUIVO MODEL {$this->data->getArquivo()} GERADO COM SUCESSO!";
+                $modeG = new \ZenCode\Services\GerarModel($this->data, $this->getServiceLocator());
+                $model = $modeG->generateClass();
+                $this->error = "ARQUIVO MODEL {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-             $this->action=$this->data->getArquivo();
-             $this->result = TRUE;
-             $this->classe = "trigger_success";
+            $this->action = $this->data->getArquivo();
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
         endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$model,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $model, 'caminho' => $caminho, 'id' => $id));
     }
 
     public function gerartableAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sModel%s{$this->data->getArquivo()}Table.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sModel%s{$this->data->getArquivo()}Table.php");
             if (file_exists($caminho)) {
                 $table = file_get_contents($caminho);
-                 $this->error = "ARQUIVO TABLE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO TABLE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-               $tableG = new \ZenCode\Services\GerarTable($this->data, $this->getServiceLocator());
-               $table = $tableG->generateClass();
-               $this->error = "ARQUIVO TABLE {$this->data->getArquivo()} GERADO COM SUCESSO!";
+                $tableG = new \ZenCode\Services\GerarTable($this->data, $this->getServiceLocator());
+                $table = $tableG->generateClass();
+                $this->error = "ARQUIVO TABLE {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Table");            
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Table");
             $this->result = TRUE;
             $this->classe = "trigger_success";
         endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$table,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $table, 'caminho' => $caminho, 'id' => $id));
     }
 
     public function gerarformAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sForm%s{$this->data->getArquivo()}Form.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sForm%s{$this->data->getArquivo()}Form.php");
             if (file_exists($caminho)) {
                 $form = file_get_contents($caminho);
-                 $this->error = "ARQUIVO FORM {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO FORM {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-               $formG = new \ZenCode\Services\GerarForm($this->data, $this->getServiceLocator());
-               $form = $formG->generateClass();
+                $formG = new \ZenCode\Services\GerarForm($this->data, $this->getServiceLocator());
+                $form = $formG->generateClass();
             }
-            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Form"); 
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Form");
             $this->result = TRUE;
             $this->error = "ARQUIVO FORM {$this->data->getArquivo()} GERADO COM SUCESSO!";
             $this->classe = "trigger_success";
         endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$form,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $form, 'caminho' => $caminho, 'id' => $id));
     }
-    
+
     public function gerarfilterAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sForm%s{$this->data->getArquivo()}Filter.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sForm%s{$this->data->getArquivo()}Filter.php");
             if (file_exists($caminho)) {
                 $filter = file_get_contents($caminho);
-                 $this->error = "ARQUIVO FILTER {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO FILTER {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
                 $filterG = new \ZenCode\Services\GerarFilter($this->data, $this->getServiceLocator());
                 $filter = $filterG->generateClass();
                 $this->error = "ARQUIVO FILTER {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Filter");
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Filter");
             $this->result = TRUE;
             $this->classe = "trigger_success";
-         endif;
+        endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$filter,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $filter, 'caminho' => $caminho, 'id' => $id));
     }
 
     public function gerarcontrollerAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sController%s{$this->data->getArquivo()}Controller.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sController%s{$this->data->getArquivo()}Controller.php");
             if (file_exists($caminho)) {
                 $controller = file_get_contents($caminho);
-                 $this->error = "ARQUIVO CONTROLLER {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO CONTROLLER {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
                 $controllerG = new \ZenCode\Services\GerarController($this->data, $this->getServiceLocator());
                 $controller = $controllerG->generateClass();
                 $this->error = "ARQUIVO CONTROLLER {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Controller");
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Controller");
             $this->result = TRUE;
             $this->classe = "trigger_success";
-         endif;
+        endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$controller,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $controller, 'caminho' => $caminho, 'id' => $id));
     }
 
-     public function gerarfactoryAction() {
+    public function gerarfactoryAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}Factory.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}Factory.php");
             if (file_exists($caminho)) {
                 $factory = file_get_contents($caminho);
-                 $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
                 $factoryG = new \ZenCode\Services\GerarFactory($this->data, $this->getServiceLocator());
                 $factory = $factoryG->generateClass();
                 $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Factory");
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Factory");
             $this->result = TRUE;
             $this->classe = "trigger_success";
-         endif;
+        endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$factory,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $factory, 'caminho' => $caminho, 'id' => $id));
     }
 
-      public function gerarmoduleAction() {
+    public function gerarmoduleAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sModule.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sModule.php");
             if (file_exists($caminho)) {
                 $smodule = file_get_contents($caminho);
-                 $this->error = "ARQUIVO MODULE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO MODULE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
                 $smoduleG = new \ZenCode\Services\GerarModule($this->data, $this->getServiceLocator());
                 $smodule = $controllerG->generateClass();
                 $this->error = "ARQUIVO MODULE {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s","Module");
+            $this->action = sprintf("%s", "Module");
             $this->result = TRUE;
             $this->classe = "trigger_success";
-         endif;
+        endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$smodule,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $smodule, 'caminho' => $caminho, 'id' => $id));
     }
 
-
-     public function gerarmoduleconfigAction() {
+    public function gerarmoduleconfigAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $t=date("YmdHis");
-            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sconfig%smodule.config.php");
+            $t = date("YmdHis");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sconfig%smodule.config.php");
             if (file_exists($caminho)) {
-                 $moduleconfig = file_get_contents($caminho);
-                 $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $moduleconfig = file_get_contents($caminho);
+                $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-                $childrenModules=$this->getTableGateway()->findBy(['alias'=>$this->data->getAlias()]);
+                $childrenModules = $this->getTableGateway()->findBy(['alias' => $this->data->getAlias()]);
                 $moduleconfigG = new \ZenCode\Services\GerarModuleConfig($this->data, $childrenModules, $this->getServiceLocator());
-                $moduleconfig = $moduleconfigG->generateFile(['caminho'=>$caminho,'description'=>$moduleconfigG->getCode()]);
+                $moduleconfig = $moduleconfigG->generateFile(['caminho' => $caminho, 'description' => $moduleconfigG->getCode()]);
                 $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
-            $this->action=sprintf("%s","module.config");
+            $this->action = sprintf("%s", "module.config");
             $this->result = TRUE;
             $this->classe = "trigger_success";
-         endif;
+        endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$moduleconfig,'caminho'=>$caminho,'id'=>$id));
+            'msg' => $this->error, 'data' => $moduleconfig, 'caminho' => $caminho, 'id' => $id));
     }
 
+    public function gerarnavigationAction() {
+
+        $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%sconfig%sautoload%snavigation.admin.php");
+        $navigationG = new \ZenCode\Services\GerarNavigation($this->getServiceLocator());
+        $navigation = $navigationG->generate($caminho);
+        $this->error = "ARQUIVO DE NAVEGAÇÃO FOI GERADO COM SUCESSO!";
+        $this->action = sprintf("%s", "navigation");
+        $this->result = TRUE;
+        $this->classe = "trigger_success";
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error, 'data' => $navigation, 'caminho' => "Não a restauração para este arquivo", 'id' => "0"));
+    }
 
     public function updateAction() {
 
         if ($this->params()->fromPost()):
             $zencode = new \ZenCode\Services\Options();
-            $data['description']=trim($this->params()->fromPost('description'));
-            $data['caminho']=trim($this->params()->fromPost('caminho'));
+            $data['description'] = trim($this->params()->fromPost('description'));
+            $data['caminho'] = trim($this->params()->fromPost('caminho'));
             $zencode->generateFile($data);
             $this->result = TRUE;
             $this->error = "ARQUIVO {$this->params()->fromPost('caminho')} ATUALIZADO COM SUCESSO!";
@@ -221,26 +234,25 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             'msg' => $this->error));
     }
 
-    public function refreshAction()
-    {
-         if ($this->params()->fromPost()):
-            $data=$this->params()->fromPost();
+    public function refreshAction() {
+        if ($this->params()->fromPost()):
+            $data = $this->params()->fromPost();
             extract($data);
             if (file_exists($caminho)) {
                 unlink($caminho);
                 $this->error = "ARQUIVO {$caminho} EXCLUIDO!";
                 $this->result = TRUE;
                 $this->classe = "trigger_success";
-                $this->action="#class";
+                $this->action = "#class";
             } else {
                 $this->error = "ARQUIVO {$caminho} NÂO FOI ENCONTRADO!";
                 $this->result = FALSE;
                 $this->classe = "trigger_error";
-                $this->action="not_class";
+                $this->action = "not_class";
             }
         endif;
         return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error,'data'=>$data));
+            'msg' => $this->error, 'data' => $data));
     }
 
 }

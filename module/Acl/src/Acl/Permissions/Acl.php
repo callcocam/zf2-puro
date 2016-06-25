@@ -24,6 +24,7 @@ class Acl extends ZendAcl {
         $resources=[];
         $invokables = $resourcesModel->getResources('invokables');
         $factories = $resourcesModel->getResources('factories');
+        
         if($invokables):
             foreach ($invokables as $key => $value) {
                 $resources[$key]=$value;

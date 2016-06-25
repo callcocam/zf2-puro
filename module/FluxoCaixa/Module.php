@@ -49,12 +49,24 @@ class Module
                     $resultSetPrototype = $sm->get('resultSetPrototype');
                     $resultSetPrototype->setArrayObjectPrototype(new \FluxoCaixa\Model\BsMovimento()); // Notice what is set here
                     return new TableGateway('bs_movimento', $dbAdapter, null, $resultSetPrototype);
+                },
+                   'FluxoCaixa\Model\BsPlanosContasTable' => function($sm) {
+                    $tableGateway = $sm->get('BsPlanosContasTableGateway');
+                    return new \FluxoCaixa\Model\BsPlanosContasTable($tableGateway);
+                },
+                'BsPlanosContasTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = $sm->get('resultSetPrototype');
+                    $resultSetPrototype->setArrayObjectPrototype(new \FluxoCaixa\Model\BsPlanosContas()); // Notice what is set here
+                    return new TableGateway('bs_planos_contas', $dbAdapter, null, $resultSetPrototype);
                 }
                
             ),
             'invokables' => array(
                  'FluxoCaixa\Model\BsCaixa'=>'FluxoCaixa\Model\BsCaixa',
                   'FluxoCaixa\Model\BsMovimento'=>'FluxoCaixa\Model\BsMovimento',
+                  'FluxoCaixa\Model\BsPlanosContas'=>'FluxoCaixa\Model\BsPlanosContas',
+                  
             )
         );
     }

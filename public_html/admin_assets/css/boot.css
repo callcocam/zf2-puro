@@ -36,6 +36,7 @@ form .disabled{display:none;}
 .none{display: none;}
 .hidden-xs{display: none;}
 .disabled{pointer-events: none;}
+.real{text-align: right !important;}
 /*PALETA*/
 /*BACKGROUND*/
 .header_blue{background: #0E96E5 !important; border-color: #096397 !important; color: #fff;}

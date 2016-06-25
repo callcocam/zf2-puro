@@ -1,7 +1,8 @@
 <?php
+
 return array(// ToDO make it dynamic - comes from the DB
     'navigation' => array(
-          'default' => array(
+        'default' => array(
             array(
                 'label' => 'Dashboard',
                 'route' => 'admin/default',
@@ -22,14 +23,14 @@ return array(// ToDO make it dynamic - comes from the DB
                 'title' => 'Ir Para O Site',
                 'target' => '_blank'
             ),
-               array(
+            array(
                 'label' => 'CONTROLE/ACESSO',
                 'class' => 'treeview',
                 'action' => '#',
                 'icone' => 'ion ion-android-unlock',
                 'title' => 'Grupo Controle De Acesso',
                 'pages' => array(
-                          array(
+                    array(
                         'label' => 'Privilegios',
                         'route' => 'acl/default',
                         'controller' => 'acl',
@@ -38,6 +39,26 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'ion ion-key',
                         'title' => '',
+                        'pages' => array(
+                            array(
+                                'label' => 'Cadastrar',
+                                'route' => 'acl/default',
+                                'controller' => 'acl',
+                                'resource' => 'Acl\Controller\Acl',
+                                'action' => 'inserir',
+                                'privilege' => 'inserir',
+                                'title' => 'Cadastrar Registro',
+                            ),
+                            array(
+                                'label' => 'Editar',
+                                'route' => 'acl/default',
+                                'controller' => 'acl',
+                                'resource' => 'Acl\Controller\Acl',
+                                'action' => 'editar',
+                                'privilege' => 'editar',
+                                'title' => 'Editar Registro',
+                            )
+                        )
                     ),
                     array(
                         'label' => 'Usuarios',
@@ -49,11 +70,11 @@ return array(// ToDO make it dynamic - comes from the DB
                         'icone' => 'ion ion-ios-people',
                         'title' => '',
                     ),
-                    ),
-                 ),
-                require_once('navigation.admin.php')
-                ,
-               array(
+                ),
+            ),
+            require_once('navigation.admin.php')
+            ,
+            array(
                 'label' => 'CONFIGURAÇÕES',
                 'class' => 'treeview',
                 'action' => '#',
@@ -69,8 +90,28 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'ion ion-android-home',
                         'title' => 'Cofiguraçãoda empresa',
+                        'pages' => array(
+                            array(
+                                'label' => 'Cadastrar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-companies',
+                                'resource' => 'Operacional\Controller\BsCompanies',
+                                'action' => 'inserir',
+                                'privilege' => 'inserir',
+                                'title' => 'Cadastrar Registro',
+                            ),
+                              array(
+                                'label' => 'Editar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-companies',
+                                'resource' => 'Operacional\Controller\BsCompanies',
+                                'action' => 'editar',
+                                'privilege' => 'editar',
+                                'title' => 'Editar Registro',
+                            )
+                        )
                     ),
-                     array(
+                    array(
                         'label' => 'Upload',
                         'route' => 'upload/default',
                         'controller' => 'upload',
@@ -79,17 +120,17 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'ion ion-android-upload',
                         'title' => 'Modulo de Uploads',
-                    ),  
+                    ),
                 )
             ),
-             array(
+            array(
                 'label' => 'SUPORTE/MANUTEÇÃO',
                 'class' => 'treeview',
                 'action' => '#',
                 'icone' => 'ion ion-wrench',
                 'title' => 'Grupo de suporte do sistema',
                 'pages' => array(
-                      array(
+                    array(
                         'label' => 'Grupos',
                         'route' => 'operacional/default',
                         'controller' => 'bs-grupos',
@@ -98,8 +139,28 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'ion ion-android-options',
                         'title' => 'Modulo Criação de grupos',
+                        'pages' => array(
+                            array(
+                                'label' => 'Cadastrar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-grupos',
+                                'resource' => 'Operacional\Controller\BsGrupos',
+                                'action' => 'inserir',
+                                'privilege' => 'inserir',
+                                'title' => 'Cadastrar Registro',
+                            ),
+                            array(
+                                'label' => 'Editar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-grupos',
+                                'resource' => 'Operacional\Controller\BsGrupos',
+                                'action' => 'editar',
+                                'privilege' => 'editar',
+                                'title' => 'Editar Registro',
+                            )
+                        )
                     ),
-                          array(
+                    array(
                         'label' => 'Ddl',
                         'route' => 'ddl/default',
                         'controller' => 'ddl',
@@ -109,7 +170,7 @@ return array(// ToDO make it dynamic - comes from the DB
                         'icone' => 'ion ion-android-options',
                         'title' => 'Modulo Manutenção do BD',
                     ),
-                   array(
+                    array(
                         'label' => 'Modulos',
                         'route' => 'operacional/default',
                         'controller' => 'bs-resources',
@@ -118,8 +179,28 @@ return array(// ToDO make it dynamic - comes from the DB
                         'privilege' => 'index',
                         'icone' => 'ion ion-android-options',
                         'title' => 'Modulos',
+                        'pages' => array(
+                            array(
+                                'label' => 'Cadastrar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-grupos',
+                                'resource' => 'Operacional\Controller\BsResources',
+                                'action' => 'inserir',
+                                'privilege' => 'inserir',
+                                'title' => 'Cadastrar Registro',
+                            ),
+                            array(
+                                'label' => 'Editar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-grupos',
+                                'resource' => 'Operacional\Controller\BsResources',
+                                'action' => 'editar',
+                                'privilege' => 'editar',
+                                'title' => 'Editar Registro',
+                            )
+                        )
                     ),
-                     array(
+                    array(
                         'label' => 'Zen Code',
                         'route' => 'zen-code/default',
                         'controller' => 'zen-code',
@@ -129,8 +210,8 @@ return array(// ToDO make it dynamic - comes from the DB
                         'icone' => 'ion ion-code',
                         'title' => 'Zen Code',
                     ),
-                    ),
-                 ),
+                ),
+            ),
             array(
                 'label' => 'Sair',
                 'route' => 'auth/default',
@@ -141,10 +222,9 @@ return array(// ToDO make it dynamic - comes from the DB
                 'icone' => 'ion ion-gear-a',
                 'title' => 'Grupo de suporte do sistema',
             )
-            ),
-          'secondary' =>require_once('navigation.site.php') ,
+        ),
+        'secondary' => require_once('navigation.site.php'),
     ),
-   
 );
 
 /*

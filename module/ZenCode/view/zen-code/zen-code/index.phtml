@@ -16,14 +16,14 @@ extract($user);
             <li class="divisor"> / </li>
             <li><a href="<?php echo $this->url($route, array('controller' => $controller, 'action' => "index")) ?>"><?= ucfirst($controller) ?> </a></li>
         </ul>
-        <?php echo $this->FormHelper()->filterForm($this->filtro); ?>
+     
     </div>
 </section>
 
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="collapse navbar-collapse">
-            <?php echo $this->ZFListarHelper()->setNavigation(); ?>
+        
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
@@ -50,6 +50,8 @@ extract($user);
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-form'))]="Gerar Form";
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-filter'))]="Gerar Filter";
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-factory'))]="Gerar Factory";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-navigation'))]="Gerar Navegação";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-tradutor'))]="Gerar Tradução";
             
             $alert =$this->HtmlTag('div')->setClass("trigger trigger_alert")->setText('<b>ATENÇÃO</b>: Ao Restaurar O Arquivo Ou Class Ao Seu Estado Original, Todas As Alterações Feitas Serão Perdidas.');
             $ModelForm[] =$this->HtmlTag('p')->setText($alert);

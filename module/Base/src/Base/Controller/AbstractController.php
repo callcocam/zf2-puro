@@ -239,6 +239,7 @@ abstract class AbstractController extends AbstractActionController {
             }
         endif;
         foreach ($constraints as $value) {
+            try{
             if ($value[1] === "UNIQUE") {
                 $unique = array_filter(explode("_", $value[0]));
                 if (isset($unique[4])) {
@@ -251,13 +252,17 @@ abstract class AbstractController extends AbstractActionController {
                         $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
                     else:
                         $validator = $this->setNoRecordExists($tabela, $field);
-                        $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
-                        $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                        $validator->setMessage("ERRO AO CADATSRAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
+                        $validator->setMessage("ERRO AO CADATSRAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
                     endif;
 
                     $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
                 }
             }
+        }
+        catch(\Zend\InputFilter\Exception\InvalidArgumentException $ex){
+
+        }
         }
     }
 

@@ -23,12 +23,17 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                 'Table' => function($sm) {
+                'Table' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new \Base\MetaData\Table($dbAdapter);
                     return $table;
                 },
-                 'Operacional\Model\BsCidadesTable' => function($sm) {
+                "DateFormat" => function () {
+                    
+                    //die;
+                    return new Services\DateFormat();
+                },
+                'Operacional\Model\BsCidadesTable' => function($sm) {
                     $tableGateway = $sm->get('BsCidadesTableGateway');
                     return new \Operacional\Model\BsCidadesTable($tableGateway);
                 },
@@ -38,7 +43,7 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new \Operacional\Model\BsCidades()); // Notice what is set here
                     return new TableGateway('bs_cidades', $dbAdapter, null, $resultSetPrototype);
                 },
-                 'Operacional\Model\BsCompaniesTable' => function($sm) {
+                'Operacional\Model\BsCompaniesTable' => function($sm) {
                     $tableGateway = $sm->get('CompaniesTableGateway');
                     $table = new \Operacional\Model\BsCompaniesTable($tableGateway);
                     return $table;
@@ -79,7 +84,6 @@ class Module {
                     $resultSetPrototype->setArrayObjectPrototype(new \Operacional\Model\BsGrupos());
                     return new TableGateway('bs_grupos', $dbAdapter, NULL, $resultSetPrototype);
                 }
-            
             ),
             'invokables' => array(
                 'Operacional\Model\BsResources' => 'Operacional\Model\BsResources',
@@ -88,11 +92,10 @@ class Module {
                 'Operacional\Model\BsCidades' => 'Operacional\Model\BsCidades',
                 'Operacional\Model\BsGrupos' => 'Operacional\Model\BsGrupos',
                 'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',
-             )
+            )
         );
     }
 
-    
     public function getViewHelperConfig() {
         return array(
             'factories' => array(
@@ -106,7 +109,7 @@ class Module {
                     return new \Base\View\Helper\RouteHelper($sm->getServiceLocator());
                 },
                 'ZFListarHelper' => function($sm) {
-                      return new \Base\View\Helper\ZFListarHelper();
+                    return new \Base\View\Helper\ZFListarHelper();
                 },
                 'FormHelper' => function ($sm) {
                     return new \Base\View\Helper\FormHelper($sm);
@@ -120,6 +123,5 @@ class Module {
             )
         );
     }
-
 
 }

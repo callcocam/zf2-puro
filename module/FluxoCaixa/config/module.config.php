@@ -46,13 +46,14 @@ return array(
             'FluxoCaixa\Controller\Index' => 'FluxoCaixa\Controller\IndexController',
               'FluxoCaixa\Controller\BsCaixa' => 'FluxoCaixa\Controller\BsCaixaController',
                'FluxoCaixa\Controller\BsMovimento' => 'FluxoCaixa\Controller\BsMovimentoController',
-
+ 		'FluxoCaixa\Controller\BsPlanosContas' => 'FluxoCaixa\Controller\BsPlanosContasController',
         ),
     ),
     'service_manager' => array(
         'factories' => array(// !!! aliases not alias
             'FluxoCaixa\Form\BsCaixaForm' => 'FluxoCaixa\Factory\BsCaixaFactory',
              'FluxoCaixa\Form\BsMovimentoForm' => 'FluxoCaixa\Factory\BsMovimentoFactory',
+             'FluxoCaixa\Form\BsPlanosContasForm' => 'FluxoCaixa\Factory\BsPlanosContasFactory',
                      
         ),
         'aliases' => array(// !!! aliases not alias
