@@ -424,6 +424,10 @@ class AbstractForm extends \Zend\Form\Form {
         if($this->has('publish_down')):
              $this->get('publish_down')->setValue( date("d-m-Y H:i:s"));
         endif;
+
+         if($this->has('publish_down')):
+             $this->get('publish_down')->setValue( date("d-m-Y H:i:s"));
+        endif;
        
     }
 
@@ -432,9 +436,9 @@ class AbstractForm extends \Zend\Form\Form {
     public static $DAFAULT_STATE = 1;
     public static $DAFAULT_ACCESS = 2;
     public static $TIPO_MODULO = ['1' => "OPTION_MODULO_LABEL", '2' => "OPTION_COMPONENTE_LABEL", '3' => "OPTION_ARQUIVO_LABEL"];
-    public static $MODULE_PAI = ['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL"];
-    public static $GROUP_ID = ['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL"];
-    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home"];
+    public static $MODULE_PAI = ['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL", '3' => "OPTION_OPREACIONAL_LABEL", '4' => "OPTION_FLUXO_CAIXA_LABEL", '5' => "OPTION_COMERCIAL_LABEL"];
+    public static $GROUP_ID = ['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL", '3' => "OPTION_FLUXO_CAIXA_LABEL", '4' => "OPTION_COMERCIAL_LABEL"];
+    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home",'FluxoCaixa' => "Fluxo De Caixa",'Cormicial' => "Comercial"];
 
     public function setValueOption($table, $condicao = array('state' => '0')) {
         $dados = $this->getServiceLocator()->get($table)->findALL();

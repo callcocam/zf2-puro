@@ -18,6 +18,8 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+            'secondary_navigation' => 'Navigation\Navigation\Service\SecondaryNavigationFactory',
         ),
         'invokables' => array(
             'LayoutListener' => 'Base\Listener\LayoutListener',

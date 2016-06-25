@@ -90,7 +90,7 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
      * @return um formulario de pesquisa com filtro de state, data perildo, title e descrição
      */
     public function getForm($formString, $repository) {
-        $ressult = $this->ServiceLocator->getServiceLocator()->get('Admin\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
+        $ressult = $this->ServiceLocator->getServiceLocator()->get('Operacional\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
         $form = $this->ServiceLocator->getServiceLocator()->get($formString);
         if ($ressult):
             $dataResult = array();
@@ -109,8 +109,8 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
     }
 
      public function getCompanies() {
-        $ressult = $this->ServiceLocator->getServiceLocator()->get('Admin\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
-        $form = $this->ServiceLocator->getServiceLocator()->get('Admin\Form\BsCompaniesForm');
+        $ressult = $this->ServiceLocator->getServiceLocator()->get('Operacional\Model\BsCompaniesTable')->findOneBy(array('state' => '0'));
+        $form = $this->ServiceLocator->getServiceLocator()->get('Operacional\Form\BsCompaniesForm');
         if ($ressult):
             $dataResult = array();
             foreach ($ressult->toArray() as $key => $value) {

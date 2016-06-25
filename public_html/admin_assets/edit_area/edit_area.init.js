@@ -6,7 +6,7 @@ $(function ()
             id: "description-edit-area"	// id of the textarea to transform	
             , start_highlight: false
             ,show_line_colors: false
-            , font_size: "8"
+            , font_size: "12"
             , font_family: "verdana, monospace"
             , allow_resize: "both"
             , allow_toggle: false

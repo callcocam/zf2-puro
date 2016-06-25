@@ -40,11 +40,12 @@ class GerarController extends Options {
         }
 
         $this->setBody('// Configurações iniciais do Controller');
-        $this->setBody('$this->route = "%s";');
+        $this->setBody('$this->route = "%s/default";');
         $this->setBody('$this->controller = "%s";');
         $this->setBody('$this->action = "%s";');
         $this->setBody('$this->model = "%s\Model\%s";');
         $this->setBody('$this->table = "%s\Model\%sTable";');
+        $this->setBody('$this->form = "%s\Form\%sForm";');
         $this->setBody('$this->template = "%s";');
       
         // gera os methods podemos erar mais de um repetindo o codigo
@@ -53,7 +54,7 @@ class GerarController extends Options {
             'shortDescription' => "construct do Table",
             'longDescription' => null,
             'datatype' => 'Base\Controller\AbstractController',
-            'body' =>sprintf(implode(PHP_EOL, $this->getBody()),$route,$controller,$action_default,$alias,$arquivo,$alias,$arquivo,$template));
+            'body' =>sprintf(implode(PHP_EOL, $this->getBody()),$route,$controller,$action_default,$alias,$arquivo,$alias,$arquivo,$alias,$arquivo,$template));
         $methodConstruct = new Methods($methodOption);
         $this->setMethod($methodConstruct);
         $this->setBody("limpa");

@@ -18,7 +18,7 @@ class GerarForm extends Options {
         $this->sl = $sl;
         extract($data->toArray());
         $this->setTable($tabela);
-        $this->tabelaElements = $this->sl->get('Admin\Model\BsElementsTable')->findBy(['asset_id' => md5($tabela)]);
+        $this->tabelaElements = $this->sl->get('Operacional\Model\BsElementsTable')->findBy(['asset_id' => md5($tabela)]);
         // Poxfix e o que completa o nome do arquivo ArquivoPosfix (ArquivoForm)
         $this->setPosfix("Form");
         // E tanto o o nome do arquivo como o nome da class

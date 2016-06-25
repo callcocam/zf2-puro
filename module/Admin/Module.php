@@ -23,20 +23,11 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                'Admin\Model\BsCidadesTable' => function($sm) {
-                    $tableGateway = $sm->get('BsCidadesTableGateway');
-                    return new \Admin\Model\BsCidadesTable($tableGateway);
-                },
-                'BsCidadesTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCidades()); // Notice what is set here
-                    return new TableGateway('bs_cidades', $dbAdapter, null, $resultSetPrototype);
-                },
+               
             
             ),
             'invokables' => array(
-                'Admin\Model\BsCidades' => 'Admin\Model\BsCidades',
+               
              )
         );
     }

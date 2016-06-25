@@ -42,20 +42,15 @@ return array(
     ),
      'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
-             'Admin\Controller\BsCidades' => 'Admin\Controller\BsCidadesController',
-             'Admin\Controller\BsCompanies' => 'Admin\Controller\BsCompaniesController',
-             'Admin\Controller\BsResources' => 'Admin\Controller\BsResourcesController',
-            
+             'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
+              
         ),
 
     ),
     'service_manager' => array(
         'factories' => array(// !!! aliases not alias
-            'Admin\Form\BsResourcesForm' => 'Admin\Factory\ResourcesFactory',
-              'Admin\Form\BsCompaniesForm' => 'Admin\Factory\CompaniesFactory',
-           
-        ),
+      
+             ),
         'aliases' => array(// !!! aliases not alias
          
         ),

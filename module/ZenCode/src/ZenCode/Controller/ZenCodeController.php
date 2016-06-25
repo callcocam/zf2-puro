@@ -17,7 +17,8 @@ use Zend\View\Model\JsonModel;
  * @author Call
  */
 class ZenCodeController extends \Base\Controller\AbstractController {
-
+    
+    protected $restaura=false;
     public function __construct() {
         $this->route = "zen-code/default";
         $this->controller = "zen-code";
@@ -138,6 +139,27 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             'msg' => $this->error,'data'=>$controller,'caminho'=>$caminho,'id'=>$id));
     }
 
+     public function gerarfactoryAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}Factory.php");
+            if (file_exists($caminho)) {
+                $factory = file_get_contents($caminho);
+                 $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            } else {
+                $factoryG = new \ZenCode\Services\GerarFactory($this->data, $this->getServiceLocator());
+                $factory = $factoryG->generateClass();
+                $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} GERADO COM SUCESSO!";
+            }
+            $this->action=sprintf("%s%s",$this->data->getArquivo(),"Factory");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+         endif;
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error,'data'=>$factory,'caminho'=>$caminho,'id'=>$id));
+    }
+
       public function gerarmoduleAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
@@ -164,13 +186,15 @@ class ZenCodeController extends \Base\Controller\AbstractController {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
+            $t=date("YmdHis");
             $caminho = str_replace("%s",DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%sconfig%smodule.config.php");
             if (file_exists($caminho)) {
-                $moduleconfig = file_get_contents($caminho);
+                 $moduleconfig = file_get_contents($caminho);
                  $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-                $moduleconfigG = new \ZenCode\Services\GerarModuleConfig($this->data, $this->getServiceLocator());
-                $moduleconfig = $controllerG->generateClass();
+                $childrenModules=$this->getTableGateway()->findBy(['alias'=>$this->data->getAlias()]);
+                $moduleconfigG = new \ZenCode\Services\GerarModuleConfig($this->data, $childrenModules, $this->getServiceLocator());
+                $moduleconfig = $moduleconfigG->generateFile(['caminho'=>$caminho,'description'=>$moduleconfigG->getCode()]);
                 $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
             $this->action=sprintf("%s","module.config");

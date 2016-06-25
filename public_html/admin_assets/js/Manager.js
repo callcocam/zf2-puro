@@ -33,9 +33,9 @@ class Manager extends SIGAMessages {
         $(_Manager.carregando).hide('fast');
         _Manager.messageSiga(responseText.msg, responseText.class);
         _Manager.result = responseText.result;
-         console.log(_Manager.result);
-         console.log(responseText.id);
-         console.log(responseText.codigo);
+         // console.log(_Manager.result);
+         // console.log(responseText.id);
+         // console.log(responseText.codigo);
 
         if (responseText.id && _Manager.result) {
             _Manager.save_copy.removeAttr('disabled');

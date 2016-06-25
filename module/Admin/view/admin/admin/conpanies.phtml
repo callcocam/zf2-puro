@@ -3,11 +3,6 @@ $form= $this->FormHelper()->getCompanies();
 if ($form instanceof \Zend\Form\Form):
   // <!-- Filename: /module/Blog/view/blog/write/add.phtml -->
 // <!-- Main content -->
-    $route = $this->RouteHelper()->getRoute();
-    $controller = $this->RouteHelper()->getController();
-    $action = $this->RouteHelper()->getAction();
-    $id = $this->RouteHelper()->getId();
-    $page = $this->RouteHelper()->getRotaAndContrllerAction('page');
     echo $this->headTitle(strtoupper(substr($controller,3)));
     ?>
     <section class="content-header">
@@ -17,7 +12,7 @@ if ($form instanceof \Zend\Form\Form):
         <li class="divisor"> / </li>
         <li>Panel</li>
         <li class="divisor"> / </li>
-        <li><a href="<?php echo $this->url($route,array('controller'=>$controller,'action'=>"index"))?>"><?=ucfirst($controller)?> </a></li>  
+        <li><a href="<?php echo $this->url($this->route,array('controller'=>$controller,'action'=>"index"))?>"><?=ucfirst($controller)?> </a></li>  
         <li class="divisor"> / </li>
         <li>MANUTENÇÃO - <b><?php echo "Manutenção";?></b></li>
     </ul>
@@ -27,7 +22,7 @@ if ($form instanceof \Zend\Form\Form):
 <section class="content">
       <?php
     echo $this->messages();
-    $form->setAttribute('action', $this->url($route, array('controller' => $controller, 'action' => $this->action, 'id' => $this->id)));
+    $form->setAttribute('action', $this->url($this->route, array('controller' => $controller, 'action' =>'publica')));
     $form->setAttribute('class', 'form-geral Manager');
     $this->formElementErrors()
             ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
@@ -35,8 +30,7 @@ if ($form instanceof \Zend\Form\Form):
     echo $this->form()->openTag($form);
     ?>
     <div class="row">
-
-        <div class="box box-full-12 box-medium-07 box-large-08">
+       <div class="box box-full-12 box-medium-07 box-large-08">
         <?php
         //BLOCO DE GERAL
         $geral = $this->FormHelper()->GerarElement($form, 'geral'); 
@@ -51,6 +45,7 @@ if ($form instanceof \Zend\Form\Form):
         <div class="box box-full-12 box-medium-05 box-large-04">
 
             <?php
+            $form->get('asset_id')->setValue(md5($this->controller));
             //BLOCO DE CONTROLES
             $controle = $this->FormHelper()->GerarElement($form, 'controle');
             if (!is_null($controle)):

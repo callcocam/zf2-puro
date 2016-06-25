@@ -49,7 +49,7 @@ extract($user);
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-table'))]="Gera Table";
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-form'))]="Gerar Form";
             $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-filter'))]="Gerar Filter";
-            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-faftory'))]="Gerar Factory";
+            $actions[$this->url('zen-code/default', array('controller' => 'zen-code', 'action' => 'gerar-factory'))]="Gerar Factory";
             
             $alert =$this->HtmlTag('div')->setClass("trigger trigger_alert")->setText('<b>ATENÇÃO</b>: Ao Restaurar O Arquivo Ou Class Ao Seu Estado Original, Todas As Alterações Feitas Serão Perdidas.');
             $ModelForm[] =$this->HtmlTag('p')->setText($alert);

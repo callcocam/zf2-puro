@@ -22,7 +22,7 @@ class Module {
         $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($ev) {
             $cache = new Model\Cache();
             if (!$cache->hasItem("companies")) {
-                $model = $ev->getApplication()->getServiceManager()->get('Admin\Model\BsCompaniesTable');
+                $model = $ev->getApplication()->getServiceManager()->get('Operacional\Model\BsCompaniesTable');
                 $companies = $model->findOneBy(array('state' => 0));
                 if ($companies) {
                     $cache->addItem("companies", $companies->toArray());
@@ -49,75 +49,21 @@ class Module {
         return array(
             'factories' => array(
                 // For Yable data Gateway
-                'Table' => function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new \Base\MetaData\Table($dbAdapter);
-                    return $table;
-                },
-                'Admin\Model\BsCompaniesTable' => function($sm) {
-                    $tableGateway = $sm->get('CompaniesTableGateway');
-                    $table = new \Admin\Model\BsCompaniesTable($tableGateway);
-                    return $table;
-                },
-                'CompaniesTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsCompanies()); // Notice what is set here
-                    return new TableGateway('bs_companies', $dbAdapter, null, $resultSetPrototype);
-                },
-                'Admin\Model\BsResourcesTable' => function ($sm) {
-                    $tableGateway = $sm->get('BsResourcesTableGateway');
-                    return new \Admin\Model\BsResourcesTable($tableGateway);
-                },
-                'BsResourcesTableGateway' => function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsResources());
-                    return new TableGateway('bs_resources', $dbAdapter, NULL, $resultSetPrototype);
-                },
-                'Admin\Model\BsElementsTable' => function ($sm) {
-                    $tableGateway = $sm->get('BsElementsTableGateway');
-                    return new \Admin\Model\BsElementsTable($tableGateway);
-                },
-                'BsElementsTableGateway' => function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \Admin\Model\BsElements());
-                    return new TableGateway('bs_elements', $dbAdapter, NULL, $resultSetPrototype);
-                }
+               
+               
             ),
             'invokables' => array(
-                'resultSetPrototype' => 'Zend\Db\ResultSet\ResultSet',
-                'Admin\Model\BsResources' => 'Admin\Model\BsResources',
-                'Admin\Model\BsElements' => 'Admin\Model\BsElements',
+                 
             )
         );
     }
 
     public function getViewHelperConfig() {
         return array(
-            'factories' => array(
-                'messages' => function ($helperPluginManager) {
-                    $sm = $helperPluginManager->getServiceLocator();
-                    $messagesPlugin = $sm->get('ControllerPluginManager')->get('messages');
-                    $messages = $messagesPlugin->getMergedMessages();
-                    $helper = new View\Helper\Messages($messages);
-                    return $helper;
-                }, 'RouteHelper' => function($sm) {
-                    return new \Base\View\Helper\RouteHelper($sm->getServiceLocator());
-                },
-                'ZFListarHelper' => function($sm) {
-                      return new \Base\View\Helper\ZFListarHelper();
-                },
-                'FormHelper' => function ($sm) {
-                    return new \Base\View\Helper\FormHelper($sm);
-                },
-            ),
+            
+        
             'invokables' => array(
-                'CacheHelper' => 'Base\View\Helper\CacheHelper',
-                'HtmlTag' => 'Base\View\Helper\HtmlElement',
-                'ZFListarHelper' => 'Base\View\Helper\ZFListarHelper',
-                 'viewhelpercaptcha' => 'Base\View\Helper\Form\Custom\Captcha\ViewHelperCaptcha',
+                
             )
         );
     }

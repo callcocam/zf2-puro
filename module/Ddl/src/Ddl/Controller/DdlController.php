@@ -22,8 +22,8 @@ class DdlController extends \Base\Controller\AbstractController {
         $this->controller = "ddl";
         $this->action = "index";
         $this->form = "";
-        $this->model = "Admin\Model\BsElements";
-        $this->table = "Admin\Model\BsElementsTable";
+        $this->model = "Operacional\Model\BsElements";
+        $this->table = "Operacional\Model\BsElementsTable";
         $this->template = "ddl/index/bd";
     }
 
@@ -73,7 +73,7 @@ class DdlController extends \Base\Controller\AbstractController {
                 $this->gerarcampos($tabela, "publish_down", "text", "Finaliza Uma Publicação", "datas");
                 $table->addConstraint(new Constraint\PrimaryKey('id'));
                 $table->addConstraint(
-                        new Constraint\UniqueKey(['codigo'], 'my_unique_key')
+                        new Constraint\UniqueKey(['codigo'], 'codigo')
                 );
                 $this->execute($table);
                 if ($this->result):

@@ -92,13 +92,11 @@ abstract class AbstractController extends AbstractActionController {
         if (!empty($this->table)):
             $page = $this->params()->fromRoute('page', 1);
             $this->data = $this->getTableGateway()->findAll();
-
             // set the current page to what has been passed in query string, or to 1 if none set
             $this->data->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
             // set the number of items per page to 10
             $this->data->setItemCountPerPage(10);
             $this->data->setCurrentPageNumber($page);
-
         endif;
         $table = $this->getServiceLocator()->get('Table');
         $view->setVariable('table', $table);
@@ -175,7 +173,6 @@ abstract class AbstractController extends AbstractActionController {
                      $this->getTableGateway()->update($model);
                 else:
                      $this->getTableGateway()->insert($model);
-
                 endif;
                 if ($this->getTableGateway()->getResult()) {
                     $this->classe = 'trigger_success';

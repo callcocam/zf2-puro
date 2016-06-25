@@ -1,21 +1,7 @@
 <?php
-
-/**
- * Global Configuration Override
- *
- * You can use this file for overriding configuration values from modules, etc.
- * You would place values in here that are agnostic to the environment and not
- * sensitive to security.
- *
- * @NOTE: In practice, this file will typically be INCLUDED in your source
- * control, so do not include passwords or other sensitive information in this
- * file.
- */
-// from http://framework.zend.com/manual/2.1/en/modules/zend.navigation.quick-start.html
-// the array was empty before that
 return array(// ToDO make it dynamic - comes from the DB
     'navigation' => array(
-        'default' => array(
+          'default' => array(
             array(
                 'label' => 'Dashboard',
                 'route' => 'admin/default',
@@ -36,41 +22,21 @@ return array(// ToDO make it dynamic - comes from the DB
                 'title' => 'Ir Para O Site',
                 'target' => '_blank'
             ),
-            array(
-                'label' => 'CONFIGURAÇÕES',
+               array(
+                'label' => 'CONTROLE/ACESSO',
                 'class' => 'treeview',
                 'action' => '#',
-                'icone' => 'ion ion-gear-a',
-                'title' => 'Grupo de suporte do sistema',
+                'icone' => 'ion ion-android-unlock',
+                'title' => 'Grupo Controle De Acesso',
                 'pages' => array(
-                    array(
-                        'label' => 'Confg/Empresa',
-                        'route' => 'admin/default',
-                        'controller' => 'bs-companies',
-                        'resource' => 'Admin\Controller\BsCompanies',
-                        'action' => 'index',
-                        'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
-                        'title' => '',
-                    ),
-                    array(
-                        'label' => 'Modulos',
-                        'route' => 'admin/default',
-                        'controller' => 'bs-resources',
-                        'resource' => 'Admin\Controller\BsResources',
-                        'action' => 'index',
-                        'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
-                        'title' => '',
-                    ),
-                    array(
+                          array(
                         'label' => 'Privilegios',
                         'route' => 'acl/default',
                         'controller' => 'acl',
                         'resource' => 'Acl\Controller\Acl',
                         'action' => 'index',
                         'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
+                        'icone' => 'ion ion-key',
                         'title' => '',
                     ),
                     array(
@@ -80,42 +46,91 @@ return array(// ToDO make it dynamic - comes from the DB
                         'resource' => 'Auth\Controller\Admin',
                         'action' => 'index',
                         'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
+                        'icone' => 'ion ion-ios-people',
                         'title' => '',
                     ),
-                      array(
-                        'label' => 'Ddl',
-                        'route' => 'ddl/default',
-                        'controller' => 'ddl',
-                        'resource' => 'Auth\Controller\Admin',
+                    ),
+                 ),
+                require_once('navigation.admin.php')
+                ,
+               array(
+                'label' => 'CONFIGURAÇÕES',
+                'class' => 'treeview',
+                'action' => '#',
+                'icone' => 'ion ion-gear-a',
+                'title' => 'Grupo de suporte do sistema',
+                'pages' => array(
+                    array(
+                        'label' => 'Confg/Empresa',
+                        'route' => 'operacional/default',
+                        'controller' => 'bs-companies',
+                        'resource' => 'Operacional\Controller\BsCompanies',
                         'action' => 'index',
                         'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
-                        'title' => '',
+                        'icone' => 'ion ion-android-home',
+                        'title' => 'Cofiguraçãoda empresa',
                     ),
-                    array(
+                     array(
                         'label' => 'Upload',
                         'route' => 'upload/default',
                         'controller' => 'upload',
                         'resource' => 'Upload\Controller\Upload',
                         'action' => 'index',
                         'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
-                        'title' => '',
+                        'icone' => 'ion ion-android-upload',
+                        'title' => 'Modulo de Uploads',
                     ),  
-                    array(
+                )
+            ),
+             array(
+                'label' => 'SUPORTE/MANUTEÇÃO',
+                'class' => 'treeview',
+                'action' => '#',
+                'icone' => 'ion ion-wrench',
+                'title' => 'Grupo de suporte do sistema',
+                'pages' => array(
+                      array(
+                        'label' => 'Grupos',
+                        'route' => 'operacional/default',
+                        'controller' => 'bs-grupos',
+                        'resource' => 'Operacional\Controller\BsGrupos',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'ion ion-android-options',
+                        'title' => 'Modulo Criação de grupos',
+                    ),
+                          array(
+                        'label' => 'Ddl',
+                        'route' => 'ddl/default',
+                        'controller' => 'ddl',
+                        'resource' => 'Auth\Controller\Admin',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'ion ion-android-options',
+                        'title' => 'Modulo Manutenção do BD',
+                    ),
+                   array(
+                        'label' => 'Modulos',
+                        'route' => 'operacional/default',
+                        'controller' => 'bs-resources',
+                        'resource' => 'Operacional\Controller\BsResources',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'ion ion-android-options',
+                        'title' => 'Modulos',
+                    ),
+                     array(
                         'label' => 'Zen Code',
                         'route' => 'zen-code/default',
                         'controller' => 'zen-code',
                         'resource' => 'ZenCode\Controller\ZenCode',
                         'action' => 'index',
                         'privilege' => 'index',
-                        'icone' => 'fa fa-angle-double-right',
-                        'title' => '',
+                        'icone' => 'ion ion-code',
+                        'title' => 'Zen Code',
                     ),
-                  
-                )
-            ),
+                    ),
+                 ),
             array(
                 'label' => 'Sair',
                 'route' => 'auth/default',
@@ -126,22 +141,10 @@ return array(// ToDO make it dynamic - comes from the DB
                 'icone' => 'ion ion-gear-a',
                 'title' => 'Grupo de suporte do sistema',
             )
-        ),
-        'secondary' => array(
-            array(
-                'label' => 'Home',
-                'route' => 'home',
-                'class' => 'item-1', // with the help of ->setAddClassToListItem(true) the class will be moved to li or a tags
-                'anchor_class' => "mmhome",
             ),
-        ),
+          'secondary' =>require_once('navigation.site.php') ,
     ),
-    'service_manager' => array(
-        'factories' => array(
-            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
-            'secondary_navigation' => 'Navigation\Navigation\Service\SecondaryNavigationFactory',
-        ),
-    ),
+   
 );
 
 /*

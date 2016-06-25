@@ -9,6 +9,7 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Base',
+        'Operacional',
         'Admin',
         'Home',
         'Auth',
@@ -17,7 +18,8 @@ return array(
         'Navigation',
         'Ddl',
         'Upload',
-        'ZenCode'
+        'ZenCode',
+        'FluxoCaixa'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

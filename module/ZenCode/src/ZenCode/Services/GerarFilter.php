@@ -16,9 +16,9 @@ class GerarFilter extends Options {
         $this->sl = $sl;
         extract($data->toArray());
         $this->setTable($tabela);
-        $this->tabelaElements = $this->sl->get('Admin\Model\BsElementsTable')->findBy(['asset_id' => md5($tabela)]);
+        $this->tabelaElements = $this->sl->get('Operacional\Model\BsElementsTable')->findBy(['asset_id' => md5($tabela)]);
         // Poxfix e o que completa o nome do arquivo ArquivoPosfix (ArquivoForm)
-        $this->setPosfix("Fiter");
+        $this->setPosfix("Filter");
         // E tanto o o nome do arquivo como o nome da class
         $this->setName($arquivo);
         // ex:Form, Entity, Service
@@ -67,7 +67,7 @@ class GerarFilter extends Options {
         endif;
         // gera os methods podemos erar mais de um repetindo o codigo
         $methodOption = array('name' => "__construct",
-            'parameter' => array(array('name' => "serviceLocator", 'type' => null, 'value' => false)),
+            'parameter' => array(array('name' => "serviceLocator", 'type' => null, 'value' => null)),
             'shortDescription' => "construct do Fultir",
             'longDescription' => null,
             'datatype' => 'Base\Form\AbstractFilter',
@@ -103,9 +103,9 @@ class GerarFilter extends Options {
         $body = '// Informação para a coluna %s:' . PHP_EOL;
         $body.='$' . $name . ' = new Input ( "%s" );' . PHP_EOL;
         $body.='$' . $name . '->setRequired ( %s );' . PHP_EOL;
-        $body.='$' . $name . '->getFilterChain ()->attach ( $StringTrim );' . PHP_EOL;
-        $body.=$stpTag . '$' . $name . '->getFilterChain ()->attach ( $StripTags );' . PHP_EOL;
-        $body.=$empty . '$' . $name . '->getValidatorChain()->attach($emptyfilter);' . PHP_EOL;
+        $body.='$' . $name . '->getFilterChain ()->attach ( $this->StringTrim );' . PHP_EOL;
+        $body.=$stpTag . '$' . $name . '->getFilterChain ()->attach ( $this->StripTags );' . PHP_EOL;
+        $body.=$empty . '$' . $name . '->getValidatorChain()->attach($this->emptyfilter);' . PHP_EOL;
         $body.='$this->add ( $' . $name . ' );' . PHP_EOL;
         return sprintf($body, $name, $name, $filter);
     }

@@ -32,7 +32,7 @@ class Options {
     protected $moduleInfo;
     protected $generateClasse;
     protected $extends;
-    protected $impements = array();
+    protected $implements = array();
     protected $method = array();
     protected $parameter;
     protected $docblock = null;
@@ -75,8 +75,8 @@ class Options {
         return $this->extends;
     }
 
-    public function getImpements() {
-        return $this->impements;
+    public function getImplements() {
+        return $this->implements;
     }
 
     public function getMethod() {
@@ -159,8 +159,8 @@ class Options {
         $this->extends = $extends;
     }
 
-    public function setImpements($impements) {
-        $this->impements = $impements;
+    public function setImplements($implements) {
+        $this->implements = $implements;
     }
 
     public function setMethod(Methods $method) {
