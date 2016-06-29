@@ -9,12 +9,14 @@ use Zend\Validator\EmailAddress;
 use Zend\Validator\Identical;
 use Zend\Filter\StripTags;
 use Zend\Filter\StringTrim;
-class ForgottenPasswordFilter  extends \Base\Form\AbstractFilter {
+
+class ForgottenPasswordFilter extends \Base\Form\AbstractFilter {
+
 
     /**
      * @return Zend\InputFilter
      */
-    public function __construct($serviceLocator=null) {
+    public function __construct($serviceLocator = null) {
         $this->inputFilter = new InputFilter ();
         $this->emptyfilter = new NotEmpty ();
         $this->emailfilter = new EmailAddress ();
@@ -26,8 +28,8 @@ class ForgottenPasswordFilter  extends \Base\Form\AbstractFilter {
         $this->identca->setToken("password");
         $this->identca->setMessage("O Campo Repita Senha de ser Igual Ao campo Senha", Identical::MISSING_TOKEN);
         $this->serviceLocator = $serviceLocator;
-        $validator = $this->RecordExiste('bs_users', 'email',"","E-Mail não foi encontrado");
-         // Informação para a coluna email:
+        $validator = $this->RecordExiste('bs_users', 'email', "", "E-Mail não foi encontrado");
+        // Informação para a coluna email:
         $email = new Input("email");
         $email->setRequired(true);
         $email->getFilterChain()->attach($this->StringTrim);

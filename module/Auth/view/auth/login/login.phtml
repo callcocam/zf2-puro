@@ -2,7 +2,7 @@
     .login-box{margin: 60px auto;float: left;width: 100%;}
     .main-login-header{text-align: left;display: block;width: 500px;max-width: 90%;margin: 0 auto;background: #fff;padding: 0;}
     .login-box-body{text-align: left;display: block;width: 500px;max-width: 90%;margin:0 auto 25px auto;background: #fff;padding: 25px;box-shadow: 0 0 5px 0 #ccc;}
-    .form-group{margin: 15px 0;}
+    .form-group{margin: 15px 0;padding: 10px 0 !important;}
     .login-logo{padding-bottom: 0;}
     .login-box a{color: #555;text-decoration: none;font-size: 0.8em;margin-top: 10px;text-transform: uppercase;font-weight: 300;}
     .login-box a:hover{text-decoration: underline;}
@@ -19,11 +19,11 @@
         $this->form->prepare();
         echo $this->form()->openTag($this->form);
         ?>
-        <div class="form-group has-feedback">
+        <div class="form-group box box-full-12 has-feedback">
             <?php echo $this->formEmail($this->form->get('email')); ?>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group box box-full-12 has-feedback">
             <?php echo $this->formPassword($this->form->get('password')); ?>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>

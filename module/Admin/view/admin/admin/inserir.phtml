@@ -1,11 +1,4 @@
-<!-- Filename: /module/Blog/view/blog/write/add.phtml -->
-<!-- Main content -->
 <?php
-$route = $this->RouteHelper()->getRoute();
-$controller = $this->RouteHelper()->getController();
-$action = $this->RouteHelper()->getAction();
-$id = $this->RouteHelper()->getId();
-$page = $this->RouteHelper()->getRotaAndContrllerAction('page');
 echo $this->headTitle(strtoupper(substr($controller, 3)));
 ?>
 <section class="content-header">
@@ -15,7 +8,7 @@ echo $this->headTitle(strtoupper(substr($controller, 3)));
             <li class="divisor"> / </li>
             <li>Panel</li>
             <li class="divisor"> / </li>
-            <li><a href="<?php echo $this->url($route, array('controller' => $controller, 'action' => "index")) ?>"><?= ucfirst($controller) ?> </a></li>  
+            <li><a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => "index")) ?>"><?= ucfirst($this->controller) ?> </a></li>  
             <li class="divisor"> / </li>
             <li>MANUTENÇÃO - <b><?php echo "Manutenção"; ?></b></li>
         </ul>
@@ -23,48 +16,24 @@ echo $this->headTitle(strtoupper(substr($controller, 3)));
     </div>
 </section>
 <section class="content">
+
     <?php
     echo $this->messages();
     $form = $this->form;
-    $form->setAttribute('action', $this->url($route, array('controller' => $controller, 'action' => $this->action, 'id' => $this->id)));
+    $form->setAttribute('action', $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action, 'id' => $this->id)));
     $form->setAttribute('class', 'form-geral Manager');
     $this->formElementErrors()
             ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
             ->setMessageSeparatorString('</li>')->render($form);
-    $filset[] = $this->form()->openTag($form);
-    $rigth = [];
-    $lefft = [];
-    //BLOCO DE GERAL
-    $geral = $this->FormHelper()->GerarElement($form, 'geral');
-    $linha = "<a class=\"btn btn-black\" href=\"%s\">{$this->translate('BTN_VOLTAR_LABEL')}</a><p>";
-    $btnVoltar = sprintf($linha, $this->url($this->route, array('controller' => $this->controller, 'action' => "index")));
-    $footer = [$this->formSubmit($form->get('save')), $this->formSubmit($form->get('save_copy')), $btnVoltar];
-    if (!is_null($geral)):
-        $lefft[] = $this->FormHelper()->boxWidgets(array('body' => $geral, "title" => "MANUTENÇÃO DOS DADOS", "class" => "box-default", 'footer' => implode("", $footer), 'icone' => 'clipboard'));
+    echo $this->form()->openTag($form);
+    $this->GerarViewHelper()->GerarElement($form);
+    if (!$this->resolver("admin/admin/tpl/{$this->controller}-inserir")) :
+         file_put_contents("./module/Admin/view/admin/admin/tpl/{$this->controller}-inserir.phtml", $this->GerarViewHelper()->formGrupo());
     endif;
-
-    //BLOCO DE CONTROLES
-    $controle = $this->FormHelper()->GerarElement($form, 'controle');
-    if (!is_null($controle)):
-        $rigth[] = $this->FormHelper()->boxWidgets(array('body' => $controle, "title" => "CONTROLES", "class" => "box-default", 'icone' => 'clipboard'));
-    endif;
-    //BLOCO DE IMAGENS
-    $images = $this->FormHelper()->GerarElement($form, 'images');
-
-    if (!is_null($images)):
-        $rigth[] = $this->FormHelper()->boxWidgets(array('body' => $images, "title" => "IMAGENS", "class" => "box-default", 'icone' => 'clipboard'));
-    endif;
-
-    //BLOCO DE DATAS
-    $datas = $this->FormHelper()->GerarElement($form, 'datas');
-    if (!is_null($datas)):
-        $rigth[] = $this->FormHelper()->boxWidgets(array('body' => $datas, "title" => "DATAS", "class" => "box-default", 'icone' => 'clipboard'));
-    endif;
-    $filset[] = $this->HtmlTag('div')->setClass("box box-full-12 box-medium-05 box-large-08")->setText(implode("", $lefft));
-    $filset[] = $this->HtmlTag('div')->setClass("box box-full-12 box-medium-07 box-large-04")->setText(implode("", $rigth));
-    $filset[] = $this->form()->closeTag();
-    $boxForm = $this->HtmlTag('fildset')->setText(implode("", $filset));
-    echo $boxForm;
+    $html = $this->partial("admin/admin/tpl/{$this->controller}-inserir");
+    $primeiro = str_replace(array_keys($this->GerarViewHelper()->getHtml()), array_values($this->GerarViewHelper()->getHtml()), $html);
+    echo str_replace(array_keys($this->GerarViewHelper()->getLabels()), array_values($this->GerarViewHelper()->getLabels()), $primeiro);
+    echo $this->form()->closeTag();
     ?>
 </section><!-- /.content -->
 

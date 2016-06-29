@@ -234,7 +234,7 @@ class ProfileForm extends AbstractForm {
                     'name' => 'cidade',
                     'options' => array(
                         'label' => 'FILD_CIDADE_LABEL',
-                        'value_options' => $this->setValueOption('Admin\Model\BsCidadesTable'),
+                        'value_options' => $this->setValueOption('Operacional\Model\BsCidadesTable'),
                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(

@@ -104,20 +104,24 @@ class App extends SIGAMessages {
     }
 
     rzHeight() {
-        var neg = parseInt($(this.mainContent).css('padding-top')) + parseInt($(this.mainContent).css('padding-bottom'));
-        var main_height = this.mainContent.outerHeight();
-        var sidebar_height = this.contentLeft.outerHeight();
-        if (main_height < $(window).outerHeight()) {
-            main_height = $(window).outerHeight();
-        }
-        var postSetWidth;
-        if (main_height >= sidebar_height) {
-            this.contentLeft.css('min-height', main_height + 30);
-            postSetWidth = main_height + neg;
-        } else {
-            this.contentLeft.css('min-height', sidebar_height);
-            postSetWidth = sidebar_height;
-        }
+        // var neg = parseInt($(this.mainContent).css('padding-top')) + parseInt($(this.mainContent).css('padding-bottom'));
+        // var main_height = this.mainContent.outerHeight();
+        // var sidebar_height = this.contentLeft.outerHeight();
+        // if (main_height > $(window).outerHeight()) {
+        //     main_height = $(window).outerHeight();
+        // }
+        // var postSetWidth;
+        // if (main_height >= sidebar_height) {
+        //     this.contentLeft.css('min-height', main_height + 30);
+        //     postSetWidth = main_height + neg;
+        // } else {
+        //     this.contentLeft.css('min-height', sidebar_height);
+        //     postSetWidth = sidebar_height;
+        // }
+        // console.clear();
+        // console.log($(window).outerHeight());
+        //  console.log(main_height);
+        //   console.log(sidebar_height);
 
     }
 
@@ -254,6 +258,17 @@ class App extends SIGAMessages {
             }).disableSelection();
     }
 
+    escondeBanco(_this)
+    {
+        console.log(_this);
+   if(parseInt(_this)){
+          $(".banco").fadeIn('slow');
+       }
+       else{
+         $(".banco").fadeOut('slow');
+       }
+    }
+
 
 
 
@@ -272,7 +287,12 @@ $(function () {
         event.preventDefault();
     });
     _App.treeview(_App.menuTreeview);
-
+    
+    
+    $('input:radio[name=conta_tipo]').change(function() {
+          _App.escondeBanco($(this).val());
+    });
+    _App.escondeBanco($('input:radio[name=conta_tipo]:checked').val());
     // if (_App.seletorElements.length) {
     //     _App.escondeElements();
     // }
@@ -300,13 +320,34 @@ $(function () {
         _App.excluir(_this, _App);
         return false;
     });
-
-
-
-
-    $("#created, #publish_down").datetimepicker({
+    
+    $("#created").datetimepicker({
         timepicker: false,
         format: 'd-m-Y',
+        onChangeDateTime: function (dp, $input) {
+            //alert($input.val());
+        }
+    });
+    if($(".negativa").length){
+        $(".negativa").parent('.css-label').css({
+        background: '#F45563',
+        'text-shadow': '1px 1px #C54550'
+        });
+        $(".positiva").parent('.css-label').css({
+            background: '#00B494',
+            'text-shadow': '1px 1px #008068'
+        });
+    }
+    if($(".real").length){
+     $(".real").blur(function()
+         {
+             $(".real").formatCurrency();
+    });
+    $(".real").formatCurrency();
+   }
+    $("#publish_up, #publish_down").datetimepicker({
+        timepicker: false,
+        format: 'd-m-Y H:i:s',
         onChangeDateTime: function (dp, $input) {
             //alert($input.val());
         }

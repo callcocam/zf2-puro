@@ -188,7 +188,7 @@ class DdlController extends \Base\Controller\AbstractController {
             endif;
         }
         return new \Zend\View\Model\JsonModel(
-                array('result' => $this->result, 'action' => '.select-tabela', 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
+                array('result' => $this->result, 'action' => '.select-tabela','action_add'=>'#tabela-add', 'codigo' => "0", 'class' => $this->classe, 'msg' => $this->msg)
         );
     }
 

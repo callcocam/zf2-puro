@@ -10,12 +10,12 @@ use Zend\Validator\Identical;
 use Zend\Filter\StripTags;
 use Zend\Filter\StringTrim;
 
-class RegistrationFilter extends  \Base\Form\AbstractFilter {
+class RegistrationFilter extends \Base\Form\AbstractFilter {
 
-    /**
+      /**
      * @return Zend\InputFilter
      */
-    public function __construct($serviceLocator=null) {
+    public function __construct($serviceLocator = null) {
         $this->inputFilter = new InputFilter ();
         $this->emptyfilter = new NotEmpty ();
         $this->emailfilter = new EmailAddress ();
@@ -27,7 +27,7 @@ class RegistrationFilter extends  \Base\Form\AbstractFilter {
         $this->identca->setToken("password");
         $this->identca->setMessage("O Campo Repita Senha de ser Igual Ao campo Senha", Identical::MISSING_TOKEN);
         $this->serviceLocator = $serviceLocator;
-      
+
         // Informação para a coluna id:
         $id = new Input("id");
         $id->setRequired(true);

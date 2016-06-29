@@ -74,10 +74,11 @@ class FormHelper extends \Zend\View\Helper\AbstractHelper {
                 ->setMessageSeparatorString('</li>')->render($form);
         $htmlHead = [];
         $html[] = $this->view->form()->openTag($form);
-        $html[] =sprintf("<div class='box box-full-12 box-small-06 box-medium-03'>%s</div>", $this->view->formRow($form->get('modulo')->setOptions(['value_options'=> $options])));
-        $html[] =sprintf("<div class='box box-full-12 box-small-06 box-medium-03'>%s</div>", $this->view->formRow( $form->get('class')->setOptions(['value_options'=> $actions])));
-        $html[] = sprintf("<div class='box box-full-12 box-small-08 box-medium-04'>%s</div>",$this->view->formRow( $form->get('caminho')));
-        $html[] = sprintf("<div class='box box-full-12 box-small-04 box-medium-02'>%s%s</div>",$this->view->formRow( $form->get('id')),$this->view->formRow( $form->get('refresh')));
+        $html[] =sprintf("<div class='box box-full-12 box-small-06 box-medium-02'>%s</div>", $this->view->formRow($form->get('modulo')->setOptions(['value_options'=> $options])));
+        $html[] =sprintf("<div class='box box-full-12 box-small-06 box-medium-02'>%s</div>", $this->view->formRow( $form->get('class')->setOptions(['value_options'=> $actions])));
+        $html[] =sprintf("<div class='box box-full-12 box-small-06 box-medium-02'>%s</div>", $this->view->formRow( $form->get('view')));
+        $html[] = sprintf("<div class='box box-full-12 box-small-08 box-medium-03'>%s</div>",$this->view->formRow( $form->get('caminho')));
+        $html[] = sprintf("<div class='box box-full-12 box-small-04 box-medium-03'>%s%s%s</div>",$this->view->formRow( $form->get('id')),$this->view->formRow( $form->get('buscar')),$this->view->formRow( $form->get('refresh')));
         $html[] =sprintf("<div class='box box-full-12'>%s</div>", $this->view->formRow($form->get('description')->setLabel('')));
       
         $html[] = $this->view->form()->closeTag();

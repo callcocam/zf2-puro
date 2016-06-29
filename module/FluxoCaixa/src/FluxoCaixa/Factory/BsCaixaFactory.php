@@ -6,26 +6,28 @@
 
 namespace FluxoCaixa\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
+use Base\Factory\AbstractFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use FluxoCaixa\Form\BsCaixaForm;
 
 /**
  * SIGA-Smart
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsCaixaFactory implements FactoryInterface
+class BsCaixaFactory extends AbstractFactory
 {
 
     /**
-     * createService Factory
+     * createService Factory Model
      *
      * @return createService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new BsCaixaForm($serviceLocator);
+        // Configurações iniciais do Factory Model
+        $this->tabela="bs_caixa";
+        $this->model="FluxoCaixa\Model\BsCaixa";
+        return parent::createService($serviceLocator);
     }
 
 

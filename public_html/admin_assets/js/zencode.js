@@ -16,6 +16,7 @@ class ZenCode extends SIGAMessages {
                 url: url, //$(this).attr('href'),
                 type: 'GET',
                 dataType: 'json',
+                data:{view:$("#view").val()},
                 beforeSend: function (xhr) {
 
                     $(_AppAjax.carregando).fadeIn('fast');
@@ -47,7 +48,7 @@ class ZenCode extends SIGAMessages {
         //console.log(responseText.action);
         if ($(responseText.action).length) {
             if (responseText.result) {
-                $(responseText.action).change();
+                $(responseText.action).click();
             }
         }
     }
@@ -55,11 +56,11 @@ class ZenCode extends SIGAMessages {
 
 $(function () {
     _Zen = new ZenCode();
-    $('#class').on('change', function () {
+    $('#buscar-zen-code').on('click', function () {
         if (typeof _AppZen == "undefined") {
             _AppZen = new App();
         }
-        _Zen.selectArquivo($(this), _AppZen);
+        _Zen.selectArquivo($("#class"), _AppZen);
     });
 
     $('#refresh-zen-code').on('click', function () {

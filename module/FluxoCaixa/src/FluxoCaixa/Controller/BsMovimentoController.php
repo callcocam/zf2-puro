@@ -33,5 +33,39 @@ class BsMovimentoController extends AbstractController
         $this->template = "/admin/admin/listar";
     }
 
+    public function editarAction() {
+        if(!$this->caixa):
+            return $this->redirect()->toRoute($this->route,array('controller'=>'bs-caixa','action'=>'index'));
+        endif;
+        return parent::editarAction();
+    }
+
+    public function excluirAction() {
+         if(!$this->caixa):
+            return $this->redirect()->toRoute($this->route,array('controller'=>'bs-caixa','action'=>'index'));
+        endif;
+        return parent::excluirAction();
+    }
+
+    public function indexAction() {
+         if(!$this->caixa):
+            return $this->redirect()->toRoute($this->route,array('controller'=>'bs-caixa','action'=>'index'));
+        endif;
+        return parent::indexAction();
+    }
+
+    public function inserirAction() {
+         if(!$this->caixa):
+            return $this->redirect()->toRoute($this->route,array('controller'=>'bs-caixa','action'=>'index'));
+        endif;
+        return parent::inserirAction();
+    }
+
+    public function publicaAction() {
+         if(!$this->caixa):
+            return $this->redirect()->toRoute($this->route,array('controller'=>'bs-caixa','action'=>'index'));
+        endif;
+        return parent::publicaAction();
+    }
 
 }

@@ -51,18 +51,24 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(// !!! aliases not alias
-            'Auth\Form\BsUsersCreateForm' => 'Auth\Factory\BsUsersCreateFactory',
-            'Auth\Form\BsUsersUpdateForm' => 'Auth\Factory\BsUsersUpdateFactory',
-            'Auth\Form\AuthForm' => 'Auth\Factory\AuthFactory',
-            'Auth\Form\ForgottenPasswordForm' => 'Auth\Factory\ForgottenPasswordFactory',
-            'Auth\Form\RegistrationForm' => 'Auth\Factory\RegistrationFactory',
-            'Auth\Form\ProfileForm' => 'Auth\Factory\ProfileFactory',
+            'Auth\Form\BsUsersCreateForm' => 'Auth\Factory\BsUsersCreateFormFactory',
+            'Auth\Form\BsUsersUpdateForm' => 'Auth\Factory\BsUsersUpdateFormFactory',
+            'Auth\Form\AuthForm' => 'Auth\Factory\AuthFormFactory',
+            'Auth\Form\ForgottenPasswordForm' => 'Auth\Factory\ForgottenPasswordFormFactory',
+            'Auth\Form\RegistrationForm' => 'Auth\Factory\RegistrationFormFactory',
+            'Auth\Form\ProfileForm' => 'Auth\Factory\ProfileFormFactory',
+            'Auth\Model\BsUsersTable' => 'Auth\Factory\BsUsersTableFactory',
+            'BsUsersTableGateway' => 'Auth\Factory\BsUsersFactory',
+            'Auth\Model\AuthStorage'=>'Auth\Factory\AuthStorageFactory',
+            'AuthService'=>'Auth\Factory\AuthServiceFactory'
+
         ),
         'aliases' => array(// !!! aliases not alias
             'Zend\Authentication\AuthenticationService' => 'my_auth_service',
         ),
         'invokables' => array(
             'my_auth_service' => 'Zend\Authentication\AuthenticationService',
+            'Auth\Model\BsUsers'=>'Auth\Model\BsUsers'
         ),
     ),
     // Placeholder for console routes

@@ -111,6 +111,36 @@ return array(// ToDO make it dynamic - comes from the DB
                             )
                         )
                     ),
+                     array(
+                        'label' => 'Tradutor',
+                        'route' => 'operacional/default',
+                        'controller' => 'bs-tradutor',
+                        'resource' => 'Operacional\Controller\BsTradutor',
+                        'action' => 'index',
+                        'privilege' => 'index',
+                        'icone' => 'ion ion-android-home',
+                        'title' => 'Tradutor Admin',
+                        'pages' => array(
+                            array(
+                                'label' => 'Cadastrar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-tradutor',
+                                'resource' => 'Operacional\Controller\BsTradutor',
+                                'action' => 'inserir',
+                                'privilege' => 'inserir',
+                                'title' => 'Cadastrar Registro',
+                            ),
+                              array(
+                                'label' => 'Editar',
+                                'route' => 'operacional/default',
+                                'controller' => 'bs-tradutor',
+                                'resource' => 'Operacional\Controller\BsTradutor',
+                                'action' => 'editar',
+                                'privilege' => 'editar',
+                                'title' => 'Editar Registro',
+                            )
+                        )
+                    ),
                     array(
                         'label' => 'Upload',
                         'route' => 'upload/default',
@@ -183,7 +213,7 @@ return array(// ToDO make it dynamic - comes from the DB
                             array(
                                 'label' => 'Cadastrar',
                                 'route' => 'operacional/default',
-                                'controller' => 'bs-grupos',
+                                'controller' => 'bs-resources',
                                 'resource' => 'Operacional\Controller\BsResources',
                                 'action' => 'inserir',
                                 'privilege' => 'inserir',
@@ -192,7 +222,7 @@ return array(// ToDO make it dynamic - comes from the DB
                             array(
                                 'label' => 'Editar',
                                 'route' => 'operacional/default',
-                                'controller' => 'bs-grupos',
+                                'controller' => 'bs-resources',
                                 'resource' => 'Operacional\Controller\BsResources',
                                 'action' => 'editar',
                                 'privilege' => 'editar',

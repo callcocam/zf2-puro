@@ -62,6 +62,26 @@ class ModelForm extends \Zend\Form\Form {
                     ),
                 )
         );
+        
+         $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'view',
+                    'options' => array(
+                        'label' => 'TIPO DE ARQUIVO:',
+                        'value_options' =>[''=>'--Selecione--','index'=>"Listar","editar"=>"Editar","inserir"=>"Inserir","excluir"=>"Ecluir"],
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'view',
+                        'title' => 'FILD_VIEW_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_VIEW_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
         //############################################ informações da coluna tabela ##############################################:
         $this->add(
                 array(
@@ -96,13 +116,27 @@ class ModelForm extends \Zend\Form\Form {
         );
 
         $this->add(array(
-            'name' => 'refresh',
+            'name' => 'buscar',
             'options' => array(
-                        'label' => 'RESTAURAR:',
+                        'label' => 'BUSCAR OU RESTAURAR ARQUIVO:',
                     ),
             'attributes' => array(
                 'type' => 'button',
-                'value' => 'BTN_REFRESH_LABEL',
+                'value' => 'BUSCAR',
+                'title' => 'BTN_BUSCAR_DESC',
+                'class' => 'btn btn-green',
+                'id' => 'buscar-zen-code',
+                'style'=>"margin-right: 4px;"
+            ),
+        ));
+           $this->add(array(
+            'name' => 'refresh',
+            'options' => array(
+//                        'label' => 'BUSCAR OU RESTAURAR ARQUIVO:',
+                    ),
+            'attributes' => array(
+                'type' => 'button',
+                'value' => 'REFRESH',
                 'title' => 'BTN_REFRESH_DESC',
                 'class' => 'btn btn-blue refresh-zen-code',
                 'id' => 'refresh-zen-code',

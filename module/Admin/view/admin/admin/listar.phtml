@@ -33,10 +33,13 @@ extract($user);
     </ul>
     <div class="tab-content">
         <div id="principal" class="tab-pane ui-state-active">
-            
+
             <?php
-            echo $this->formFileSessionProgress();
-// Result <input type="hidden" id="progress_key" name="UPLOAD_IDENTIFIER" value="12345abcde">
+            if (!$this->resolver("/tpl/{$this->controller}-index")) :
+                $partial = $this->partial("/tpl/index");
+            else:
+                $partial = $this->partial("/tpl/{$this->controller}-index");
+            endif;
             $button = array(
                 'EDITAR' => array('type' => 'a', 'label' => 'EDITAR', 'icone' => 'ion ion-compose', 'action' => 'editar', 'class' => 'green', 'page' => $this->page, 'id' => 'editar'),
                 'EXCLUIR' => array('type' => 'a', 'label' => 'EXCLUIR', 'icone' => 'ion ion-ios-trash-outline', 'action' => 'excluir', 'class' => 'blue', 'page' => $this->page, 'id' => 'delete'),
@@ -49,7 +52,7 @@ extract($user);
                     $value = $o->toArray();
                     $value['description'] = \Base\Model\Check::Words($value['description'], 10);
                     $value['buttons'] = $this->ZFListarHelper()->createBtn($value['id'], $button);
-                    $implode = implode("}}&{{", array_keys($value));
+                    $implode = "{{" . implode("}}&{{", array_keys($value)) . "}}";
                     $keys = explode("&", $implode);
                     if (array_key_exists("images", $value)) {
                         $images = $value['images'];
@@ -59,9 +62,9 @@ extract($user);
                             'src' => "/dist/tim.php?src=/uploads/{$images}&w=370&h=200"
                         ));
                         $value['title'] = \Base\Model\Check::Words($value['title'], 3);
-                        $html[] = str_replace(array_values($keys),  array_values($value), $this->ZFListarHelper()->setThumbnail($value['id']));
+                        $html[] = str_replace(array_values($keys), array_values($value), $partial);
                     } else {
-                        $html[] = str_replace(array_values($keys),  array_values($value), $this->ZFListarHelper()->setList($value['id']));
+                        $html[] = str_replace(array_values($keys), array_values($value), $partial);
                     }
                 }
                 if ($html) {
@@ -87,6 +90,6 @@ extract($user);
             );
             ?>
         </div><!-- /.tab-pane -->
-          <div class="clear"></div>
+        <div class="clear"></div>
     </div><!-- /.tab-content -->
 </div>

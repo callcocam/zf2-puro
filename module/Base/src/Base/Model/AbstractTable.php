@@ -241,5 +241,10 @@ abstract class AbstractTable {
     public function getClass() {
         return $this->class;
     }
+    public function getTableGateway() {
+        return $this->tableGateway;
+    }
+
+
 
 }

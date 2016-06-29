@@ -24,15 +24,17 @@ return array(
         'invokables' => array(
             'LayoutListener' => 'Base\Listener\LayoutListener',
             'LayoutErrorListener' => 'Base\Listener\LayoutErrorListener',
+            'CaixaListener' => 'Base\Listener\CaixaListener',
+            'CompaniesListener' => 'Base\Listener\CompaniesListener',
         ),
     ),
     'translator' => array(
         'locale' => 'pt_BR',
         'translation_file_patterns' => array(
             array(
-                'type' => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern' => '%s.mo',
+                'type'     => 'phparray',
+                'base_dir' =>  './data/languageArray',
+                'pattern'  => '%s.php',
             ),
         ),
     ),

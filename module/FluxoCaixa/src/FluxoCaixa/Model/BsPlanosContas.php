@@ -16,26 +16,26 @@ use Base\Model\AbstractModel;
 class BsPlanosContas extends AbstractModel
 {
 
-    protected $tipo = '';
+    protected $parent_id = '';
 
     /**
-     * get tipo
+     * get parent_id
      *
-     * @return varchar
+     * @return int
      */
-    public function getTipo()
+    public function getParentId()
     {
-        return $this->tipo;
+        return $this->parent_id;
     }
 
     /**
-     * set tipo
+     * set parent_id
      *
-     * @return varchar
+     * @return int
      */
-    public function setTipo($tipo = null)
+    public function setParentId($parent_id = null)
     {
-        $this->tipo=$tipo;
+        $this->parent_id=$parent_id;
         return $this;
     }
 

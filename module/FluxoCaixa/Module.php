@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -7,17 +8,20 @@
  */
 
 namespace FluxoCaixa;
+
 use Zend\Db\TableGateway\TableGateway;
-class Module
-{
-    
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
+
+class Module {
+
+    public function getConfig() {
+        if(file_exists(__DIR__ . '/config/module.config.php')):
+             return include __DIR__ . '/config/module.config.php';
+        endif;
+        return [];
+       
     }
 
-    public function getAutoloaderConfig()
-    {
+    public function getAutoloaderConfig() {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -26,49 +30,16 @@ class Module
             ),
         );
     }
-    
-     public function getServiceConfig() {
+
+    public function getServiceConfig() {
         return array(
             'factories' => array(
-                 'FluxoCaixa\Model\BsCaixaTable' => function($sm) {
-                    $tableGateway = $sm->get('BsCaixaTableGateway');
-                    return new \FluxoCaixa\Model\BsCaixaTable($tableGateway);
-                },
-                'BsCaixaTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \FluxoCaixa\Model\BsCaixa()); // Notice what is set here
-                    return new TableGateway('bs_caixa', $dbAdapter, null, $resultSetPrototype);
-                },
-                   'FluxoCaixa\Model\BsMovimentoTable' => function($sm) {
-                    $tableGateway = $sm->get('BsMovimentoTableGateway');
-                    return new \FluxoCaixa\Model\BsMovimentoTable($tableGateway);
-                },
-                'BsMovimentoTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \FluxoCaixa\Model\BsMovimento()); // Notice what is set here
-                    return new TableGateway('bs_movimento', $dbAdapter, null, $resultSetPrototype);
-                },
-                   'FluxoCaixa\Model\BsPlanosContasTable' => function($sm) {
-                    $tableGateway = $sm->get('BsPlanosContasTableGateway');
-                    return new \FluxoCaixa\Model\BsPlanosContasTable($tableGateway);
-                },
-                'BsPlanosContasTableGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = $sm->get('resultSetPrototype');
-                    $resultSetPrototype->setArrayObjectPrototype(new \FluxoCaixa\Model\BsPlanosContas()); // Notice what is set here
-                    return new TableGateway('bs_planos_contas', $dbAdapter, null, $resultSetPrototype);
-                }
-               
+         
             ),
             'invokables' => array(
-                 'FluxoCaixa\Model\BsCaixa'=>'FluxoCaixa\Model\BsCaixa',
-                  'FluxoCaixa\Model\BsMovimento'=>'FluxoCaixa\Model\BsMovimento',
-                  'FluxoCaixa\Model\BsPlanosContas'=>'FluxoCaixa\Model\BsPlanosContas',
-                  
+                
             )
         );
     }
-    
+
 }

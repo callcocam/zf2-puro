@@ -6,26 +6,28 @@
 
 namespace FluxoCaixa\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
+use Base\Factory\AbstractFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use FluxoCaixa\Form\BsMovimentoForm;
 
 /**
  * SIGA-Smart
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsMovimentoFactory implements FactoryInterface
+class BsMovimentoFactory extends AbstractFactory
 {
 
     /**
-     * createService Factory
+     * createService Factory Model
      *
      * @return createService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new BsMovimentoForm($serviceLocator);
+        // Configurações iniciais do Factory Model
+        $this->tabela="bs_movimento";
+        $this->model="FluxoCaixa\Model\BsMovimento";
+        return parent::createService($serviceLocator);
     }
 
 

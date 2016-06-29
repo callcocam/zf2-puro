@@ -75,6 +75,12 @@ class Dlls extends SIGAMessages {
                 $(responseText.action).change();
             }
         }
+        if ($(responseText.action_add).length) {
+            //responseText.action vem do controller
+            if (responseText.result) {
+                $(responseText.action_add).change();
+            }
+        }
     }
 
 }

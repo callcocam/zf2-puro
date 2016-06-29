@@ -7,7 +7,10 @@ use Zend\Db\TableGateway\TableGateway;
 class Module {
 
     public function getConfig() {
+         if(file_exists(__DIR__ . '/config/module.config.php')):
         return include __DIR__ . '/config/module.config.php';
+        endif;
+        return [];
     }
 
     public function getAutoloaderConfig() {

@@ -37,6 +37,8 @@ abstract class AbstractController extends AbstractActionController {
     protected $id = 0;
     protected $classe = "trigger_error";
     protected $acao = "save";
+    protected $caixa = null;
+    protected $cache;
 
     abstract function __construct();
 
@@ -50,7 +52,9 @@ abstract class AbstractController extends AbstractActionController {
             $this->Messages()->error('MSG_ACCESS_DENY');
             $this->template = "/admin/admin/deny";
         }
+        $this->getCache();
         $this->user = $this->getAuthService()->getIdentity();
+        $this->caixa=  $this->cache->getItem('caixa');
         return parent::onDispatch($e);
     }
 
@@ -85,7 +89,12 @@ abstract class AbstractController extends AbstractActionController {
     public function getModel() {
         return $this->getServiceLocator()->get($this->model);
     }
+    public function getCache() {
+        $this->cache=  $this->getServiceLocator()->get("Cache");
+        return $this->cache;
+    }
 
+    
     public function indexAction() {
 
         $view = new ViewModel();
@@ -170,9 +179,9 @@ abstract class AbstractController extends AbstractActionController {
                 endif;
                 //Se exitir o campo id valido e uma edição
                 if (isset($this->data['id']) && (int) $this->data['id']):
-                     $this->getTableGateway()->update($model);
+                    $this->getTableGateway()->update($model);
                 else:
-                     $this->getTableGateway()->insert($model);
+                    $this->getTableGateway()->insert($model);
                 endif;
                 if ($this->getTableGateway()->getResult()) {
                     $this->classe = 'trigger_success';
@@ -193,9 +202,15 @@ abstract class AbstractController extends AbstractActionController {
                 $this->error = $msgs;
                 $this->acao = 'save';
             }
+            return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' => $this->id, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $this->data));
         }
-        return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' => $this->id, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $this->data));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function setNoRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
@@ -239,31 +254,39 @@ abstract class AbstractController extends AbstractActionController {
             }
         endif;
         foreach ($constraints as $value) {
-            try{
-            if ($value[1] === "UNIQUE") {
-                $unique = array_filter(explode("_", $value[0]));
-                if (isset($unique[4])) {
-                    $tabela = $this->getTableGateway()->getTable();
-                    $field = $unique[4];
-                    $id = $this->data['id'];
-                    if (isset($this->data['save']) && (int) $id):
-                        $validator = $this->setNoRecordExists($tabela, $field, array('field' => 'id', 'value' => $id));
-                        $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
-                        $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
-                    else:
-                        $validator = $this->setNoRecordExists($tabela, $field);
-                        $validator->setMessage("ERRO AO CADATSRAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
-                        $validator->setMessage("ERRO AO CADATSRAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
-                    endif;
+            try {
+                if ($value[1] === "UNIQUE") {
+                    $unique = array_filter(explode("_", $value[0]));
+                    if (isset($unique[4])) {
+                        $tabela = $this->getTableGateway()->getTable();
+                        $field = $unique[4];
+                        $id = $this->data['id'];
+                        if (isset($this->data['save']) && (int) $id):
+                            $validator = $this->setNoRecordExists($tabela, $field, array('field' => 'id', 'value' => $id));
+                            $validator->setMessage("ERRO AO ATUALIZAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
+                            $validator->setMessage("ERRO AO ATUALIZAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                        else:
+                            $validator = $this->setNoRecordExists($tabela, $field);
+                            $validator->setMessage("ERRO AO CADATSRAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
+                            $validator->setMessage("ERRO AO CADATSRAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                        endif;
 
-                    $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
+                        $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
+                    }
                 }
+            } catch (\Zend\InputFilter\Exception\InvalidArgumentException $ex) {
+                
             }
         }
-        catch(\Zend\InputFilter\Exception\InvalidArgumentException $ex){
+    }
 
-        }
-        }
+    public function getCaixa() {
+        return $this->caixa;
+    }
+
+    public function setCaixa($caixa) {
+        $this->caixa = $caixa;
+        return $this;
     }
 
 }

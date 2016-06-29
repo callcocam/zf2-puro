@@ -9,7 +9,8 @@
 
 namespace ZenCode\Controller;
 
-use Zend\View\Model\JsonModel;
+use Zend\View\Model\JsonModel,
+    Zend\View\Model\ViewModel;
 
 /**
  * Description of ZenCodeController
@@ -52,9 +53,15 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = $this->data->getArquivo();
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $model, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $model, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function gerartableAction() {
@@ -73,9 +80,15 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = sprintf("%s%s", $this->data->getArquivo(), "Table");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $table, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $table, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function gerarformAction() {
@@ -94,9 +107,15 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->result = TRUE;
             $this->error = "ARQUIVO FORM {$this->data->getArquivo()} GERADO COM SUCESSO!";
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $form, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $form, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function gerarfilterAction() {
@@ -115,9 +134,15 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = sprintf("%s%s", $this->data->getArquivo(), "Filter");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $filter, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $filter, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function gerarcontrollerAction() {
@@ -136,30 +161,96 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = sprintf("%s%s", $this->data->getArquivo(), "Controller");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $controller, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $controller, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
-    public function gerarfactoryAction() {
+    public function gerarformfactoryAction() {
         $id = $this->params()->fromRoute('id', 0);
         if ((int) $id):
             $this->data = $this->getTableGateway()->find($id);
-            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}Factory.php");
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}FormFactory.php");
             if (file_exists($caminho)) {
                 $factory = file_get_contents($caminho);
-                $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+                $this->error = "ARQUIVO FACTORY FORM {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             } else {
-                $factoryG = new \ZenCode\Services\GerarFactory($this->data, $this->getServiceLocator());
+                $factoryG = new \ZenCode\Services\GerarFormFactory($this->data, $this->getServiceLocator());
                 $factory = $factoryG->generateClass();
-                $this->error = "ARQUIVO FACTORY {$this->data->getArquivo()} GERADO COM SUCESSO!";
+                $this->error = "ARQUIVO FACTORY FORM {$this->data->getArquivo()} GERADO COM SUCESSO!";
             }
             $this->action = sprintf("%s%s", $this->data->getArquivo(), "Factory");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $factory, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $factory, 'caminho' => $caminho, 'id' => $id));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
+    }
+
+    public function gerarmodelfactoryAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}.php");
+            if (file_exists($caminho)) {
+                $factory = file_get_contents($caminho);
+                $this->error = "ARQUIVO FACTORY MODEL {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            } else {
+                $factoryG = new \ZenCode\Services\GerarFactoryModel($this->data, $this->getServiceLocator());
+                $factory = $factoryG->generateClass();
+                $this->error = "ARQUIVO FACTORY MODEL {$this->data->getArquivo()} GERADO COM SUCESSO!";
+            }
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Factory");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $factory, 'caminho' => $caminho, 'id' => $id));
+        endif;
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
+    }
+
+    public function gerartablefactoryAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%s{$this->data->getAlias()}%ssrc%s{$this->data->getAlias()}%sFactory%s{$this->data->getArquivo()}Table.php");
+            if (file_exists($caminho)) {
+                $factory = file_get_contents($caminho);
+                $this->error = "ARQUIVO FACTORY TABLE {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            } else {
+                $factoryG = new \ZenCode\Services\GerarFactoryTable($this->data, $this->getServiceLocator());
+                $factory = $factoryG->generateClass();
+                $this->error = "ARQUIVO FACTORY TABLE {$this->data->getArquivo()} GERADO COM SUCESSO!";
+            }
+            $this->action = sprintf("%s%s", $this->data->getArquivo(), "Factory Table");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $factory, 'caminho' => $caminho, 'id' => $id));
+        endif;
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function gerarmoduleAction() {
@@ -178,9 +269,9 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = sprintf("%s", "Module");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $smodule, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $smodule, 'caminho' => $caminho, 'id' => $id));
     }
 
     public function gerarmoduleconfigAction() {
@@ -201,9 +292,63 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $this->action = sprintf("%s", "module.config");
             $this->result = TRUE;
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $moduleconfig, 'caminho' => $caminho, 'id' => $id));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $moduleconfig, 'caminho' => $caminho, 'id' => $id));
+    }
+
+    public function gerarviewAction() {
+        $tplview = "Nada Foi Encotrado";
+        $id = $this->params()->fromRoute('id', 0);
+        $view = $this->params()->fromQuery("view", '0');
+        if ((int) $id):
+            $this->data = $this->getTableGateway()->find($id);
+            if ($view === '0'):
+                $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sAdmin%sview%sadmin%sadmin%stpl%s{$this->data->getController()}.phtml");
+                if (!file_exists($caminho)):
+                    $this->form = "{$this->data->getAlias()}\\Form\\{$this->data->getArquivo()}Form";
+                    $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
+                    $this->form = $this->getForm();
+                    $tplviewG->GerarElement($this->form, $this->url()->fromRoute(sprintf("%s/default", $this->data->getRoute()), array('controller' => $this->data->getController(), 'action' => "index")));
+                    file_put_contents($caminho, $tplviewG->formGrupo());
+                endif;
+
+            else:
+                $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sAdmin%sview%sadmin%sadmin%stpl%s{$this->data->getController()}-{$view}.phtml");
+                if (!file_exists($caminho)):
+                    if ($view == "index"):
+                        $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
+                        file_put_contents($caminho, $tplviewG->GerarListagem($this->data));
+                    else:
+                        $this->form = "{$this->data->getAlias()}\\Form\\{$this->data->getArquivo()}Form";
+                        $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
+                        $this->form = $this->getForm();
+                        $tplviewG->GerarElement($this->form, $this->url()->fromRoute(sprintf("%s/default", $this->data->getRoute()), array('controller' => $this->data->getController(), 'action' => "index")));
+                        file_put_contents($caminho, $tplviewG->formGrupo());
+                    endif;
+
+                endif;
+                file_get_contents($caminho);
+            endif;
+
+
+            $tplview = file_get_contents($caminho);
+            $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
+            $this->action = sprintf("%s%s", $this->data->getController(), "View");
+            $this->result = TRUE;
+            $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $tplview, 'caminho' => $caminho, 'id' => $id));
+        endif;
+    }
+
+    public function testeAction() {
+        $this->data = $this->getTableGateway()->find("13");
+        $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
+        $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sAdmin%sview%sadmin%sadmin%stpl%s{$this->data->getController()}-index.phtml");
+        file_put_contents($caminho, $tplviewG->GerarListagem($this->data));
+        var_dump($tplviewG->GerarListagem($this->data));
+        die();
     }
 
     public function gerarnavigationAction() {
@@ -225,13 +370,25 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             $zencode = new \ZenCode\Services\Options();
             $data['description'] = trim($this->params()->fromPost('description'));
             $data['caminho'] = trim($this->params()->fromPost('caminho'));
-            $zencode->generateFile($data);
+            $pos = strlen($data['caminho']) - 4;
+            if (substr($data['caminho'], $pos) === "phtml" || substr($data['caminho'], $pos) === "html") {
+                file_put_contents($data['caminho'], $data['description']);
+            } else {
+                $zencode->generateFile($data);
+            }
+
             $this->result = TRUE;
             $this->error = "ARQUIVO {$this->params()->fromPost('caminho')} ATUALIZADO COM SUCESSO!";
             $this->classe = "trigger_success";
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
     public function refreshAction() {
@@ -243,16 +400,22 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 $this->error = "ARQUIVO {$caminho} EXCLUIDO!";
                 $this->result = TRUE;
                 $this->classe = "trigger_success";
-                $this->action = "#class";
+                $this->action = "#btn btn-green";
             } else {
                 $this->error = "ARQUIVO {$caminho} NÂO FOI ENCONTRADO!";
                 $this->result = FALSE;
                 $this->classe = "trigger_error";
                 $this->action = "not_class";
             }
+            return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+                'msg' => $this->error, 'data' => $data));
         endif;
-        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
-            'msg' => $this->error, 'data' => $data));
+        $view = new ViewModel(array(
+            'route' => $this->route,
+            'controller' => $this->controller,
+            'action' => 'index'));
+        $view->setTemplate('/admin/admin/deny');
+        return $view;
     }
 
 }

@@ -42,7 +42,7 @@ class Messages extends AbstractHelper
 			foreach ($messagesArray as  $value) {
 				
 						$html .= '<li class="trigger trigger_'.$key.' alert-dismissable">
-						<i class="ion '.$ico.'"></i><h>Alerta!</b> '.$this->view->translate($value).' </li>';
+						<i class="ion '.$ico.'"></i> <b>ALERTA!</b>: '.$this->view->translate($value).' </li>';
 			}
 			 
 		}

@@ -183,7 +183,7 @@ class AbstractForm extends \Zend\Form\Form {
 
 
         //############################################ informações da coluna alias ##############################################:
-         $this->add(
+        $this->add(
                 array(
                     'type' => 'text',
                     'name' => 'alias',
@@ -200,8 +200,8 @@ class AbstractForm extends \Zend\Form\Form {
                     ),
                 )
         );
-        
-       
+
+
         //############################################ informações da coluna modified_by ##############################################:
         $this->add(
                 array(
@@ -212,7 +212,7 @@ class AbstractForm extends \Zend\Form\Form {
                     ),
                     'attributes' => array(
                         'id' => 'modified_by',
-                         'data-access' => '3',
+                        'data-access' => '3',
                         'data-position' => 'controle',
                     ),
                 )
@@ -250,9 +250,9 @@ class AbstractForm extends \Zend\Form\Form {
                     ),
                 )
         );
-        
-       
-      
+
+
+
         //############################################ informações da coluna access ##############################################:
         $this->add(
                 array(
@@ -342,7 +342,7 @@ class AbstractForm extends \Zend\Form\Form {
                         'title' => 'FILD_PUBLISH_DOWN_DESC',
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_PUBLISH_DOWN_PLACEHOLDER',
-                         'data-access' => '3',
+                        'data-access' => '3',
                         'readonly' => true,
                         'data-position' => 'datas',
                     ),
@@ -388,47 +388,46 @@ class AbstractForm extends \Zend\Form\Form {
                 'id' => 'save_copy',
             ),
         ));
-        
-        if($this->has('state')):
-             $this->get('state')->setOptions(['value_options'=> self::$STATE]);
-        endif;
-        
-        if($this->has('access')):
-             $this->get('access')->setOptions(['value_options'=> $this->getRoles($this->authservice['role_id'])]);
-        endif;
-        
-        if($this->has('empresa')):
-             $this->get('empresa')->setValue($this->authservice['empresa']);
-        endif;
-       
-        if($this->has('created_by')):
-             $this->get('created_by')->setValue($this->authservice['id']);
-        endif;
-       
-        if($this->has('modified_by')):
-             $this->get('modified_by')->setValue($this->authservice['id']);
-        endif;
-       
-        if($this->has('created')):
-             $this->get('created')->setValue( date("d-m-Y"));
-        endif;
-       
-        if($this->has('modified')):
-             $this->get('modified')->setValue( date("d-m-Y H:i:s"));
-        endif;
-       
-        if($this->has('publish_up')):
-             $this->get('publish_up')->setValue( date("d-m-Y H:i:s"));
-        endif;
-       
-        if($this->has('publish_down')):
-             $this->get('publish_down')->setValue( date("d-m-Y H:i:s"));
+
+        if ($this->has('state')):
+            $this->get('state')->setOptions(['value_options' => self::$STATE]);
         endif;
 
-         if($this->has('publish_down')):
-             $this->get('publish_down')->setValue( date("d-m-Y H:i:s"));
+        if ($this->has('access')):
+            $this->get('access')->setOptions(['value_options' => $this->getRoles($this->authservice['role_id'])]);
         endif;
-       
+
+        if ($this->has('empresa')):
+            $this->get('empresa')->setValue($this->authservice['empresa']);
+        endif;
+
+        if ($this->has('created_by')):
+            $this->get('created_by')->setValue($this->authservice['id']);
+        endif;
+
+        if ($this->has('modified_by')):
+            $this->get('modified_by')->setValue($this->authservice['id']);
+        endif;
+
+        if ($this->has('created')):
+            $this->get('created')->setValue(date("d-m-Y"));
+        endif;
+
+        if ($this->has('modified')):
+            $this->get('modified')->setValue(date("d-m-Y H:i:s"));
+        endif;
+
+        if ($this->has('publish_up')):
+            $this->get('publish_up')->setValue(date("d-m-Y H:i:s"));
+        endif;
+
+        if ($this->has('publish_down')):
+            $this->get('publish_down')->setValue(date("d-m-Y H:i:s"));
+        endif;
+
+        if ($this->has('publish_down')):
+            $this->get('publish_down')->setValue(date("d-m-Y H:i:s"));
+        endif;
     }
 
     public static $STATE = ['0' => "OPTION_PUBLICADO_LABEL", '1' => "OPTION_ARQUIVADO_LABEL", '2' => "OPTION_LIXEIRA_LABEL"];
@@ -438,17 +437,17 @@ class AbstractForm extends \Zend\Form\Form {
     public static $TIPO_MODULO = ['1' => "OPTION_MODULO_LABEL", '2' => "OPTION_COMPONENTE_LABEL", '3' => "OPTION_ARQUIVO_LABEL"];
     public static $MODULE_PAI = ['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL", '3' => "OPTION_OPREACIONAL_LABEL", '4' => "OPTION_FLUXO_CAIXA_LABEL", '5' => "OPTION_COMERCIAL_LABEL"];
     public static $GROUP_ID = ['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL", '3' => "OPTION_FLUXO_CAIXA_LABEL", '4' => "OPTION_COMERCIAL_LABEL"];
-    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home",'FluxoCaixa' => "Fluxo De Caixa",'Cormicial' => "Comercial"];
+    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home", 'FluxoCaixa' => "Fluxo De Caixa", 'Cormicial' => "Comercial"];
 
     public function setValueOption($table, $condicao = array('state' => '0')) {
-        $dados = $this->getServiceLocator()->get($table)->findALL();
-        $valueOptions = array();
+        $dados = $this->getServiceLocator()->get($table)->findBy($condicao);
+        $valueOptions = array('--SELECIONE--');
         if ($dados):
             foreach ($dados as $value):
                 $valueOptions[$value->getId()] = $value->getTitle();
             endforeach;
         endif;
-       
+
         return $valueOptions;
     }
 
@@ -487,6 +486,10 @@ class AbstractForm extends \Zend\Form\Form {
 
     public function getServiceLocator() {
         return $this->serviceLocator;
+    }
+
+    public function getAuthservice() {
+        return $this->authservice;
     }
 
 }

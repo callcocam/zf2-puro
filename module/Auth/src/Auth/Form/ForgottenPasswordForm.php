@@ -2,12 +2,12 @@
 
 namespace Auth\Form;
 
-use Base\Form\AbstractForm;
 
-class ForgottenPasswordForm extends AbstractForm {
+
+class ForgottenPasswordForm extends \Zend\Form\Form {
 
     public function __construct($serviceLocator) {
-        parent::__construct($serviceLocator, " ForgottenPassword");
+        parent::__construct(" ForgottenPassword");
         $this->setInputFilter(new ForgottenPasswordFilter($serviceLocator));
 
 

@@ -149,22 +149,22 @@ abstract class AbstractModel {
     }
 
     public function setCreated($created) {
-        $this->created = $created;
+        $this->created =  date('Y-m-d', strtotime($created));
         return $this;
     }
 
     public function setModified($modified) {
-        $this->modified = $modified;
+        $this->modified = date('Y-m-d H:i:s', strtotime($modified));
         return $this;
     }
 
     public function setPublishUp($publish_up) {
-        $this->publish_up = $publish_up;
+        $this->publish_up =  date('Y-m-d H:i:s', strtotime($publish_up));
         return $this;
     }
 
     public function setPublishDown($publish_down) {
-        $this->publish_down = $publish_down;
+        $this->publish_down = date('Y-m-d H:i:s', strtotime($publish_down));
         return $this;
     }
   

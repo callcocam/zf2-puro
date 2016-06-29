@@ -23,7 +23,7 @@ class ZFListarHelper extends \Zend\View\Helper\AbstractHelper {
         $this->em = null;
     }
 
-    public function setThumbnail($id,$bg="box-default") {
+    public function setThumbnail($id,$body="{{images}}",$bg="box-default") {
 
         $qtd_col =str_pad(4, 2,'0',STR_PAD_LEFT) ;
 
@@ -45,7 +45,7 @@ class ZFListarHelper extends \Zend\View\Helper\AbstractHelper {
 
         $boxbody = $this->view->HtmlTag("div")->setClass('box-body');
 
-        $desc = $this->view->HtmlTag("p")->setClass('box-description')->setText("{{images}}");
+        $desc = $this->view->HtmlTag("p")->setClass('box-description')->setText($body);
 
         $botao = $this->view->HtmlTag("div")->setClass('box-footer')->setText('{{buttons}}');
 
@@ -56,7 +56,7 @@ class ZFListarHelper extends \Zend\View\Helper\AbstractHelper {
         return $this->view->HtmlTag('div')->setClass("box box-full-12  box-mini-06 box-small-06 box-medium-04 box-large-{$qtd_col} col-box-list")->appendClass("delete-{$id}")->setText($boxboxsolid);
     }
 
-    public function setList($id,$bg="box-default") {
+    public function setList($id,$body="{{description}}",$bg="box-default") {
         $qtd_col =str_pad(4, 2,'0',STR_PAD_LEFT) ;
 
         $br = $this->view->HtmlTag('br');
@@ -77,7 +77,7 @@ class ZFListarHelper extends \Zend\View\Helper\AbstractHelper {
 
         $boxbody = $this->view->HtmlTag("div")->setClass('box-body');
 
-        $desc = $this->view->HtmlTag("p")->setClass('box-description')->setText('{{description}}');
+        $desc = $this->view->HtmlTag("p")->setClass('box-description')->setText($body);
 
         $botao = $this->view->HtmlTag("div")->setClass('box-footer')->setText('{{buttons}}');
 
@@ -86,6 +86,12 @@ class ZFListarHelper extends \Zend\View\Helper\AbstractHelper {
         $boxboxsolid->setText($box_header)->appendText($boxbody)->appendText($botao);
 
         return $this->view->HtmlTag('div')->setClass("box box-full-12 box-mini-06  box-small-06 box-medium-04 box-large-{$qtd_col} col-box-list")->appendClass("delete-{$id}")->setText($boxboxsolid);
+    }
+    
+    public function getBody($data)
+    {
+        $boxbody=  implode("", $data);
+       return $this->view->HtmlTag("p")->setClass('box-description')->setText($boxbody)->appendText('{{description}}');
     }
 
     public function setNavigation() {
