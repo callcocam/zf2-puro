@@ -25,6 +25,15 @@ class BsCompaniesController extends \Base\Controller\AbstractController {
         $this->template = "/admin/admin/conpanies";
     }
 
+    public function indexAction()
+    {
+    	if($this->user['role_id']==1):
+    		$this->template = "/admin/admin/listar";
+    	endif;
+    	return parent::indexAction();
+
+    }
+
   
 
 }

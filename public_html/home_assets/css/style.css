@@ -12,6 +12,7 @@
 .main-container{
 	width:100%;
 	 background:#eee;
+        display: block;position: relative;float: left; height: 100%;
 	}
 .main_header{
 	width: 100%;

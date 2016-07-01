@@ -118,16 +118,16 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
     }
 
     public function setGeral($key, $visible) {
-        self::$gegal[$key] = $this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("{{{$key}}}")->appendText("#{$key}#");
+        self::$gegal[$key] = $this->view->HtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass('clear'));
     }
 
     public function setControle($key, $visible) {
-        self::$controle[$key] = $this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("{{{$key}}}")->appendText("#{$key}#");
+        self::$controle[$key] = $this->view->HtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass('clear'));
     }
 
     public function setDatas($key, $visible) {
         $addon = $this->view->HtmlTag("div")->setClass("input-group-addon");
-        self::$datas[$key] = $this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("{{{$key}}}")->appendText($addon)->appendText("#{$key}#");
+        self::$datas[$key] = $this->view->HtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText($addon)->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass('clear'));
     }
 
     public function setBtn($key) {
@@ -156,8 +156,8 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
         $divbtnPrimary->appendText($attachment)->appendText("#{$key}#");
         $divInputGroup = $this->view->HtmlTag('div')->setClass("input-group class-file{$visible}");
         $divInputGroup->setText($divbtnPrimary)->appendText($this->view->HtmlTag('p')->setText($this->view->translate("Max. 32MB"))->setClass('help-block'));
-        self::$images[] = $this->view->HtmlTag('div')->setattributes(array('class' => "img-add "))->setText("{{{$key}}}")->appendText("#imagePreview#");
-        self::$images[] = $divInputGroup;
+        self::$images[] = $this->view->HtmlTag('div')->setattributes(array('class' => "img-add "))->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText("#imagePreview#");
+        self::$images[] = $this->view->HtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($divInputGroup)->appendText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass('clear'));
     }
 
     public function setTemplate($key) {
@@ -168,7 +168,7 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
         $divbtnPrimary->appendText($attachment)->appendText("#{$key}#");
         $divInputGroup = $this->view->HtmlTag('div')->setClass('input-group class-file');
         $divInputGroup->setText($divbtnPrimary)->appendText($this->view->HtmlTag('p')->setText($this->view->translate("Max. 32MB"))->setClass('help-block'));
-        self::$html[] = $divInputGroup;
+        self::$html[] = $this->view->HtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($divInputGroup)->appendText(PHP_EOL)->appendText($this->view->HtmlTag("div")->setClass('clear'));
     }
 
     public function setGalery($key) {
@@ -231,9 +231,9 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
 
         $boxTitle = $this->view->HtmlTag("h3")->setClass('box-title')->setText("{{title}}");
 
-        $criadoEm = $this->view->HtmlTag("small")->setClass('fl-left')->setText($this->view->translate('CRIADO EM: '))->appendText('{{created}}');
+        $criadoEm = $this->view->HtmlTag("small")->setClass('fl-left')->setText("<?php echo \$this->translate('CRIADO EM: ');?>")->appendText('{{created}}');
 
-        $criadoPor = $this->view->HtmlTag("small")->setClass('fl-right')->setText($this->view->translate(' POR: '))->appendText('{{editorBy}}');
+        $criadoPor = $this->view->HtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editorBy}}');
 
         $box_header->setText($box_header_icon)->appendText($boxTitle)->appendText($br)->appendText($criadoEm)->appendText($criadoPor);
 
@@ -263,9 +263,9 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
 
         $boxTitle = $this->view->HtmlTag("h2")->setClass('box-title')->setText("{{title}}");
 
-        $criadoEm = $this->view->HtmlTag("small")->setClass('fl-left')->setText($this->view->translate('CRIADO EM: '))->appendText('{{created}}');
+        $criadoEm = $this->view->HtmlTag("small")->setClass('fl-left')->setText("<?php echo \$this->translate('CRIADO EM: ');?>")->appendText('{{created}}');
 
-        $criadoPor = $this->view->HtmlTag("small")->setClass('fl-right')->setText($this->view->translate(' POR: '))->appendText('{{editorBy}}');
+        $criadoPor = $this->view->HtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editorBy}}');
 
         $box_header->setText($box_header_icon)->appendText($boxTitle)->appendText($br)->appendText($criadoEm)->appendText($criadoPor);
 

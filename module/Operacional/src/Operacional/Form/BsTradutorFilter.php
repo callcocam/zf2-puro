@@ -65,14 +65,30 @@ class BsTradutorFilter extends \Base\Form\AbstractFilter {
         $title->getFilterChain()->attach($this->StripTags);
         $title->getValidatorChain()->attach($this->emptyfilter);
         $this->add($title);
+        
+         // Informação para a coluna placeholder:
+        $placeholder = new Input("placeholder");
+        $placeholder->setRequired(FALSE);
+        $placeholder->getFilterChain()->attach($this->StringTrim);
+        $placeholder->getFilterChain()->attach($this->StripTags);
+        //$placeholder->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($placeholder);
+        
+         // Informação para a coluna dica_tela:
+        $dica_tela = new Input("dica_tela");
+        $dica_tela->setRequired(FALSE);
+        $dica_tela->getFilterChain()->attach($this->StringTrim);
+        $dica_tela->getFilterChain()->attach($this->StripTags);
+        //$dica_tela->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($dica_tela);
 
         //put your code here
         // Informação para a coluna description:
         $description = new Input("description");
-        $description->setRequired(false);
+        $description->setRequired(true);
         $description->getFilterChain()->attach($this->StringTrim);
-        //$description->getFilterChain ()->attach ( $this->StripTags );
-        //$description->getValidatorChain()->attach($this->emptyfilter);
+        $description->getFilterChain ()->attach ( $this->StripTags );
+        $description->getValidatorChain()->attach($this->emptyfilter);
         $this->add($description);
         // Informação para a coluna created_by:
         $created_by = new Input("created_by");

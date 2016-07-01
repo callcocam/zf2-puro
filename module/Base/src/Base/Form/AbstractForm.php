@@ -268,6 +268,7 @@ class AbstractForm extends \Zend\Form\Form {
                         'class' => 'form-control input-sm',
                         'placeholder' => 'FILD_ACCESS_PLACEHOLDER',
                         'data-access' => '3',
+                        'value'=>'3',
                         'data-position' => 'controle',
                     ),
                 )
@@ -428,6 +429,8 @@ class AbstractForm extends \Zend\Form\Form {
         if ($this->has('publish_down')):
             $this->get('publish_down')->setValue(date("d-m-Y H:i:s"));
         endif;
+
+        
     }
 
     public static $STATE = ['0' => "OPTION_PUBLICADO_LABEL", '1' => "OPTION_ARQUIVADO_LABEL", '2' => "OPTION_LIXEIRA_LABEL"];
@@ -449,6 +452,16 @@ class AbstractForm extends \Zend\Form\Form {
         endif;
 
         return $valueOptions;
+    }
+
+    public function getCaixa()
+    {
+        $cache= $this->serviceLocator->get('Cache');
+        if($cache->hasItem('caixa')){
+            $caixa=$cache->getItem('caixa');
+           return $caixa['id'];
+        }
+        return '';
     }
 
     public function getTabelas() {

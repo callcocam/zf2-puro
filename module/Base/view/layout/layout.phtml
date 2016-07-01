@@ -19,6 +19,9 @@ extract($usuario);
         <?php
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/forms-default.css'))
+               
+                  ->prependStylesheet($this->basePath('/admin_assets/icheck/skins/square/red.css'))
+                 ->prependStylesheet($this->basePath('/admin_assets/icheck/skins/square/_all.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/style.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/widgets.css'))
                 ->prependStylesheet($this->basePath('/admin_assets/css/ionicons.min.css'))
@@ -111,9 +114,12 @@ extract($usuario);
                 ->prependFile($this->basePath('/admin_assets/js/Manager.js'))
                 ->prependFile($this->basePath('/admin_assets/js/App.js'))
                 ->prependFile($this->basePath('/admin_assets/js/Dlls.js'))
-                ->prependFile($this->basePath('/admin_assets/js/SIGAMessages.js'))
                 ->prependFile($this->basePath('/admin_assets/edit_area/edit_area.init.js'))
                 ->prependFile($this->basePath('/admin_assets/edit_area/edit_area_full.js'))
+                ->prependFile($this->basePath('/admin_assets/icheck/icheck.init.js'))
+                ->prependFile($this->basePath('/admin_assets/js/SIGAMessages.js'))
+                ->prependFile($this->basePath('/admin_assets/js/slimScroll/jquery.slimscroll.min.js'))
+                ->prependFile($this->basePath('/admin_assets/icheck/icheck.js'))
                  ->prependFile($this->basePath('/admin_assets/js/formatCurrency.js'))
                 ->prependFile($this->basePath('/admin_assets/js/jquery.form.min.js'))
                 ->prependFile($this->basePath('/admin_assets/js/geral/jquery.datetimepicker.full.min.js'))

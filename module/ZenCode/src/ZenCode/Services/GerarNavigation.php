@@ -35,7 +35,7 @@ class GerarNavigation extends Options {
                 $this->setBody("          ),");
             }
             $this->setBody(" );     // Fim navigation default");
-            $this->setBody('return $return[0];');
+            $this->setBody('return $return;');
             if (!$entro) {
                 $this->setBody("limpa");
                 $this->setBody("return ;");
@@ -80,7 +80,7 @@ class GerarNavigation extends Options {
         $this->setSubaction("                        'label' => 'Cadastrar',");
         $this->setSubaction("                        'route' => '{$route}/default',");
         $this->setSubaction("                        'controller' => '{$controller}',");
-        $this->setSubaction("                        'resource' => '{$alias}\Controller\{$arquivo}',");
+        $this->setSubaction("                        'resource' => '{$alias}\Controller\\{$arquivo}',");
         $this->setSubaction("                        'action' => 'inserir',");
         $this->setSubaction("                        'privilege' => 'inserir',");
         $this->setSubaction("                        'title' => 'Cadastrar Registro',");
@@ -89,7 +89,7 @@ class GerarNavigation extends Options {
         $this->setSubaction("                        'label' => 'Editar',");
         $this->setSubaction("                        'route' => '{$route}/default',");
         $this->setSubaction("                        'controller' => '{$controller}',");
-        $this->setSubaction("                        'resource' => '{$alias}\Controller\{$arquivo}',");
+        $this->setSubaction("                        'resource' => '{$alias}\Controller\\{$arquivo}',");
         $this->setSubaction("                        'action' => 'editar',");
         $this->setSubaction("                        'privilege' => 'editar',");
         $this->setSubaction("                        'title' => 'Editar Registro',");

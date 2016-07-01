@@ -33,7 +33,7 @@ return array(
         'translation_file_patterns' => array(
             array(
                 'type'     => 'phparray',
-                'base_dir' =>  './data/languageArray',
+                'base_dir' =>  __DIR__ . '/../language',
                 'pattern'  => '%s.php',
             ),
         ),

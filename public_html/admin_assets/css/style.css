@@ -113,6 +113,8 @@ cursor: pointer;}
 .todo-list .handle{cursor: move;}
 .todo-list .texto{color: #0E96E5;font-size: 1.2em !important;font-weight: 600;margin: 5px 2px 5px 10px;}
 
+.iradio_square-green{margin: 0 5px 0 0 !important;}
+
 /* BOX COMENTARIOS */
 /* MSG CARREGANDO */
  /* .box-carregando, .carregando{

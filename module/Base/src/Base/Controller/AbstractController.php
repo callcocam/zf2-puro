@@ -39,6 +39,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $acao = "save";
     protected $caixa = null;
     protected $cache;
+    protected $filtro;
 
     abstract function __construct();
 
@@ -54,7 +55,7 @@ abstract class AbstractController extends AbstractActionController {
         }
         $this->getCache();
         $this->user = $this->getAuthService()->getIdentity();
-        $this->caixa=  $this->cache->getItem('caixa');
+        $this->caixa = $this->cache->getItem('caixa');
         return parent::onDispatch($e);
     }
 
@@ -89,23 +90,29 @@ abstract class AbstractController extends AbstractActionController {
     public function getModel() {
         return $this->getServiceLocator()->get($this->model);
     }
+
     public function getCache() {
-        $this->cache=  $this->getServiceLocator()->get("Cache");
+        $this->cache = $this->getServiceLocator()->get("Cache");
         return $this->cache;
     }
 
-    
     public function indexAction() {
 
         $view = new ViewModel();
         if (!empty($this->table)):
             $page = $this->params()->fromRoute('page', 1);
-            $this->data = $this->getTableGateway()->findAll();
+            if ($this->params()->fromPost()):
+                $this->data = $this->getTableGateway()->findAll($this->params()->fromPost());
+                $this->filtro = $this->params()->fromPost();
+            else:
+                $this->data = $this->getTableGateway()->findAll();
+            endif;
             // set the current page to what has been passed in query string, or to 1 if none set
             $this->data->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
             // set the number of items per page to 10
             $this->data->setItemCountPerPage(10);
             $this->data->setCurrentPageNumber($page);
+
         endif;
         $table = $this->getServiceLocator()->get('Table');
         $view->setVariable('table', $table);
@@ -113,6 +120,7 @@ abstract class AbstractController extends AbstractActionController {
         $view->setVariable('route', $this->route);
         $view->setVariable('controller', $this->controller);
         $view->setVariable('user', $this->user);
+        $view->setVariable('filtro', $this->filtro);
         $view->setTemplate($this->template);
         return $view;
     }

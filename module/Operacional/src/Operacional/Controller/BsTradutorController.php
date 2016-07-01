@@ -24,4 +24,39 @@ class BsTradutorController extends \Base\Controller\AbstractController {
         $this->template = "/admin/admin/listar";
     }
 
+
+    public function testeAction()
+    {
+    	$ler=$this->getTableGateway()->findBy(['state'=>0]);
+    	foreach ($ler as $key => $value) {
+			$mystring = $value->getTitle();
+			$desc=$value->getDescription();
+			$findme   = '_LABEL';
+			$pos = strpos($mystring, $findme);
+
+			// Note our use of ===.  Simply == would not work as expected
+			// because the position of 'a' was the 0th (first) character.
+			if ($pos === false) {
+			echo "The string '$findme' was not found in the string '$mystring' - $desc<p>";
+			} else {
+			// echo "The string '$findme' was found in the string '$mystring'<p>";
+			// echo " and exists at position $pos";
+			}
+    		// if(empty($value->getPlaceholder()))
+    		// {
+
+    		// 	$value->setPlaceholder($value->getDescription());
+
+    		// }
+    		// if(empty($value->getDicaTela()))
+    		// {
+    		// 	$value->setDicaTela($value->getDescription());
+    		// 	//$this->getTableGateway()->update($value);
+    		// }
+    		//var_dump($value);
+    	}
+    	
+    	die();
+    }
+
 }

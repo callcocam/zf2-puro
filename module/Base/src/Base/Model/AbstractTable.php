@@ -33,14 +33,25 @@ abstract class AbstractTable {
      * Busca todos os regstros do banco sem nenhuma restrição
      * @return type object table bd
      */
-    public function findALL($paginated = true) {
+    public function findALL($condicao = array(), $paginated = true) {
         $table = $this->tableGateway->getTable();
         if ($paginated) {
             $select = new Select($table);
             if ($table != 'bs_users'):
                 $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
             endif;
-            $select->order("{$table}.id DESC");
+            if (isset($condicao['state']) && (int) $condicao['state'] >= 0):
+                $select->where(array("{$table}.state" => $condicao['state']));
+            endif;
+            if (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && empty($condicao['publish_down'])):
+                $select->where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime("2050-01-01")));
+            elseif (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && !empty($condicao['publish_down'])):
+                $select->where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
+            endif;
+            if (isset($condicao['busca']) && !empty($condicao['busca'])):
+                $select->where->expression("CONCAT_WS(' ', {$table}.title, {$table}.description) LIKE ?", "%{$condicao['busca']}%");
+            endif;
+             $select->order("{$table}.id DESC");
             // create a new pagination adapter object
             $paginatorAdapter = new \Zend\Paginator\Adapter\DbSelect(
                     // our configured select object
@@ -170,7 +181,9 @@ abstract class AbstractTable {
                     $this->result = TRUE;
                     $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
                     $this->class = "trigger_success";
+                    $this->last_insert=TRUE;
                     return $this->result;
+                    
                 }
             }
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
@@ -204,7 +217,7 @@ abstract class AbstractTable {
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
             $this->result = TRUE;
             $this->class = "trigger_success";
-             return $this->result;
+            return $this->result;
         } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $exc) {
             $this->error = sprintf("ERROR: %s - %s", $exc->getCode(), $exc->getMessage());
             $this->result = null;
@@ -241,10 +254,9 @@ abstract class AbstractTable {
     public function getClass() {
         return $this->class;
     }
+
     public function getTableGateway() {
         return $this->tableGateway;
     }
-
-
 
 }

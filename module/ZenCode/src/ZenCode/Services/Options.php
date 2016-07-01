@@ -46,6 +46,7 @@ class Options {
     protected $table;
     protected $sl;
     protected $resutl;
+    protected $servileLocator;
 
     public function getName() {
         return $this->name;

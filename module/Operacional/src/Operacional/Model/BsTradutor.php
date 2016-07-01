@@ -15,4 +15,25 @@ use Base\Model\AbstractModel;
  */
 class BsTradutor extends AbstractModel
 {
+    protected $dica_tela;
+    protected $placeholder;
+    public function getDicaTela() {
+        return $this->dica_tela;
+    }
+
+    public function getPlaceholder() {
+        return $this->placeholder;
+    }
+
+    public function setDicaTela($dica_tela) {
+        $this->dica_tela = $dica_tela;
+        return $this;
+    }
+
+    public function setPlaceholder($placeholder) {
+        $this->placeholder = $placeholder;
+        return $this;
+    }
+
+
 }

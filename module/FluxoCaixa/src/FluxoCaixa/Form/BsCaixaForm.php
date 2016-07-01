@@ -24,10 +24,10 @@ class BsCaixaForm extends AbstractForm
      */
     public function __construct($serviceLocator, array $options = array())
     {
-        // Configurações iniciais do Form
-        parent::__construct($serviceLocator, "BsCaixa", $options);
-        $this->setInputFilter(new  BsCaixaFilter());
-                  	$formatter = $serviceLocator->get('DateFormat');
+                // Configurações iniciais do Form
+                parent::__construct($serviceLocator, "BsCaixa", $options);
+                $this->setInputFilter(new  BsCaixaFilter());
+                $formatter = $serviceLocator->get('DateFormat');
 		        if($this->has('title')):
 		        $this->get("title")->setValue($formatter->getDate())->setAttribute('readonly',true);
 		        endif;
@@ -43,12 +43,12 @@ class BsCaixaForm extends AbstractForm
         	                    'attributes' => array(
                                         'id'=>'ent_previsto',
                                         'class'=>'form-control real',
-                                        'value'=>'0,00',
-                                        'placeholder'=>'FILD_ENT_PREVISTO_PLACEHOLDER',
+                                       'placeholder'=>'FILD_ENT_PREVISTO_PLACEHOLDER',
                                         'requerid'=>'1',
                                         'title'=>'ent_previsto',
                                         'data-access'=>'3',
                                         'data-position'=>'geral',
+                                        
             	        	        ),
         	                )
         	            );
@@ -65,7 +65,6 @@ class BsCaixaForm extends AbstractForm
         	                    'attributes' => array(
                                         'id'=>'ent_real',
                                         'class'=>'form-control real',
-                                        'value'=>'0,00',
                                         'placeholder'=>'FILD_ENT_REAL_PLACEHOLDER',
                                         'requerid'=>'1',
                                         'title'=>'ent_real',
@@ -87,7 +86,7 @@ class BsCaixaForm extends AbstractForm
         	                    'attributes' => array(
                                         'id'=>'said_previsto',
                                         'class'=>'form-control real',
-                                        'value'=>'0,00',
+                                         'value'=>'',
                                         'placeholder'=>'FILD_SAID_PREVISTO_PLACEHOLDER',
                                         'requerid'=>'1',
                                         'title'=>'said_previsto',
@@ -109,7 +108,7 @@ class BsCaixaForm extends AbstractForm
         	                    'attributes' => array(
                                         'id'=>'said_real',
                                         'class'=>'form-control real',
-                                        'value'=>'0,00',
+                                         'value'=>"1",
                                         'placeholder'=>'FILD_SAID_REAL_PLACEHOLDER',
                                         'requerid'=>'1',
                                         'title'=>'said_real',
@@ -118,7 +117,10 @@ class BsCaixaForm extends AbstractForm
             	        	        ),
         	                )
         	            );
+
+              
     }
 
+   
 
 }

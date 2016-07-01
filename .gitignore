@@ -7,14 +7,8 @@ nbproject
 .idea
 .project
 .settings
-.phpintel
+/.phpintel
 vendor
 composer.phar
-data/to
-dist/images*
-dist/images/2016/*
-dist/cache
-dist/audios
-dist/midias*
-dist/files*
-*.mp3
+data
+dist

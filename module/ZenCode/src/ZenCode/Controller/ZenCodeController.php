@@ -364,6 +364,19 @@ class ZenCodeController extends \Base\Controller\AbstractController {
             'msg' => $this->error, 'data' => $navigation, 'caminho' => "Não a restauração para este arquivo", 'id' => "0"));
     }
 
+    public function gerartradutorAction() {
+        $language = $this->getServiceLocator()->get("Operacional\Model\BsTradutorTable")->findBy(array('state' => '0'));
+        $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sBase%slanguage%spt_BR.php");
+        $tradutorG = new \ZenCode\Services\GerarTradutor($language);
+        $tradutor = $tradutorG->generate($caminho);
+        $this->error = "ARQUIVO DE TADUÇÂO FOI GERADO COM SUCESSO, ATUALIZE A PAGINA PARA VER O RESULTADO!";
+        $this->action = sprintf("%s", "tradutor");
+        $this->result = TRUE;
+        $this->classe = "trigger_success";
+        return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
+            'msg' => $this->error, 'data' => $tradutor, 'caminho' => "Não a restauração para este arquivo", 'id' => "0"));
+    }
+
     public function updateAction() {
 
         if ($this->params()->fromPost()):

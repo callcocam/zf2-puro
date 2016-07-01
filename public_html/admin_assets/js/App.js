@@ -260,7 +260,6 @@ class App extends SIGAMessages {
 
     escondeBanco(_this)
     {
-        console.log(_this);
    if(parseInt(_this)){
           $(".banco").fadeIn('slow');
        }
@@ -268,9 +267,6 @@ class App extends SIGAMessages {
          $(".banco").fadeOut('slow');
        }
     }
-
-
-
 
 }
 
@@ -289,10 +285,7 @@ $(function () {
     _App.treeview(_App.menuTreeview);
     
     
-    $('input:radio[name=conta_tipo]').change(function() {
-          _App.escondeBanco($(this).val());
-    });
-    _App.escondeBanco($('input:radio[name=conta_tipo]:checked').val());
+   
     // if (_App.seletorElements.length) {
     //     _App.escondeElements();
     // }
@@ -360,6 +353,11 @@ $(function () {
 
     $(_App.carregando).hide();
     $(_App.boxCarregando).hide();
+
+     $('.main-sidebar').slimscroll({
+        height: '100%'
+    });
+
 
     if ($(".fancybox").length) {
         var _width = "70%";
