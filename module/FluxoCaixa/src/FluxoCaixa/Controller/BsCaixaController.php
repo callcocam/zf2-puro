@@ -52,5 +52,13 @@ class BsCaixaController extends AbstractController {
         }
         return parent::excluirAction();
     }
+    public function updateAction()
+    {
+        if ($this->cache->hasItem('caixa')) {
+            $this->cache->removeItem('caixa');
+        }
+        return parent::updateAction();
+
+    }
 
 }

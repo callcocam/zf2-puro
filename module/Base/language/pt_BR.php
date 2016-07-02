@@ -225,5 +225,4 @@ return array(
               'FILD_SAID_REAL_LABEL' => 'Saída Real',
               'FILD_SAID_REAL_DESC' => 'Saída Real',
               'FILD_SAID_REAL_PLACEHOLDER' => '0,00',
-             
  );

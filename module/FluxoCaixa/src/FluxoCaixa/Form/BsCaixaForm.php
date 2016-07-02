@@ -109,6 +109,7 @@ class BsCaixaForm extends AbstractForm {
         'class' => 'form-control real',
         'placeholder' => 'FILD_SAID_REAL_PLACEHOLDER',
         'requerid' => '1',
+          'value' => '0',
         'title' => 'said_real',
         'data-access' => '3',
         'data-position' => 'geral',

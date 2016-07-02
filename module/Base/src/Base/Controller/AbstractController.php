@@ -41,7 +41,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $cache;
     protected $filtro;
     protected $use_paginator = true;
-    protected $item_per_page = 1000;
+    protected $item_per_page = 12;
 
     abstract function __construct();
 
@@ -107,24 +107,17 @@ abstract class AbstractController extends AbstractActionController {
                 $this->data = $this->getTableGateway()->findAll($this->params()->fromPost());
                 $this->filtro = $this->params()->fromPost();
             else:
-                $this->data = $this->getTableGateway()->findAll(array());
+                $this->data = $this->getTableGateway()->findAll(array('state'=>'0'));
             endif;
           
                 // set the number of items per page to 10
                 $this->data->setItemCountPerPage($this->item_per_page);
                 // set the current page to what has been passed in query string, or to 1 if none set
                 $this->data->setCurrentPageNumber($page);
-         
-
-
-        endif;
-        $table = $this->getServiceLocator()->get('Table');
-        $view->setVariable('table', $table);
-        $view->setVariable('data', $this->data);
-        $view->setVariable('route', $this->route);
-        $view->setVariable('controller', $this->controller);
-        $view->setVariable('user', $this->user);
-        $view->setVariable('filtro', $this->filtro);
+           endif;
+        //$table = $this->getServiceLocator()->get('Table');
+        //$view->setVariable('table', $table);
+        $view = new ViewModel(array('data'=> $this->data,'route'=> $this->route,'controller'=>$this->controller,'user'=> $this->user,'filtro'=> $this->filtro));
         $view->setTemplate($this->template);
         return $view;
     }
@@ -165,11 +158,13 @@ abstract class AbstractController extends AbstractActionController {
 
     public function excluirAction() {
         $param = $this->params()->fromRoute('id', '0');
+         $this->result =false;
         if ($param) {
             if ($this->getTableGateway()->delete($param)):
                 $this->classe = 'trigger_success';
+               $this->result = $this->getTableGateway()->getResult();     
             endif;
-            $this->result = $this->getTableGateway()->getResult();
+            
             $this->error = $this->getTableGateway()->getError();
         }
         return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
@@ -293,6 +288,22 @@ abstract class AbstractController extends AbstractActionController {
     }
 
     public function getCaixa() {
+        $cache = $this->getServiceLocator()->get('Cache');
+        if (!$cache->hasItem("caixa")) {
+        $model = $this->getServiceLocator()->get('FluxoCaixa\Model\BsCaixaTable');
+        $caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
+        if ($caixa):
+            $cache->addItem("caixa", $caixa->toArray());
+            else:
+                $cache->removeItem("caixa");
+        endif;
+        }
+        else {
+        $caixa = $cache->getItem('caixa');
+        if ($caixa['created'] != date("Y-m-d")) {
+            $cache->removeItem("caixa");
+        }
+        }
         return $this->caixa;
     }
 
@@ -300,5 +311,7 @@ abstract class AbstractController extends AbstractActionController {
         $this->caixa = $caixa;
         return $this;
     }
+
+
 
 }

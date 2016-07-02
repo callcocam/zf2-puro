@@ -218,7 +218,7 @@ class BsContasPagarForm extends AbstractForm
                     'name' => 'plano_conta_id',
                     'options' => array(
                         'label' => 'FILD_PLANO_CONTA_ID_LABEL',
-                          'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsPlanosContasTable",array('state' => '0', 'parent_id' => '')),
+                          'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsPlanosContasTable",array('state' => '0', 'parent_id' => '','tipo'=>'1')),
                     ),
                     'attributes' => array(
                         'id' => 'plano_conta_id',

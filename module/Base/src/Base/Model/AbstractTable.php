@@ -64,6 +64,7 @@ abstract class AbstractTable {
             $paginator = new \Zend\Paginator\Paginator($paginatorAdapter);
             return $paginator;
         }
+        die;
         $resultSelect = $this->tableGateway->select(function(Select $select) use ($table) {
             $select->order("{$table}.id DESC");
             if ($table != 'bs_users'):

@@ -47,13 +47,14 @@ extract($user);
             $html = array();
             $escaper = new \Zend\Escaper\Escaper('utf-8');
             $qtd_col = 4;
-            if ($this->data):
+       
+            if ($this->data->count()):
                 foreach ($this->data as $o) {
                     $value = $o->toArray();
                     $value['description'] = \Base\Model\Check::Words($value['description'], 10);
                     $value['buttons'] = $this->ZFListarHelper()->createBtn($value['id'], $button);
                     $implode = "{{" . implode("}}&{{", array_keys($value)) . "}}";
-                    $keys = explode("&", $implode);
+                   $keys = explode("&", $implode);
                     if (array_key_exists("images", $value)) {
                         $images = $value['images'];
                         $value['images'] = $this->HtmlTag("img")->setAttributes(array(
@@ -70,9 +71,8 @@ extract($user);
                 if ($html) {
                     echo $this->HtmlTag('div')->setClass('row')->setText(implode("", $html));
                 }
-            endif;
-            ?>
-            <?php
+           
+            
             echo $this->paginationControl(
                     // the paginator object
                     $this->data,
@@ -88,6 +88,9 @@ extract($user);
                 'id' => "0"
                     )
             );
+            else:
+            echo '<div style="margin-top:20px" class="trigger trigger_info">OPSS! NÃO FOI ENCONTRADO NENHUMA INFORMAÇÃO, USE O BOTÃO DE CADASTRO PARA INSERIR UM OU MAIS REGISTRO(S)!</div>';
+             endif;
             ?>
         </div><!-- /.tab-pane -->
         <div class="clear"></div>

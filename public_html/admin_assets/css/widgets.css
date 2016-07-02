@@ -34,7 +34,10 @@
 .ico-modified{background: url(/admin_assets/images/cal.png) center center no-repeat;}
 .ico-plano_conta_id{background: url(/admin_assets/images/projeto.png) center center no-repeat;}
 .ico-description{background: url(/admin_assets/images/datail.png) center center no-repeat;}
-
+.ico-alias{background: url(/admin_assets/images/nick.png) center center no-repeat;}
+.ico-parent_id{background: url(/admin_assets/images/parent.png) center center no-repeat;}
+.ico-tipo{background: url(/admin_assets/images/tipo.png) center center no-repeat;}
+.ico-state{background: url(/admin_assets/images/status.png) center center no-repeat;}
 
 /*SMALL BOX*/
 .small-box{border-radius: 2px;position: relative;float: left;margin-bottom: 20px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);width: 100%;}

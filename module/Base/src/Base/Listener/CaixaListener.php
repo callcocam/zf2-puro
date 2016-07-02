@@ -14,10 +14,10 @@ use Zend\Mvc\MvcEvent;
 class CaixaListener implements ListenerAggregateInterface {
 
     public function attach(EventManagerInterface $events) {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array(
-            $this,
-            'GetCaixa'
-                ), - 9401);
+        // $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array(
+        //     $this,
+        //     'GetCaixa'
+        //         ));
     }
 
     public function detach(EventManagerInterface $events) {
@@ -31,6 +31,8 @@ class CaixaListener implements ListenerAggregateInterface {
             $caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
             if ($caixa):
                 $cache->addItem("caixa", $caixa->toArray());
+                else:
+                 $cache->removeItem("caixa");
             endif;
         }
         else {

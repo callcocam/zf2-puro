@@ -32,21 +32,24 @@ class BsContasReceberController extends AbstractController {
     }
 
     public function editarAction() {
-        if (!$this->caixa):
+         if (!$this->getCaixa()):
+           $this->Messages()->flashInfo("OPPSS!, VOÇÊ DEVE ABRIR UMA CONTA PARA O DIA DE HOJE {$this->getServiceLocator()->get('DateFormat')->getDate()}");
             return $this->redirect()->toRoute($this->route, array('controller' => 'bs-caixa', 'action' => 'index'));
         endif;
         return parent::editarAction();
     }
 
     public function excluirAction() {
-        if (!$this->caixa):
-            return $this->redirect()->toRoute($this->route, array('controller' => 'bs-caixa', 'action' => 'index'));
+         if (!$this->getCaixa()):
+             return new JsonModel(array('result' => false, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' =>"0", 'class' => "trigger_error",
+             'msg' =>"OPPSS!, VOÇÊ DEVE ABRIR UMA CONTA PARA O DIA DE HOJE {$this->getServiceLocator()->get('DateFormat')->getDate()}", 'data' => array()));
         endif;
         return parent::excluirAction();
     }
 
     public function inserirAction() {
-        if (!$this->caixa):
+         if (!$this->getCaixa()):
+            $this->Messages()->flashInfo("OPPSS!, VOÇÊ DEVE ABRIR UMA CONTA PARA O DIA DE HOJE {$this->getServiceLocator()->get('DateFormat')->getDate()}");
             return $this->redirect()->toRoute($this->route, array('controller' => 'bs-caixa', 'action' => 'index'));
         endif;
         return parent::inserirAction();

@@ -17,7 +17,7 @@ class Module {
 
         $eventManager->attach($serviceManager->get('LayoutListener'));
         $eventManager->attach($serviceManager->get('LayoutErrorListener'));
-        $eventManager->attach($serviceManager->get('CaixaListener'));
+       // $eventManager->attach($serviceManager->get('CaixaListener'));
         $eventManager->attach($serviceManager->get('CompaniesListener'));
         $eventManager->attach($serviceManager->get('LogListener'));
 
