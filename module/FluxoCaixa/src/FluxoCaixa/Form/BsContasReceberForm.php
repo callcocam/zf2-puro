@@ -57,7 +57,7 @@ class BsContasReceberForm extends AbstractForm {
                     'attributes' => array(
                         'id' => 'valor',
                         'class' => 'form-control real',
-                        'placeholder' => 'FILD_VALOR_PLACEHOLDER',
+                        'placeholder' => '0,00',
                         'requerid' => '1',
                         'title' => 'valor',
                         'data-access' => '3',
@@ -258,10 +258,11 @@ class BsContasReceberForm extends AbstractForm {
         //############################################ informações da coluna cliente_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'select',
                     'name' => 'cliente_id',
                     'options' => array(
                         'label' => 'FILD_CLIENTE_ID_LABEL',
+                        'value_options'=>$this->setValueOption('Gestao\Model\BsClientesTable',array('state' =>'0'))
                     ),
                     'attributes' => array(
                         'id' => 'cliente_id',
@@ -298,26 +299,25 @@ class BsContasReceberForm extends AbstractForm {
 
 
         //############################################ informações da coluna tipo_documento ##############################################:
-        
         $this->add(
-        	                array(
-        	                    'type' => 'select',
-        	                    'name' => 'tipo_documento',
-        	                    'options' => array(
-                     			'label' => 'FILD_TIPO_DOCUMENTO_LABEL',
-                     			'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoDocumentoTable')
-                     		   	 ),
-        	                    'attributes' => array(
-                                        'id'=>'tipo_documento',
-                                        'class'=>'form-control',
-                                        'placeholder'=>'FILD_TIPO_DOCUMENTO_PLACEHOLDER',
-                                        'requerid'=>'1',
-                                        'title'=>'tipo_documento',
-                                        'data-access'=>'3',
-                                        'data-position'=>'geral',
-            	        	        ),
-        	                )
-        	            );
+                    array(
+                        'type' => 'select',
+                        'name' => 'tipo_documento',
+                        'options' => array(
+                        'label' => 'FILD_TIPO_DOCUMENTO_LABEL',
+                        'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoDocumentoTable')
+                            ),
+                        'attributes' => array(
+                                'id'=>'tipo_documento',
+                                'class'=>'form-control',
+                                'placeholder'=>'FILD_TIPO_DOCUMENTO_PLACEHOLDER',
+                                'requerid'=>'1',
+                                'title'=>'tipo_documento',
+                                'data-access'=>'3',
+                                'data-position'=>'geral',
+                            ),
+                    )
+                );
         	            
        //############################################ informações da coluna num_documento ##############################################:
         $this->add(

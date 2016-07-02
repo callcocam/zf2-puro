@@ -57,7 +57,7 @@ class BsContasPagarForm extends AbstractForm
                     'attributes' => array(
                         'id' => 'valor',
                         'class' => 'form-control real',
-                        'placeholder' => 'FILD_VALOR_PLACEHOLDER',
+                        'placeholder' => '0,00',
                         'requerid' => '1',
                         'title' => 'valor',
                         'data-access' => '3',

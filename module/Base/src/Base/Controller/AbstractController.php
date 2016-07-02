@@ -291,18 +291,22 @@ abstract class AbstractController extends AbstractActionController {
         $cache = $this->getServiceLocator()->get('Cache');
         if (!$cache->hasItem("caixa")) {
         $model = $this->getServiceLocator()->get('FluxoCaixa\Model\BsCaixaTable');
-        $caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
-        if ($caixa):
-            $cache->addItem("caixa", $caixa->toArray());
+        $this->caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
+        if ($this->caixa):
+                $cache->addItem("caixa", $this->caixa->toArray());
+                $this->caixa = $cache->getItem('caixa');
             else:
+                $this->caixa=false;
                 $cache->removeItem("caixa");
         endif;
         }
-        else {
-        $caixa = $cache->getItem('caixa');
-        if ($caixa['created'] != date("Y-m-d")) {
-            $cache->removeItem("caixa");
-        }
+        else 
+        {
+            $this->caixa = $cache->getItem('caixa');
+            if ($this->caixa['created'] != date("Y-m-d")) {
+                $cache->removeItem("caixa");
+                $this->caixa=false;
+            }
         }
         return $this->caixa;
     }
