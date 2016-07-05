@@ -19,8 +19,11 @@ use Zend\Db\Sql\Select;
 abstract class AbstractTable {
 
     protected $tableGateway;
+    protected $table;
     protected $limit = 50;
     protected $offset = 0;
+    protected $joins = array();
+    protected $columns = array();
     protected $error;
     protected $result;
     protected $last_insert;
@@ -34,44 +37,58 @@ abstract class AbstractTable {
      * @return type object table bd
      */
     public function findALL($condicao = array(), $paginated = true) {
+        //pegamos a tabela principal
         $table = $this->tableGateway->getTable();
-        if ($paginated) {
-            $select = new Select($table);
-            if ($table != 'bs_users'):
-                $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
-            endif;
-            if (isset($condicao['state']) && (int) $condicao['state'] >= 0):
-                $select->where(array("{$table}.state" => $condicao['state']));
-            endif;
-            if (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && empty($condicao['publish_down'])):
-                $select->where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime("2050-01-01")));
-            elseif (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && !empty($condicao['publish_down'])):
-                $select->where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
-            endif;
-            if (isset($condicao['busca']) && !empty($condicao['busca'])):
-                $select->where->expression("CONCAT_WS(' ', {$table}.title, {$table}.description) LIKE ?", "%{$condicao['busca']}%");
-            endif;
-             $select->order("{$table}.id DESC");
-            // create a new pagination adapter object
-            $paginatorAdapter = new \Zend\Paginator\Adapter\DbSelect(
-                    // our configured select object
-                    $select,
-                    // the adapter to run it against
-                    $this->tableGateway->getAdapter(),
-                    // the result set to hydrate
-                    $this->tableGateway->getResultSetPrototype()
-            );
-            $paginator = new \Zend\Paginator\Paginator($paginatorAdapter);
-            return $paginator;
-        }
-        die;
-        $resultSelect = $this->tableGateway->select(function(Select $select) use ($table) {
-            $select->order("{$table}.id DESC");
-            if ($table != 'bs_users'):
-                $select->join('bs_users', "bs_users.id = {$table}.created_by", array('Username' => 'title'));
-            endif;
-        });
-        return $resultSelect;
+        //abrir zend db sql e iniciar um select
+        $select = $this->tableGateway->getSql()->select();
+        // verificar se não estamos listando a tabela de usuario
+        //e unir com a tabella de usuario qualquer outra tabela
+        if ($table != 'bs_users'):
+            $select->join('bs_users', "bs_users.id = {$table}.modified_by", array('editor_by' => 'title'));
+        endif;
+        //verificar e monta as união de tabelas vindas de sua table real
+        if ($this->joins):
+            foreach ($this->joins as $j):
+                $select->join($j['tabela'], $j['w'], $j['c'], $j['predicate']);
+            endforeach;
+        endif;
+        if (isset($condicao['busca'])):
+            $select->where($this->filtro($condicao, $table));
+        endif;
+//        if ($table != 'bs_users'):
+//             echo $select->getSqlString();
+//        endif;
+        $select->order("{$table}.id DESC");
+        $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        $resultSet = new \Zend\Db\ResultSet\ResultSet(); //$this->tableGateway->getResultSetPrototype();
+        $resultSet->initialize($results);
+        $paginator = new \Zend\Paginator\Paginator(new
+                \Zend\Paginator\Adapter\ArrayAdapter($resultSet->toArray())
+        );
+        return $paginator;
+    }
+
+    protected function filtro($condicao, $table) {
+
+        $where = new \Zend\Db\Sql\Where();
+        if (isset($condicao['state']) && (int) $condicao['state'] >= 0):
+            $where->equalTo("{$table}.state", $condicao['state']);
+        endif;
+        if (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && empty($condicao['publish_down'])):
+            $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime("2050-01-01")));
+        elseif (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && !empty($condicao['publish_down'])):
+            $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
+        endif;
+        if (isset($condicao['busca']) && !empty($condicao['busca'])):
+            $where->expression("CONCAT_WS(' ', {$table}.title, {$table}.description) LIKE ?", "%{$condicao['busca']}%");
+        endif;
+        return $where;
+    }
+    
+    public function setJoin()
+    {
+        
     }
 
     /**
@@ -182,9 +199,8 @@ abstract class AbstractTable {
                     $this->result = TRUE;
                     $this->error = "O REGISTRO [ <b>{$oldData->getTitle()}</b> ] FOI EXCLUIDO COM SUCESSO!";
                     $this->class = "trigger_success";
-                    $this->last_insert=TRUE;
+                    $this->last_insert = TRUE;
                     return $this->result;
-                    
                 }
             }
             $this->error = "NÃO FOI POSSIVEL CONCLUIR A SUA SOLISITAÇÃO, POR QUE NENHUM REGISTRO CORRESPONDENTE FOI ENCONTRADO!!";
@@ -238,6 +254,16 @@ abstract class AbstractTable {
             $row['maxId'] = 0;
         }
         return $row['maxId'] + 1;
+    }
+
+    public function getSqlPerson($table, $condicao = array('state' => 0)) {
+        $sql = new \Zend\Db\Sql\Sql($this->tableGateway->getAdapter());
+        $select = $sql->select();
+        $select->from($table);
+        $select->where($condicao);
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        return $results->current();
     }
 
     public function getError() {

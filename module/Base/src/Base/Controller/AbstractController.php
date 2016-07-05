@@ -152,7 +152,7 @@ abstract class AbstractController extends AbstractActionController {
             'controller' => $this->controller,
             'action' => 'publica',
             'id' => $id));
-        $view->setTemplate('/admin/admin/inserir');
+        $view->setTemplate('/admin/admin/editar');
         return $view;
     }
 
@@ -201,12 +201,19 @@ abstract class AbstractController extends AbstractActionController {
                     $this->result = null;
                 }
             } else {
-                $msgs = "";
-                foreach ($this->form->getMessages() as $msg):
-                    $msgs.= implode("<p> ", $msg);
-                endforeach;
+                $msgs = [];
+
+                $erro=$this->form->getMessages();
+                //$this->printAll($erro);
+                if (isset($erro)):
+                foreach ($erro as $key => $value) {
+                    foreach ($value as $value_i) {
+                        $msgs[]="{$key} : {$value_i}";
+                    }
+                }
+                endif;
                 $this->result = null;
-                $this->error = $msgs;
+                $this->error =implode("<p> ", $msgs);
                 $this->acao = 'save';
             }
             return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' => $this->id, 'class' => $this->classe,

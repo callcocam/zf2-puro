@@ -341,6 +341,7 @@ $(function () {
     $("#publish_up, #publish_down").datetimepicker({
         timepicker: false,
         format: 'd-m-Y H:i:s',
+        startDate:'+2001/05/01',//or 1986/12/08
         onChangeDateTime: function (dp, $input) {
             //alert($input.val());
         }

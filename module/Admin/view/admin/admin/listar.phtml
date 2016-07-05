@@ -35,11 +35,14 @@ extract($user);
         <div id="principal" class="tab-pane ui-state-active">
 
             <?php
-            if (!$this->resolver("/tpl/{$this->controller}-index")) :
-                $partial = $this->partial("/tpl/index");
-            else:
-                $partial = $this->partial("/tpl/{$this->controller}-index");
+            if(!is_dir("./module/Admin/view/admin/admin/tpl/{$this->controller}")):
+             mkdir("./module/Admin/view/admin/admin/tpl/{$this->controller}");
             endif;
+            if (!$this->resolver("/tpl/{$this->controller}/index")) :
+                $partial = $this->partial("/tpl/index");
+                file_put_contents("./module/Admin/view/admin/admin/tpl/{$this->controller}/index.phtml",  $partial);
+           endif;
+           $partial = $this->partial("/tpl/{$this->controller}/index");
             $button = array(
                 'EDITAR' => array('type' => 'a', 'label' => 'EDITAR', 'icone' => 'ion ion-compose', 'action' => 'editar', 'class' => 'green', 'page' => $this->page, 'id' => 'editar'),
                 'EXCLUIR' => array('type' => 'a', 'label' => 'EXCLUIR', 'icone' => 'ion ion-ios-trash-outline', 'action' => 'excluir', 'class' => 'blue', 'page' => $this->page, 'id' => 'delete'),
@@ -49,12 +52,13 @@ extract($user);
             $qtd_col = 4;
        
             if ($this->data->count()):
-                foreach ($this->data as $o) {
-                    $value = $o->toArray();
+                foreach ($this->data as $value) {
+                   // $value = $o->toArray();
                     $value['description'] = \Base\Model\Check::Words($value['description'], 10);
                     $value['buttons'] = $this->ZFListarHelper()->createBtn($value['id'], $button);
                     $implode = "{{" . implode("}}&{{", array_keys($value)) . "}}";
-                   $keys = explode("&", $implode);
+                    $keys = explode("&", $implode);
+                   // var_dump($keys);
                     if (array_key_exists("images", $value)) {
                         $images = $value['images'];
                         $value['images'] = $this->HtmlTag("img")->setAttributes(array(

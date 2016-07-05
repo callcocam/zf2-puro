@@ -2,7 +2,7 @@
 
 namespace Auth\Controller;
 
-class AdminController extends AbstractController {
+class AdminController extends \Base\Controller\AbstractController {
 
     public function __construct() {
         $this->route = "auth/default";
@@ -11,6 +11,7 @@ class AdminController extends AbstractController {
         $this->form = "Auth\Form\BsUsersCreateForm";
         $this->model = "Auth\Model\BsUsers";
         $this->table = "Auth\Model\BsUsersTable";
+        $this->template = "/admin/admin/listar";
     }
     public function updateAction() {
         $this->form = "Auth\Form\BsUsersUpdateForm";

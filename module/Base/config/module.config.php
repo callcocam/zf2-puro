@@ -58,7 +58,7 @@ return array(
         'template_map' => array(
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'home/layout' => __DIR__ . '/../view/layout/home.phtml',
-            'auth/layout' => __DIR__ . '/../view/layout/home.phtml',
+           'auth/layout' => __DIR__ . '/../view/layout/home.phtml',
             'base/index/index' => __DIR__ . '/../view/base/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',

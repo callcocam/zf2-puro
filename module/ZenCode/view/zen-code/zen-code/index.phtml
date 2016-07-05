@@ -37,7 +37,7 @@ extract($user);
             <?php 
             $options=[''=>'--Selecione--'];
             foreach ($this->data as $r):
-                       $options[$r->getId()]=$r->getTitle();
+                       $options[$r['id']]=$r['title'];
              endforeach; ?>
             
             <?php

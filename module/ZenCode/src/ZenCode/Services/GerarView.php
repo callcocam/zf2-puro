@@ -55,6 +55,9 @@ class GerarView extends HtmlElement {
             } elseif ($element->getAttribute('type') === "submit") {
                 $this->setBtn($key);
                 self::$html["#{$key}#"] = "";
+            } elseif ($blokcs === "images") {
+                self::$html["#imagePreview#"] = "";
+                 $this->setImages($key, $visible);
             } else {
                 if ($blokcs === "geral") {
                     $this->setGeral($key, $visible);
@@ -62,10 +65,7 @@ class GerarView extends HtmlElement {
                 if ($blokcs === "controle") {
                     $this->setControle($key, $visible);
                 }
-                if ($blokcs === "images") {
-                    self::$html["#imagePreview#"] = "";
-                    $this->setImages($key, $visible);
-                }
+                
                 if ($blokcs === "galery") {
                     $this->setGalery($key, $visible);
                 }
@@ -84,43 +84,43 @@ class GerarView extends HtmlElement {
         if (self::$hidden):
             self::$gegal['hiddeh'] = implode("", self::$hidden);
             $boxGeral = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$gegal), "title" => "GERAL", "class" => "box-default", 'footer' => implode("", self::$btn), 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-08')->setText($boxGeral)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM GERAL ################################# -->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-08')->setText(PHP_EOL)->appendText($boxGeral)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM GERAL ################################# -->")->appendText(PHP_EOL);
         else:
             $boxGeral = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$gegal), "title" => "GERAL SEM HIDDEN", "class" => "box-default", 'footer' => implode("", self::$btn), 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-08')->setText($boxGeral)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM GERAL ################################# -->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-08')->setText(PHP_EOL)->appendText($boxGeral)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM GERAL ################################# -->")->appendText(PHP_EOL);
         endif;
 
         if (self::$controle):
             $boxControle = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$controle), "title" => "CONTROLES", "class" => "box-default", 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText($boxControle)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!--################################# FIM CONTROLE ################################# -->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxControle)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!--################################# FIM CONTROLE ################################# -->")->appendText(PHP_EOL);
         endif;
         if (self::$images):
             $boxImages = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$images), "title" => "IMAGENS", "class" => "box-default", 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText($boxImages)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM IMAGES ###########################-->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxImages)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################# FIM IMAGES ###########################-->")->appendText(PHP_EOL);
         endif;
         if (self::$galery):
             $boxGalery = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$galery), "title" => "GALERIAS", "class" => "box-default", 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText($boxGalery)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ###################################FIM GALERIA###################### -->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxGalery)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ###################################FIM GALERIA###################### -->")->appendText(PHP_EOL);
         endif;
         if (self::$datas):
             $boxDatas = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$datas), "title" => "DATAS", "class" => "box-default", 'icone' => 'clipboard'));
-            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText($boxDatas)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################## FIM DATAS ###################### -->")->appendText(PHP_EOL);
+            $box->appendText($this->setHtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxDatas)->appendText(PHP_EOL))->appendText(PHP_EOL)->appendText("<!-- ################################## FIM DATAS ###################### -->")->appendText(PHP_EOL);
         endif;
 
         return $box;
     }
 
     public function setGeral($key, $visible) {
-        self::$gegal[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}')?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'));
+        self::$gegal[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}')?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'))->appendText(PHP_EOL);
     }
 
     public function setControle($key, $visible) {
-        self::$controle[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'));
+        self::$controle[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'))->appendText(PHP_EOL);
     }
 
     public function setDatas($key, $visible) {
         $addon = $this->setHtmlTag("div")->setClass("input-group-addon");
-        self::$datas[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText($addon)->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'));
+        self::$datas[$key] = $this->setHtmlTag("div")->setClass('row')->setText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass("form-group box box-full-12 box-medium-12 box-large-12{$visible}")->setText("<?php echo \$this->translate('{{{$key}}}');?>")->appendText($addon)->appendText("#{$key}#"))->appendText(PHP_EOL)->appendText($this->setHtmlTag("div")->setClass('clear'))->appendText(PHP_EOL);
     }
 
     public function setBtn($key) {
@@ -142,7 +142,6 @@ class GerarView extends HtmlElement {
     public function setImages($key, $visible) {
         $iFaparpeClicp = $this->setHtmlTag('i')->setClass('ion ion-android-upload');
         $attachment = $this->setHtmlTag('input')->setAttributes(array('name' => 'attachment', 'type' => 'file', 'id' => 'attachment'));
-        // $imagenHidden = $this->formRow($element->setLabel('')->setAttributes(array('type' => 'hidden')));
         $divbtnPrimary = $this->setHtmlTag('div')->setClass('btn btn-blue btn-file');
         $span = $this->setHtmlTag('span')->setClass('file-text')->appendText("Selecione uma imagem");
         $divbtnPrimary->setText($iFaparpeClicp)->appendText($span)->appendText(PHP_EOL);
@@ -176,14 +175,14 @@ class GerarView extends HtmlElement {
         $ionIonBag = $this->setHtmlTag("i")->setClass("ion ion-{$icone}")->setText(PHP_EOL);
         $box_title = $this->setHtmlTag('h3')->setClass("box-title")->setText($title)->appendText(PHP_EOL);
         $box_header->appendText($ionIonBag)->appendText(PHP_EOL)->appendText($box_title)->appendText(PHP_EOL);
-        $box_body = $this->setHtmlTag('div')->setClass("box-body")->setText($body)->appendText(PHP_EOL);
+        $box_body = $this->setHtmlTag('div')->setClass("box-body")->setText(PHP_EOL)->appendText($body)->appendText(PHP_EOL);
         if (isset($footer)) {
             $pull_right = $this->setHtmlTag('div')->setClass("pull-right")->setText($footer)->appendText(PHP_EOL);
             $box_footer = $this->setHtmlTag('div')->setClass("box-footer")->setText($pull_right)->appendText(PHP_EOL);
         }
         if (isset($append_box_footer)) {
             if (empty($box_footer)) {
-                $box_footer = $this->setHtmlTag('div')->setClass("box-footer");
+                $box_footer = $this->setHtmlTag('div')->setClass("box-footer")->setText(PHP_EOL);
             }
             $box_footer->appendText(PHP_EOL)->appendText($append_box_footer)->appendText(PHP_EOL);
         }
@@ -200,9 +199,9 @@ class GerarView extends HtmlElement {
         foreach ($colunas as $key => $value):
             if (!array_search($key, $ignore)):
                 $ico=$this->setHtmlTag('i')->setClass("ico ico-{$key}");
-                $label=$this->setHtmlTag('span')->setClass("label-list label-list-{$key}")->setText("<?php echo \$this->translate('{$key}');?> :");
+                $label=$this->setHtmlTag('span')->setClass("label-list label-list-{$key}")->setText(PHP_EOL)->appendText("<?php echo \$this->translate('{$key}');?> :")->appendText(PHP_EOL);
                 $desc=$this->setHtmlTag('span')->setClass("data-list data-list-{$key}")->setText("{{{$key}}}");
-                $filds["{{{$key}}}"] = $this->setHtmlTag('div')->setClass("box-list list-{$key}")->setText($ico)->appendText($label)->appendText($desc);
+                $filds["{{{$key}}}"] = $this->setHtmlTag('div')->setClass("box-list list-{$key}")->setText(PHP_EOL)->appendText($ico)->appendText(PHP_EOL)->appendText($label)->appendText(PHP_EOL)->appendText($desc)->appendText(PHP_EOL);
             endif;
         endforeach;
         if (array_key_exists("images", $colunas)) {
@@ -235,22 +234,22 @@ class GerarView extends HtmlElement {
 
         $criadoEm = $this->setHtmlTag("small")->setClass('fl-left')->setText("<?php echo \$this->translate('CRIADO EM: ');?>")->appendText('{{created}}');
 
-        $criadoPor = $this->setHtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editorBy}}');
+        $criadoPor = $this->setHtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editor_by}}');
 
-        $box_header->setText($box_header_icon)->appendText($boxTitle)->appendText($br)->appendText($criadoEm)->appendText($criadoPor);
+        $box_header->appendText($box_header_icon)->appendText(PHP_EOL)->appendText($boxTitle)->appendText(PHP_EOL)->appendText($br)->appendText(PHP_EOL)->appendText($criadoEm)->appendText($criadoPor)->appendText(PHP_EOL);
 
         $boxbody = $this->setHtmlTag("div")->setClass('box-body');
 
-        $desc = $this->setHtmlTag("p")->setClass('box-description')->setText($body);
+        $desc = $this->setHtmlTag("p")->setClass('box-description')->setText(PHP_EOL)->appendText($body);
 
         $botao = $this->setHtmlTag("div")->setClass('box-footer')->setText('{{buttons}}');
 
-        $boxbody->setText($desc);
+        $boxbody->setText(PHP_EOL)->appendText($desc);
 
-        $boxboxsolid->setText($box_header)->appendText($boxbody)->appendText($botao);
-
-        return $this->setHtmlTag('div')->setClass('box box-full-12  box-mini-06 box-small-06 box-medium-04 box-large-<?=$qtd_col?> col-box-list')->setText($boxboxsolid);
-    }
+        $boxboxsolid->setText(PHP_EOL)->appendText($box_header)->appendText(PHP_EOL)->appendText($boxbody)->appendText(PHP_EOL)->appendText($botao)->appendText(PHP_EOL);
+        $box_class=utf8_encode("box box-full-12 box-mini-06  box-small-06 box-medium-04 box-large-{$qtd_col} col-box-list");
+        return $this->setHtmlTag('div')->setClass($box_class)->setText(PHP_EOL)->appendText($boxboxsolid)->appendText(PHP_EOL);
+        }
 
     public function setList($id, $body = "{{description}}",$module, $bg = "box-default") {
         $qtd_col = str_pad($module->getColunasLinha(), 2, '0', STR_PAD_LEFT);
@@ -269,7 +268,7 @@ class GerarView extends HtmlElement {
 
         $criadoEm = $this->setHtmlTag("small")->setClass('fl-left')->setText("<?php echo \$this->translate('CRIADO EM: ');?>")->appendText('{{created}}');
 
-        $criadoPor = $this->setHtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editorBy}}');
+        $criadoPor = $this->setHtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editor_by}}');
 
         $box_header->appendText($box_header_icon)->appendText(PHP_EOL)->appendText($boxTitle)->appendText(PHP_EOL)->appendText($br)->appendText(PHP_EOL)->appendText($criadoEm)->appendText($criadoPor)->appendText(PHP_EOL);
 

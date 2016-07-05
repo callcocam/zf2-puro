@@ -22,6 +22,8 @@ class BsContasReceber extends AbstractModel
 
     protected $repete = '';
 
+    protected $periodos = '';
+
     protected $qtdade = '';
 
     protected $conta_id = '';
@@ -39,8 +41,6 @@ class BsContasReceber extends AbstractModel
     protected $tipo_documento = '';
 
     protected $num_documento = '';
-
-    protected $perildo = '';
 
     /**
      * get caixa_id
@@ -70,6 +70,16 @@ class BsContasReceber extends AbstractModel
     public function getRepete()
     {
         return $this->repete;
+    }
+
+    /**
+     * get periodos
+     *
+     * @return varchar
+     */
+    public function getPeriodos()
+    {
+        return $this->periodos;
     }
 
     /**
@@ -163,16 +173,6 @@ class BsContasReceber extends AbstractModel
     }
 
     /**
-     * get perildo
-     *
-     * @return varchar
-     */
-    public function getPerildo()
-    {
-        return $this->perildo;
-    }
-
-    /**
      * set caixa_id
      *
      * @return int
@@ -202,6 +202,17 @@ class BsContasReceber extends AbstractModel
     public function setRepete($repete = null)
     {
         $this->repete=$repete;
+        return $this;
+    }
+
+    /**
+     * set periodos
+     *
+     * @return varchar
+     */
+    public function setPeriodos($periodos = null)
+    {
+        $this->periodos=$periodos;
         return $this;
     }
 
@@ -301,17 +312,6 @@ class BsContasReceber extends AbstractModel
     public function setNumDocumento($num_documento = null)
     {
         $this->num_documento=$num_documento;
-        return $this;
-    }
-
-    /**
-     * set perildo
-     *
-     * @return varchar
-     */
-    public function setPerildo($perildo = null)
-    {
-        $this->perildo=$perildo;
         return $this;
     }
 

@@ -225,4 +225,10 @@ return array(
               'FILD_SAID_REAL_LABEL' => 'Saída Real',
               'FILD_SAID_REAL_DESC' => 'Saída Real',
               'FILD_SAID_REAL_PLACEHOLDER' => '0,00',
+              'FILD_PUBLISH_UP_START_LABEL' => 'Inicio Da Capitalização',
+              'FILD_PUBLISH_UP_START_DESC' => 'Inicio Da Capitalização',
+              'FILD_PUBLISH_UP_START_PLACEHOLDER' => '00/00/0000 00:00:00',
+              'FILD_VALOR_LABEL' => 'Valor',
+              'FILD_VALOR_DESC' => 'Valor',
+              'FILD_VALOR_PLACEHOLDER' => '0,00',
  );

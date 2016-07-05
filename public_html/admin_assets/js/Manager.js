@@ -11,7 +11,7 @@ class Manager extends SIGAMessages {
         this.seletorSqlAttach = $("#attachmentSql");
         this.preview = '.preview_IMG';
         this.fileText = '.file-text';
-        this.wd = "418";
+        this.wd = "300";
         this.hg = "251";
 
         this.ManagerFormOption = {

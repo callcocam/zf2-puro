@@ -26,7 +26,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $route = "auth/default";
     protected $controller = "auth";
     protected $action = "index";
-    protected $template = "/auth/admin/index";
+    protected $template = "/admin/admin/listar";
 
     public function onDispatch(\Zend\Mvc\MvcEvent $e) {
         $this->user = $this->getAuthService()->getIdentity();

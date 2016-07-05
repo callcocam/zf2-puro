@@ -27,10 +27,13 @@ echo $this->headTitle(strtoupper(substr($controller, 3)));
             ->setMessageSeparatorString('</li>')->render($form);
     echo $this->form()->openTag($form);
     $this->GerarViewHelper()->GerarElement($form);
-    if (!$this->resolver("admin/admin/tpl/{$this->controller}-inserir")) :
-         file_put_contents("./module/Admin/view/admin/admin/tpl/{$this->controller}-inserir.phtml", $this->GerarViewHelper()->formGrupo());
+     if(!is_dir("./module/Admin/view/admin/admin/tpl/{$this->controller}")):
+        mkdir("./module/Admin/view/admin/admin/tpl/{$this->controller}");
     endif;
-    $html = $this->partial("admin/admin/tpl/{$this->controller}-inserir");
+    if (!$this->resolver("admin/admin/tpl/{$this->controller}/inserir")) :
+         file_put_contents("./module/Admin/view/admin/admin/tpl/{$this->controller}/inserir.phtml", $this->GerarViewHelper()->formGrupo());
+    endif;
+    $html = $this->partial("admin/admin/tpl/{$this->controller}/inserir");
     $primeiro = str_replace(array_keys($this->GerarViewHelper()->getHtml()), array_values($this->GerarViewHelper()->getHtml()), $html);
     echo str_replace(array_keys($this->GerarViewHelper()->getLabels()), array_values($this->GerarViewHelper()->getLabels()), $primeiro);
     echo $this->form()->closeTag();

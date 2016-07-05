@@ -51,16 +51,18 @@ class BsClientesForm extends AbstractForm
                     //############################################ informações da coluna tipo ##############################################:
         		    $this->add(
         	                array(
-        	                    'type' => 'text',
+        	                    'type' => 'select',
         	                    'name' => 'tipo',
         	                    'options' => array(
                      			'label' => 'FILD_TIPO_LABEL',
+                                'value_options'=>['0'=>"FISICA",'1'=>'JURIDICA'],
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'tipo',
                                         'class'=>'form-control',
                                         'placeholder'=>'FILD_TIPO_PLACEHOLDER',
                                         'requerid'=>'1',
+                                        'value'=>'0',
                                         'title'=>'tipo',
                                         'data-access'=>'3',
                                         'data-position'=>'geral',
@@ -336,7 +338,7 @@ class BsClientesForm extends AbstractForm
                                         'requerid'=>'1',
                                         'title'=>'images',
                                         'data-access'=>'3',
-                                        'data-position'=>'geral',
+                                        'data-position'=>'images',
             	        	        ),
         	                )
         	            );

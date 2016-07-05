@@ -76,19 +76,7 @@ class BsContasPagarForm extends AbstractForm
                     'class' => 'css-label ',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' => array(
-                    'negativa' => array(
-                        'label' => 'RECEBIDA',
-                        'value' => '0',
-                        'checked' => true,
-                        
-                    ),
-                    'positiva' => array(
-                        'label' => 'RECEBER',
-                        'value' => '1',
-                      
-                    ),
-                ),
+                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','id','title',array('tipo'=>'DS')),
             ),
             'attributes' => array(
                 'id' => 'situacao',
@@ -111,23 +99,7 @@ class BsContasPagarForm extends AbstractForm
                     'class' => 'css-label',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' => array(
-                    'nao-repete' => array(
-                        'label' => 'NÃO REPETE',
-                        'value' => '0',
-                        
-                    ),
-                    'mais-de-uma-vez' => array(
-                        'label' => 'MAIS DE UMA VEZ',
-                        'value' => '1',
-                        
-                    ),
-                    'sempre' => array(
-                        'label' => 'SEMPRE',
-                        'value' => '2',
-                       
-                    ),
-                ),
+                'value_options' => $this->setCustonValueOption('FluxoCaixa\Model\BsContaRepeteTable','alias','title'),
             ),
             'attributes' => array(
                 'id' => 'repete',
@@ -142,21 +114,22 @@ class BsContasPagarForm extends AbstractForm
 
 
 
-        //############################################ informações da coluna perildo ##############################################:
+        //############################################ informações da coluna periodos ##############################################:
         $this->add(
                 array(
                     'type' => 'select',
-                    'name' => 'perildo',
+                    'name' => 'periodos',
                     'options' => array(
-                        'label' => 'FILD_PERILDO_LABEL',
-                        'value_options'=>array(''=>'--SELECIONE','diario'=>'Diario','semanal'=>'Semanal','mensal'=>'Mensal','trimestral'=>'Trimestral','anual'=>'Anual'),
+                        'label' => 'FILD_PERIODOS_LABEL',
+                        'value_options'=> $this->setCustonValueOption('FluxoCaixa\Model\BsContaPeriodosTable','id','title'),
                     ),
                     'attributes' => array(
-                        'id' => 'perildo',
+                        'id' => 'periodos',
                         'class' => 'form-control',
-                        'placeholder' => 'FILD_PERILDO_PLACEHOLDER',
+                        'placeholder' => 'FILD_PERIODOS_PLACEHOLDER',
                         'requerid' => '1',
-                        'title' => 'perildo',
+                        'title' => 'periodos',
+                        'value'=>'+1 month',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -311,7 +284,7 @@ class BsContasPagarForm extends AbstractForm
         	                    'name' => 'tipo_custo',
         	                    'options' => array(
                      			'label' => 'FILD_TIPO_CUSTO_LABEL',
-                     			'value_options'=>[''=>'--SELECIONE--','0'=>'Fixo','1'=>'Variável']
+                     			'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoCustoTable'),
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'tipo_custo',
@@ -333,7 +306,7 @@ class BsContasPagarForm extends AbstractForm
         	                    'name' => 'apropriacao_custo',
         	                    'options' => array(
                      			'label' => 'FILD_APROPRIACAO_CUSTO_LABEL',
-                     			'value_options'=>[''=>'--SELECIONE--','0'=>'Diréto','1'=>'Indiréto']
+                     			'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsApropriacaoCustoTable'),
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'apropriacao_custo',

@@ -26,6 +26,17 @@ class BsCaixaTable extends AbstractTable {
         $this->tableGateway = $tableGateway;
     }
 
+    public function insert(\Base\Model\AbstractModel $data) {
+        parent::insert($data);
+        if ($this->getLastInsert()):
+            $tableReceber = new TableGateway('bs_contas_receber', $this->getTableGateway()->getAdapter(), new \Zend\Db\TableGateway\Feature\RowGatewayFeature('publish_up'));
+            $tableReceber->update(array('caixa_id' => $this->getLastInsert()->getId()), array('publish_up' => date("Y-m-d 00:00:00", strtotime($this->getLastInsert()->getPublishUp()))));
+            $tablePagar = new TableGateway('bs_contas_pagar', $this->getTableGateway()->getAdapter(), new \Zend\Db\TableGateway\Feature\RowGatewayFeature('publish_up'));
+            $tablePagar->update(array('caixa_id' => $this->getLastInsert()->getId()), array('publish_up' => date("Y-m-d 00:00:00", strtotime($this->getLastInsert()->getPublishUp()))));
+        endif;
+        return $this->getLastInsert();
+    }
+
     public function update(\Base\Model\AbstractModel $data) {
         parent::update($data);
         if ($this->getLastInsert()):

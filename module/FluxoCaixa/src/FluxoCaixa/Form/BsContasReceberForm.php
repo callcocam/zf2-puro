@@ -66,7 +66,7 @@ class BsContasReceberForm extends AbstractForm {
                 )
         );
 
-        //############################################ informações da coluna situacao ##############################################:
+          //############################################ informações da coluna situacao ##############################################:
         $this->add(array(
             'type' => 'radio',
             'name' => 'situacao',
@@ -76,19 +76,7 @@ class BsContasReceberForm extends AbstractForm {
                     'class' => 'css-label ',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' => array(
-                    'negativa' => array(
-                        'label' => 'RECEBIDA',
-                        'value' => '0',
-                        'checked' => true,
-                        
-                    ),
-                    'positiva' => array(
-                        'label' => 'RECEBER',
-                        'value' => '1',
-                      
-                    ),
-                ),
+                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','id','title',array('tipo'=>'ET')),
             ),
             'attributes' => array(
                 'id' => 'situacao',
@@ -111,23 +99,7 @@ class BsContasReceberForm extends AbstractForm {
                     'class' => 'css-label',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' => array(
-                    'nao-repete' => array(
-                        'label' => 'NÃO REPETE',
-                        'value' => '0',
-                        
-                    ),
-                    'mais-de-uma-vez' => array(
-                        'label' => 'MAIS DE UMA VEZ',
-                        'value' => '1',
-                        
-                    ),
-                    'sempre' => array(
-                        'label' => 'SEMPRE',
-                        'value' => '2',
-                       
-                    ),
-                ),
+                'value_options' => $this->setCustonValueOption('FluxoCaixa\Model\BsContaRepeteTable','alias','title'),
             ),
             'attributes' => array(
                 'id' => 'repete',
@@ -142,21 +114,23 @@ class BsContasReceberForm extends AbstractForm {
 
 
 
-        //############################################ informações da coluna perildo ##############################################:
+
+        //############################################ informações da coluna periodos ##############################################:
         $this->add(
                 array(
                     'type' => 'select',
-                    'name' => 'perildo',
+                    'name' => 'periodos',
                     'options' => array(
-                        'label' => 'FILD_PERILDO_LABEL',
-                        'value_options'=>array(''=>'--SELECIONE','diario'=>'Diario','semanal'=>'Semanal','mensal'=>'Mensal','trimestral'=>'Trimestral','anual'=>'Anual'),
+                        'label' => 'FILD_PERIODOS_LABEL',
+                        'value_options'=>   $this->setCustonValueOption('FluxoCaixa\Model\BsContaPeriodosTable','id','title'),
                     ),
                     'attributes' => array(
-                        'id' => 'perildo',
+                        'id' => 'periodos',
                         'class' => 'form-control',
-                        'placeholder' => 'FILD_PERILDO_PLACEHOLDER',
+                        'placeholder' => 'FILD_PERIODOS_PLACEHOLDER',
                         'requerid' => '1',
-                        'title' => 'perildo',
+                        'title' => 'periodos',
+                          'value'=>'+1 month',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -341,6 +315,9 @@ class BsContasReceberForm extends AbstractForm {
         
         if ($this->has('caixa_id')):
             $this->get('caixa_id')->setValue($this->getCaixa());
+        endif;
+        if ($this->has('publish_up')):
+            $this->get('publish_up')->setLabel("FILD_PUBLISH_UP_START_LABEL");
         endif;
     }
     public function setValueOpt($tabela,$condicao=array('state'=>'0')) {

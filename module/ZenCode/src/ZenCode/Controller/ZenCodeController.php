@@ -316,7 +316,7 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 endif;
 
             else:
-                $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sAdmin%sview%sadmin%sadmin%stpl%s{$this->data->getController()}-{$view}.phtml");
+                $caminho = str_replace("%s", DIRECTORY_SEPARATOR, ".%smodule%sAdmin%sview%sadmin%sadmin%stpl%s{$this->data->getController()}%s{$view}.phtml");
                 if (!file_exists($caminho)):
                     if ($view == "index"):
                         $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());

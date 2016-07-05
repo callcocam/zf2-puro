@@ -52,20 +52,20 @@ class AbstractForm extends \Zend\Form\Form {
         //############################################ informações da coluna id ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'id',
                     'options' => array(
-                        'label' => 'FILD_ID_LABEL',
+                     //   'label' => 'FILD_ID_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'id',
                         'value' => 'AUTOMATICO',
-                        'title' => 'FILD_ID_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_ID_PLACEHOLDER',
+                      //  'title' => 'FILD_ID_DESC',
+                      //  'class' => 'form-control input-sm',
+                      //  'placeholder' => 'FILD_ID_PLACEHOLDER',
                         'data-access' => '3',
                         'readonly' => true,
-                        'data-position' => 'controle',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -74,19 +74,19 @@ class AbstractForm extends \Zend\Form\Form {
         //############################################ informações da coluna codigo ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'name' => 'codigo',
                     'options' => array(
-                        'label' => 'FILD_CODIGO_LABEL',
+                     //   'label' => 'FILD_CODIGO_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'codigo',
                         'value' => '00000',
-                        'title' => 'FILD_CODIGOD_DESC',
+                       // 'title' => 'FILD_CODIGOD_DESC',
                         'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_CODIGO_PLACEHOLDER',
+                       // 'placeholder' => 'FILD_CODIGO_PLACEHOLDER',
                         'data-access' => '3',
-                        'data-position' => 'controle',
+                        'data-position' => 'geral',
                     ),
                 )
         );
@@ -102,7 +102,7 @@ class AbstractForm extends \Zend\Form\Form {
                     ),
                     'attributes' => array(
                         'id' => 'asset_id',
-                        'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
+                        'value' => md5($this->empresa['id']),
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -438,16 +438,28 @@ class AbstractForm extends \Zend\Form\Form {
     public static $DAFAULT_STATE = 1;
     public static $DAFAULT_ACCESS = 2;
     public static $TIPO_MODULO = ['1' => "OPTION_MODULO_LABEL", '2' => "OPTION_COMPONENTE_LABEL", '3' => "OPTION_ARQUIVO_LABEL"];
-    public static $MODULE_PAI = ['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL", '3' => "OPTION_OPREACIONAL_LABEL", '4' => "OPTION_FLUXO_CAIXA_LABEL", '5' => "OPTION_COMERCIAL_LABEL"];
+    public static $MODULE_PAI = ['1' => "OPTION_ADMIN_LABEL", '2' => "OPTION_HOME_LABEL", '3' => "OPTION_OPREACIONAL_LABEL", '4' => "OPTION_FLUXO_CAIXA_LABEL", '5' => "OPTION_COMERCIAL_LABEL", '6' => "OPTION_CONTREOLEESTOQUE_LABEL"];
     public static $GROUP_ID = ['1' => "GROUP_OPERACIONAL_LABEL", '2' => "GROUP_HOME_LABEL", '3' => "OPTION_FLUXO_CAIXA_LABEL", '4' => "OPTION_COMERCIAL_LABEL"];
-    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home", 'FluxoCaixa' => "OPTION_FLUXO_CAIXA_LABEL", 'Gestao' => "OPTION_COMERCIAL_LABEL"];
-
+    public static $MODULES = ['Admin' => "Modulo Admin", 'Home' => "Mdulo Home", 'FluxoCaixa' => "OPTION_FLUXO_CAIXA_LABEL", 'Gestao' => "OPTION_COMERCIAL_LABEL","ControleEstoque"=>"OPTION_CONTREOLEESTOQUE_LABEL"];
+    public static $DATE_INTEVAL=['+1 days'=>"ROTULO_DIARIO_LABEL",'+7 days'=>"ROTULO_SEMANAL_LABEL",'+15 days'=>"ROTULO_QUINSENAL_LABEL",'+1 month'=>"ROTULO_MENSAL_LABEL",'+6 month'=>"ROTULO_SEMESTRAL_LABEL",'+12 month'=>"ROTULO_ANUAL_LABEL"];
     public function setValueOption($table, $condicao = array('state' => '0')) {
         $dados = $this->getServiceLocator()->get($table)->findBy($condicao);
         $valueOptions = array('--SELECIONE--');
         if ($dados):
             foreach ($dados as $value):
                 $valueOptions[$value->getId()] = $value->getTitle();
+            endforeach;
+        endif;
+
+        return $valueOptions;
+    }
+    public function setCustonValueOption($table,$index='id',$valor='title', $condicao = array('state' => '0')) {
+        $dados = $this->getServiceLocator()->get($table)->findBy($condicao);
+        $valueOptions =[];
+        if ($dados):
+            foreach ($dados as $value):
+                $op=$value->toArray();
+                $valueOptions[$op[$index]] = $op[$valor];
             endforeach;
         endif;
 

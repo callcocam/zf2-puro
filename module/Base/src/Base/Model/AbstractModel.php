@@ -23,6 +23,7 @@ abstract class AbstractModel {
     private $modified;
     private $publish_up;
     private $publish_down;
+  
 
     public function getId() {
         return $this->id;
@@ -88,6 +89,7 @@ abstract class AbstractModel {
         return $this->publish_down;
     }
 
+   
     public function setId($id) {
         $this->id = $id;
         return $this;
@@ -167,8 +169,7 @@ abstract class AbstractModel {
         $this->publish_down = date('Y-m-d H:i:s', strtotime($publish_down));
         return $this;
     }
-  
-
+   
      public function exchangeArray($options = array()) {
         $hydrator = new ClassMethods();
         $hydrator->hydrate($options, $this);

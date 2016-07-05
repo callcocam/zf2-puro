@@ -45,6 +45,9 @@ class Module {
                'ZenCode\Model\BsResourcesTable' => function($sm) {
                     $tableGateway = $sm->get('BsResourcesTableGateway');
                     return new \ZenCode\Model\BsResourcesTable($tableGateway);
+                },
+                'ZenCode\Services\GerarView' => function($sm) {
+                    return new \ZenCode\Services\GerarView($sm);
                 }
             ),
             'invokables' => array(

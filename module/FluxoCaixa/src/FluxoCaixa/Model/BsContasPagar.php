@@ -22,7 +22,7 @@ class BsContasPagar extends AbstractModel
 
     protected $repete = '';
 
-    protected $perildo = '';
+    protected $periodos = '';
 
     protected $qtdade = '';
 
@@ -34,10 +34,6 @@ class BsContasPagar extends AbstractModel
 
     protected $centro_custo_id = '';
 
-    protected $tipo_documento = '';
-
-    protected $num_documento = '';
-
     protected $fornecedor_id = '';
 
     protected $fpgto_id = '';
@@ -45,6 +41,10 @@ class BsContasPagar extends AbstractModel
     protected $tipo_custo = '';
 
     protected $apropriacao_custo = '';
+
+    protected $tipo_documento = '';
+
+    protected $num_documento = '';
 
     /**
      * get caixa_id
@@ -77,13 +77,13 @@ class BsContasPagar extends AbstractModel
     }
 
     /**
-     * get perildo
+     * get periodos
      *
-     * @return int
+     * @return varchar
      */
-    public function getPerildo()
+    public function getPeriodos()
     {
-        return $this->perildo;
+        return $this->periodos;
     }
 
     /**
@@ -137,26 +137,6 @@ class BsContasPagar extends AbstractModel
     }
 
     /**
-     * get tipo_documento
-     *
-     * @return int
-     */
-    public function getTipoDocumento()
-    {
-        return $this->tipo_documento;
-    }
-
-    /**
-     * get num_documento
-     *
-     * @return varchar
-     */
-    public function getNumDocumento()
-    {
-        return $this->num_documento;
-    }
-
-    /**
      * get fornecedor_id
      *
      * @return int
@@ -179,7 +159,7 @@ class BsContasPagar extends AbstractModel
     /**
      * get tipo_custo
      *
-     * @return int
+     * @return varchar
      */
     public function getTipoCusto()
     {
@@ -189,11 +169,31 @@ class BsContasPagar extends AbstractModel
     /**
      * get apropriacao_custo
      *
-     * @return int
+     * @return varchar
      */
     public function getApropriacaoCusto()
     {
         return $this->apropriacao_custo;
+    }
+
+    /**
+     * get tipo_documento
+     *
+     * @return int
+     */
+    public function getTipoDocumento()
+    {
+        return $this->tipo_documento;
+    }
+
+    /**
+     * get num_documento
+     *
+     * @return int
+     */
+    public function getNumDocumento()
+    {
+        return $this->num_documento;
     }
 
     /**
@@ -230,13 +230,13 @@ class BsContasPagar extends AbstractModel
     }
 
     /**
-     * set perildo
+     * set periodos
      *
-     * @return int
+     * @return varchar
      */
-    public function setPerildo($perildo = null)
+    public function setPeriodos($periodos = null)
     {
-        $this->perildo=$perildo;
+        $this->periodos=$periodos;
         return $this;
     }
 
@@ -296,28 +296,6 @@ class BsContasPagar extends AbstractModel
     }
 
     /**
-     * set tipo_documento
-     *
-     * @return int
-     */
-    public function setTipoDocumento($tipo_documento = null)
-    {
-        $this->tipo_documento=$tipo_documento;
-        return $this;
-    }
-
-    /**
-     * set num_documento
-     *
-     * @return varchar
-     */
-    public function setNumDocumento($num_documento = null)
-    {
-        $this->num_documento=$num_documento;
-        return $this;
-    }
-
-    /**
      * set fornecedor_id
      *
      * @return int
@@ -342,7 +320,7 @@ class BsContasPagar extends AbstractModel
     /**
      * set tipo_custo
      *
-     * @return int
+     * @return varchar
      */
     public function setTipoCusto($tipo_custo = null)
     {
@@ -353,11 +331,33 @@ class BsContasPagar extends AbstractModel
     /**
      * set apropriacao_custo
      *
-     * @return int
+     * @return varchar
      */
     public function setApropriacaoCusto($apropriacao_custo = null)
     {
         $this->apropriacao_custo=$apropriacao_custo;
+        return $this;
+    }
+
+    /**
+     * set tipo_documento
+     *
+     * @return int
+     */
+    public function setTipoDocumento($tipo_documento = null)
+    {
+        $this->tipo_documento=$tipo_documento;
+        return $this;
+    }
+
+    /**
+     * set num_documento
+     *
+     * @return int
+     */
+    public function setNumDocumento($num_documento = null)
+    {
+        $this->num_documento=$num_documento;
         return $this;
     }
 

@@ -76,13 +76,33 @@ $admin[] = array(
         ),
         array(
             'label' => 'Usuarios',
-            'route' => 'auth/default',
-            'controller' => 'admin',
-            'resource' => 'Auth\Controller\Admin',
+            'route' => 'admin/default',
+            'controller' => 'bs-users',
+            'resource' => 'Admin\Controller\BsUsers',
             'action' => 'index',
             'privilege' => 'index',
             'icone' => 'ion ion-ios-people',
             'title' => '',
+            'pages' => array(
+                array(
+                    'label' => 'Cadastrar',
+                    'route' => 'admin/default',
+                    'controller' => 'bs-users',
+                    'resource' => 'Admin\Controller\BsUsers',
+                    'action' => 'inserir',
+                    'privilege' => 'inserir',
+                    'title' => 'Cadastrar Registro',
+                ),
+                array(
+                    'label' => 'Editar',
+                    'route' => 'admin/default',
+                    'controller' => 'bs-users',
+                    'resource' => 'Admin\Controller\BsUsers',
+                    'action' => 'editar',
+                    'privilege' => 'editar',
+                    'title' => 'Editar Registro',
+                )
+            )
         ),
     ),
 );
