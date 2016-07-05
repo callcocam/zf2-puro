@@ -4,10 +4,9 @@ namespace Base;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Db\TableGateway\TableGateway;
 
 class Module {
-
+    protected $finishLog;
     public function onBootstrap(MvcEvent $e) {
 
         $eventManager = $e->getApplication()->getEventManager();
@@ -16,23 +15,13 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        //$sharedManager = $eventManager->getSharedManager();
         $eventManager->attach($serviceManager->get('LayoutListener'));
         $eventManager->attach($serviceManager->get('LayoutErrorListener'));
         $eventManager->attach($serviceManager->get('CaixaListener'));
         $eventManager->attach($serviceManager->get('CompaniesListener'));
-//        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($ev) {
-//            $cache = $ev->getApplication()->getServiceManager()->get('Cache');
-//            if (!$cache->hasItem("companies")) {
-//                $model = $ev->getApplication()->getServiceManager()->get('Operacional\Model\BsCompaniesTable');
-//
-//                $companies = $model->findOneBy(array('state' => 0));
-//                if ($companies) {
-//                    $cache->addItem("companies", $companies->toArray());
-//                }
-//            }
-//          
-//        }, 99);
+        $eventManager->attach($serviceManager->get('LogListener'));
+
+      
     }
 
     public function getConfig() {

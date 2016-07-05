@@ -20,21 +20,24 @@ return array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
             'secondary_navigation' => 'Navigation\Navigation\Service\SecondaryNavigationFactory',
+            'log' => 'Base\Factory\Log',
+            'log-errorhandling' => 'Base\Factory\ErrorHandling',
         ),
         'invokables' => array(
             'LayoutListener' => 'Base\Listener\LayoutListener',
             'LayoutErrorListener' => 'Base\Listener\LayoutErrorListener',
             'CaixaListener' => 'Base\Listener\CaixaListener',
             'CompaniesListener' => 'Base\Listener\CompaniesListener',
+            'LogListener' => 'Base\Listener\LogListener',
         ),
     ),
     'translator' => array(
         'locale' => 'pt_BR',
         'translation_file_patterns' => array(
             array(
-                'type'     => 'phparray',
-                'base_dir' =>  __DIR__ . '/../language',
-                'pattern'  => '%s.php',
+                'type' => 'phparray',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.php',
             ),
         ),
     ),

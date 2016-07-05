@@ -40,6 +40,8 @@ abstract class AbstractController extends AbstractActionController {
     protected $caixa = null;
     protected $cache;
     protected $filtro;
+    protected $use_paginator = true;
+    protected $item_per_page = 1000;
 
     abstract function __construct();
 
@@ -105,13 +107,15 @@ abstract class AbstractController extends AbstractActionController {
                 $this->data = $this->getTableGateway()->findAll($this->params()->fromPost());
                 $this->filtro = $this->params()->fromPost();
             else:
-                $this->data = $this->getTableGateway()->findAll();
+                $this->data = $this->getTableGateway()->findAll(array());
             endif;
-            // set the current page to what has been passed in query string, or to 1 if none set
-            $this->data->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
-            // set the number of items per page to 10
-            $this->data->setItemCountPerPage(10);
-            $this->data->setCurrentPageNumber($page);
+          
+                // set the number of items per page to 10
+                $this->data->setItemCountPerPage($this->item_per_page);
+                // set the current page to what has been passed in query string, or to 1 if none set
+                $this->data->setCurrentPageNumber($page);
+         
+
 
         endif;
         $table = $this->getServiceLocator()->get('Table');

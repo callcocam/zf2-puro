@@ -28,6 +28,8 @@ class ZenCodeController extends \Base\Controller\AbstractController {
         $this->model = "ZenCode\Model\BsResources";
         $this->table = "ZenCode\Model\BsResourcesTable";
         $this->template = "/zen-code/zen-code/index";
+        $this->use_paginator=FALSE;
+        $this->item_per_page=1000;
     }
 
 //    public function indexAction() {

@@ -48,7 +48,7 @@ class ModelForm extends \Zend\Form\Form {
                     'type' => 'select',
                     'name' => 'class',
                     'options' => array(
-                        'label' => 'TIPO DE ARQUIVO:',
+                        'label' => 'CLASSES:',
                         'value_options' =>[''=>'--Selecione--','model'=>"Model","table"=>"Table","controller"=>"Controller","form"=>"Form","filter"=>"Filter"],
                         "disable_inarray_validator" => true,
                     ),

@@ -264,7 +264,7 @@ class BsClientesForm extends AbstractForm
         	                    'type' => 'text',
         	                    'name' => 'cep',
         	                    'options' => array(
-                     			'label' => 'FILD_CEP_LABEL',
+                     			'label' => 'CEP',
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'cep',

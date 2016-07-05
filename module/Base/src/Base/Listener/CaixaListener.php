@@ -1,4 +1,5 @@
 <?php
+
 namespace Base\Listener;
 
 use Zend\EventManager\ListenerAggregateInterface;
@@ -41,5 +42,4 @@ class CaixaListener implements ListenerAggregateInterface {
        
     }
 
-//put your code here
 }

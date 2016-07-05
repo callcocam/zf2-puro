@@ -1,36 +1,30 @@
 <?php
-/**
- * Global Configuration Override
- *
- * You can use this file for overriding configuration values from modules, etc.
- * You would place values in here that are agnostic to the environment and not
- * sensitive to security.
- *
- * @NOTE: In practice, this file will typically be INCLUDED in your source
- * control, so do not include passwords or other sensitive information in this
- * file.
- */
-
 return array(
     'db' => array(
-         'driver'         => 'Pdo',
-         'dsn'            => 'mysql:dbname=base;host=localhost',
-         'driver_options' => array(
-             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
-         ),
-     ),
-     //   'db' => array(
-     //     'driver'         => 'Pdo',
-     //     'dsn'            => 'mysql:dbname=sistema_siga;host=sistema_siga.mysql.dbaas.com.br',
-     //     'driver_options' => array(
-     //         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
-     //     ),
-     // ),
-     'service_manager' => array(
-         'factories' => array(
-             'Zend\Db\Adapter\Adapter'
-                     => 'Zend\Db\Adapter\AdapterServiceFactory',
-         ),
-     ),
-     'static_salt' => 'aFGQ475SDsdfsaf2342'
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:dbname=base;host=localhost',
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ),
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter'
+            => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+    'static_salt' => 'aFGQ475SDsdfsaf2342',
+    'Log' => array(
+        'notificationMail' => array(
+            'notify' => TRUE,
+            'priorities' => array(
+                '0' => 'Emergency',
+                '2' => 'Critical',
+                '3' => 'Error',
+                '4' => 'Warning',
+                '5' => 'Debug'
+            ),
+            'email' => 'callcocam@gmail.com'
+        )
+    ),
 );

@@ -199,7 +199,10 @@ class GerarView extends HtmlElement {
         $ignore = ['1' => 'codigo', '2' => 'title', '3' => 'created', '4' => 'asset_id', '5' => 'access', '6' => 'id'];
         foreach ($colunas as $key => $value):
             if (!array_search($key, $ignore)):
-                $filds["{{{$key}}}"] = $this->setHtmlTag('div')->setAttributes(array('class' => 'box-list'))->setText("<?php echo \$this->translate('{$key}');?> ")->appendText("{{{$key}}}");
+                $ico=$this->setHtmlTag('i')->setClass("ico ico-{$key}");
+                $label=$this->setHtmlTag('span')->setClass("label-list label-list-{$key}")->setText("<?php echo \$this->translate('{$key}');?> :");
+                $desc=$this->setHtmlTag('span')->setClass("data-list data-list-{$key}")->setText("{{{$key}}}");
+                $filds["{{{$key}}}"] = $this->setHtmlTag('div')->setClass("box-list list-{$key}")->setText($ico)->appendText($label)->appendText($desc);
             endif;
         endforeach;
         if (array_key_exists("images", $colunas)) {

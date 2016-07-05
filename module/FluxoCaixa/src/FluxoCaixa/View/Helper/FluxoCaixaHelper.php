@@ -6,7 +6,7 @@ namespace FluxoCaixa\View\Helper;
 class FluxoCaixaHelper extends AbstractViewHeper
 {
 	
-	public function __construct(argument)
+	public function __construct()
 	{
 		# code...
 	}

@@ -26,7 +26,7 @@ class BsCaixaController extends AbstractController {
         $this->controller = "bs-caixa";
         $this->action = "index";
         $this->model = "FluxoCaixa\Model\BsCaixa";
-        $this->table = "FluxoCaixa\Model\BsCaixaTable";
+        $this->table = "FluxoCaixa\Model\BsCaixaTable1";
         $this->form = "FluxoCaixa\Form\BsCaixaForm";
         $this->template = "/admin/admin/listar";
     }
@@ -44,6 +44,13 @@ class BsCaixaController extends AbstractController {
             return $this->redirect()->toRoute($this->route, array('controller' => 'bs-caixa', 'action' => 'index'));
         endif;
         return parent::inserirAction();
+    }
+
+    public function excluirAction() {
+        if ($this->cache->hasItem('caixa')) {
+            $this->cache->removeItem('caixa');
+        }
+        return parent::excluirAction();
     }
 
 }
