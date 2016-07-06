@@ -171,12 +171,21 @@ class BsPlanosContasFilter extends AbstractFilter
         
         // Informação para a coluna parent_id:
         $parent_id = new Input ( "parent_id" );
-        $parent_id->setRequired ( false);
+        $parent_id->setRequired ( true );
         $parent_id->getFilterChain ()->attach ( $this->StringTrim );
         $parent_id->getFilterChain ()->attach ( $this->StripTags );
-        //$parent_id->getValidatorChain()->attach($this->emptyfilter);
+        $parent_id->getValidatorChain()->attach($this->emptyfilter);
         $this->add ( $parent_id );
+        
+        // Informação para a coluna tipo:
+        $tipo = new Input ( "tipo" );
+        $tipo->setRequired ( true );
+        $tipo->getFilterChain ()->attach ( $this->StringTrim );
+        $tipo->getFilterChain ()->attach ( $this->StripTags );
+        $tipo->getValidatorChain()->attach($this->emptyfilter);
+        $this->add ( $tipo );
     }
 
 
 }
+

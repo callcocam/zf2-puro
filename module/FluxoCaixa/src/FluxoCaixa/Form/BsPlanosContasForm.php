@@ -1,8 +1,8 @@
 <?php
-
 /**
  * @license © 2005 - 2016 by Zend Technologies Ltd. All rights reserved.
  */
+
 
 namespace FluxoCaixa\Form;
 
@@ -14,20 +14,21 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsPlanosContasForm extends AbstractForm {
+class BsPlanosContasForm extends AbstractForm
+{
 
     /**
      * construct do Table
      *
      * @return Base\Form\AbstractForm
      */
-    public function __construct($serviceLocator, array $options = array()) {
+    public function __construct($serviceLocator, array $options = array())
+    {
         // Configurações iniciais do Form
         parent::__construct($serviceLocator, "BsPlanosContas", $options);
-        $this->setInputFilter(new BsPlanosContasFilter());
-        //############################################ informações da coluna parent_id ##############################################:
-
-        $this->add(
+        $this->setInputFilter(new  BsPlanosContasFilter());
+                    //############################################ informações da coluna parent_id ##############################################:
+         $this->add(
                 array(
                     'type' => 'Select',
                     'name' => 'parent_id',
@@ -46,6 +47,28 @@ class BsPlanosContasForm extends AbstractForm {
                     ),
                 )
         );
+        
+                    //############################################ informações da coluna tipo ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'Select',
+        	                    'name' => 'tipo',
+        	                    'options' => array(
+                     			'label' => 'FILD_TIPO_LABEL',
+                     			'value_options'=>['0'=>"RECEITA","1"=>"DESPESA"]
+                     		   	 ),
+        	                    'attributes' => array(
+                                        'id'=>'tipo',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_TIPO_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'tipo',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
     }
+
 
 }

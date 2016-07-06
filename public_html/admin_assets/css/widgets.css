@@ -4,7 +4,7 @@
 .box-yellow{background: #FABB3D !important; border-color: #EEA306 !important; color: #fff;}
 .box-red{background: #FF524F !important; border-color: #C63D3A !important; color: #fff;}
 .box-header{border-top: 5px solid #008068;border-bottom: 1px solid #008068;padding: 0 5px;}
-.box-body{background: #fff;float: left;width: 100%;min-height: 160px;padding: 0 15px 15px 15px;}
+.box-body{background: #eee;float: left;width: 100%;min-height: 160px;padding: 0 15px 15px 15px;}
 /*WIDGETS BOX*/
 .widgets-box{border-radius: 2px;position: relative;float: left;margin-bottom: 20px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);width: 100%;}
 .widgets-box .box-title{margin: 5px 5px;display: inline-block;}
@@ -16,6 +16,26 @@
 .box-body-footer{text-align: right;display: inline-block;text-align: right;width: 100%;}
 .widgets-box .box-footer .btn{margin: 5px 5px;}
 .widgets-box .box-body-footer a{margin: 5px 5px;}
+
+.box-list{padding: 3px 2px;font-weight: 600;font-size: 0.8em;}
+.box-list .ico{padding: 5px 9px;width: 5px;background-size:  90%; margin-right: 5px;}
+.box-list .label-list{font-weight: 600;text-transform: uppercase;color: #777;min-width: 30%;font-size: 0.9em;}
+.box-list .data-list{font-weight: 800;color: #333;padding-left: 5px;}
+
+/* ICONES BOX-LIST*/
+.ico-valor, .ico-said_real, .ico-said_previsto, .ico-ent_real, .ico-ent_previsto{background: url(/admin_assets/images/price_tag.png) center center no-repeat;}
+ 
+.ico-fornecedor_id{background: url(/admin_assets/images/client.png) center center no-repeat;}
+.ico-cliente_id{background: url(/admin_assets/images/client.png) center center no-repeat;}
+.ico-repete{background: url(/admin_assets/images/repete.png) center center no-repeat;}
+.ico-created{background: url(/admin_assets/images/cal.png) center center no-repeat;}
+.ico-publish_up{background: url(/admin_assets/images/cal.png) center center no-repeat;}
+.ico-publish_down{background: url(/admin_assets/images/cal.png) center center no-repeat;}
+.ico-modified{background: url(/admin_assets/images/cal.png) center center no-repeat;}
+.ico-plano_conta_id{background: url(/admin_assets/images/projeto.png) center center no-repeat;}
+.ico-description{background: url(/admin_assets/images/datail.png) center center no-repeat;}
+
+
 /*SMALL BOX*/
 .small-box{border-radius: 2px;position: relative;float: left;margin-bottom: 20px;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);width: 100%;}
 .small-box p {font-size: 0.9375em;}
@@ -173,3 +193,5 @@
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
+
+

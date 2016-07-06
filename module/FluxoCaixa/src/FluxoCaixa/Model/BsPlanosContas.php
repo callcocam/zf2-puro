@@ -18,6 +18,8 @@ class BsPlanosContas extends AbstractModel
 
     protected $parent_id = '';
 
+    protected $tipo = '';
+
     /**
      * get parent_id
      *
@@ -26,6 +28,16 @@ class BsPlanosContas extends AbstractModel
     public function getParentId()
     {
         return $this->parent_id;
+    }
+
+    /**
+     * get tipo
+     *
+     * @return int
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 
     /**
@@ -39,5 +51,17 @@ class BsPlanosContas extends AbstractModel
         return $this;
     }
 
+    /**
+     * set tipo
+     *
+     * @return int
+     */
+    public function setTipo($tipo = null)
+    {
+        $this->tipo=$tipo;
+        return $this;
+    }
+
 
 }
+

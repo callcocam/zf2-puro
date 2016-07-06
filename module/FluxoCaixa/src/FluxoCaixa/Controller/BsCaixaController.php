@@ -26,7 +26,7 @@ class BsCaixaController extends AbstractController {
         $this->controller = "bs-caixa";
         $this->action = "index";
         $this->model = "FluxoCaixa\Model\BsCaixa";
-        $this->table = "FluxoCaixa\Model\BsCaixaTable1";
+        $this->table = "FluxoCaixa\Model\BsCaixaTable";
         $this->form = "FluxoCaixa\Form\BsCaixaForm";
         $this->template = "/admin/admin/listar";
     }

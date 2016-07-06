@@ -171,11 +171,11 @@ class GerarView extends HtmlElement {
     public function boxWidgets($options = array('body' => "", 'title' => "GEARL", 'class' => "box-green", 'icone' => 'clipboard')) {
         extract($options);
         $box_footer = "";
-        $box = $this->setHtmlTag('div')->setClass("widgets-box")->appendText(PHP_EOL);
-        $box_header = $this->setHtmlTag('div')->setClass("box-header {$class}")->appendText(PHP_EOL);
-        $ionIonBag = $this->setHtmlTag("i")->setClass("ion ion-{$icone}")->appendText(PHP_EOL);
+        $box = $this->setHtmlTag('div')->setClass("widgets-box")->setText(PHP_EOL);
+        $box_header = $this->setHtmlTag('div')->setClass("box-header {$class}")->setText(PHP_EOL);
+        $ionIonBag = $this->setHtmlTag("i")->setClass("ion ion-{$icone}")->setText(PHP_EOL);
         $box_title = $this->setHtmlTag('h3')->setClass("box-title")->setText($title)->appendText(PHP_EOL);
-        $box_header->setText($ionIonBag)->appendText(PHP_EOL)->appendText($box_title)->appendText(PHP_EOL);
+        $box_header->appendText($ionIonBag)->appendText(PHP_EOL)->appendText($box_title)->appendText(PHP_EOL);
         $box_body = $this->setHtmlTag('div')->setClass("box-body")->setText($body)->appendText(PHP_EOL);
         if (isset($footer)) {
             $pull_right = $this->setHtmlTag('div')->setClass("pull-right")->setText($footer)->appendText(PHP_EOL);
@@ -187,7 +187,7 @@ class GerarView extends HtmlElement {
             }
             $box_footer->appendText(PHP_EOL)->appendText($append_box_footer)->appendText(PHP_EOL);
         }
-        $box->setText($box_header)->appendText(PHP_EOL)->appendText($box_body)->appendText(PHP_EOL)->appendText($box_footer)->appendText(PHP_EOL)->appendText(PHP_EOL);
+        $box->appendText($box_header)->appendText(PHP_EOL)->appendText($box_body)->appendText(PHP_EOL)->appendText($box_footer)->appendText(PHP_EOL)->appendText(PHP_EOL);
         return $box;
     }
 
@@ -259,7 +259,7 @@ class GerarView extends HtmlElement {
 
         $boxboxsolid = $this->setHtmlTag('div')->setAttributes(array('class' => 'widgets-box'));
 
-        $box_header = $this->setHtmlTag("div")->setClass("box-header {$bg}");
+        $box_header = $this->setHtmlTag("div")->setClass("box-header {$bg}")->setText(PHP_EOL);
 
         $box_header_icon = $this->setHtmlTag("i")->setClass('ion ion-android-open');
 
@@ -271,19 +271,19 @@ class GerarView extends HtmlElement {
 
         $criadoPor = $this->setHtmlTag("small")->setClass('fl-right')->setText("<?php echo \$this->translate(' POR: ');?>")->appendText('{{editorBy}}');
 
-        $box_header->setText($box_header_icon)->appendText($boxTitle)->appendText($br)->appendText($criadoEm)->appendText($criadoPor);
+        $box_header->appendText($box_header_icon)->appendText(PHP_EOL)->appendText($boxTitle)->appendText(PHP_EOL)->appendText($br)->appendText(PHP_EOL)->appendText($criadoEm)->appendText($criadoPor)->appendText(PHP_EOL);
 
         $boxbody = $this->setHtmlTag("div")->setClass('box-body');
 
-        $desc = $this->setHtmlTag("p")->setClass('box-description')->setText($body);
+        $desc = $this->setHtmlTag("p")->setClass('box-description')->setText(PHP_EOL)->appendText($body);
 
         $botao = $this->setHtmlTag("div")->setClass('box-footer')->setText('{{buttons}}');
 
-        $boxbody->setText($desc);
+        $boxbody->setText(PHP_EOL)->appendText($desc);
 
-        $boxboxsolid->setText($box_header)->appendText($boxbody)->appendText($botao);
-
-        return $this->setHtmlTag('div')->setClass("box box-full-12 box-mini-06  box-small-06 box-medium-04 box-large-{$qtd_col} col-box-list")->setText($boxboxsolid);
+        $boxboxsolid->setText(PHP_EOL)->appendText($box_header)->appendText(PHP_EOL)->appendText($boxbody)->appendText(PHP_EOL)->appendText($botao)->appendText(PHP_EOL);
+        $box_class=utf8_encode("box box-full-12 box-mini-06  box-small-06 box-medium-04 box-large-{$qtd_col} col-box-list");
+        return $this->setHtmlTag('div')->setClass($box_class)->setText(PHP_EOL)->appendText($boxboxsolid)->appendText(PHP_EOL);
     }
 
     public function setBody($body) {

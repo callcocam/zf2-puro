@@ -312,7 +312,7 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                     $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
                     $this->form = $this->getForm();
                     $tplviewG->GerarElement($this->form, $this->url()->fromRoute(sprintf("%s/default", $this->data->getRoute()), array('controller' => $this->data->getController(), 'action' => "index")));
-                    file_put_contents($caminho, $tplviewG->formGrupo());
+                    $this->createview($caminho,$tplviewG->formGrupo(),"{$this->data->getController()}");
                 endif;
 
             else:
@@ -320,8 +320,10 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 if (!file_exists($caminho)):
                     if ($view == "index"):
                         $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
-                        file_put_contents($caminho, $tplviewG->GerarListagem($this->data));
+                        $this->createview($caminho,$tplviewG->GerarListagem($this->data),"{$this->data->getController()}-{$view}");
                     else:
+                        $this->classe = "trigger_success";
+                        $this->error = "ARQUIVO  {$this->data->getController()}-{$view}} JA EXISTE E PODE SER EDITADO!";
                         $this->form = "{$this->data->getAlias()}\\Form\\{$this->data->getArquivo()}Form";
                         $tplviewG = new \ZenCode\Services\GerarView($this->getServiceLocator());
                         $this->form = $this->getForm();
@@ -332,15 +334,25 @@ class ZenCodeController extends \Base\Controller\AbstractController {
                 endif;
                 file_get_contents($caminho);
             endif;
-
-
             $tplview = file_get_contents($caminho);
-            $this->error = "ARQUIVO MODULE CONFIG {$this->data->getArquivo()} JA EXISTE E PODE SER EDITADO!";
             $this->action = sprintf("%s%s", $this->data->getController(), "View");
             $this->result = TRUE;
-            $this->classe = "trigger_success";
             return new JsonModel(array('result' => $this->result, 'action' => $this->action, 'codigo' => $this->codigo, 'class' => $this->classe,
                 'msg' => $this->error, 'data' => $tplview, 'caminho' => $caminho, 'id' => $id));
+        endif;
+    }
+
+    protected function createview($caminho,$texto,$arquivo)
+    {
+        $fp = fopen($caminho , "w");
+        $fw = fwrite($fp,  $texto);
+        #Verificar se o arquivo foi salvo.
+        if($fw == strlen($texto)):
+        $this->classe = "trigger_success";
+        $this->error = "ARQUIVO  {$arquivo} PODE SER EDITADO!";
+        else:
+        $this->classe="trigger_error";
+        $this->error = "ERRO AO GERAR O ARQUIVO  {$arquivo} PODE SER EDITADO!";
         endif;
     }
 

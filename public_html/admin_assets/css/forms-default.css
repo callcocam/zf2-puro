@@ -4,12 +4,11 @@
 
 label{ margin-top: 15px;display: inline-block; width: 100%; }
 .form-control{padding: 7px; border: 1px #ccc solid; width: 100%; color: #555;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;}
-
 .form-control-lg{padding: 10px; border: 1px #ccc solid; width: 80%; color: #555;}
 .form-control-md{padding: 10px; border: 1px #ccc solid; width: 50%; color: #555;}
 .form-control-sm{padding: 10px; border: 1px #ccc solid; width: 25%; color: #555;}
 .form-control-search{padding: 10px; border: 1px #ccc solid;color: #555;}
-select{padding: 5px !important; border-bottom-width: 3px important;}
+select{padding: 5px !important;}
 #attachment-sql{display:none;}
 
 input[type="submit"],
@@ -22,7 +21,6 @@ button:disabled{
           box-shadow: none;
   opacity: .65;
 }
-
 input[type="submit"]:disabled{
 cursor: not-allowed;
   filter: alpha(opacity=65);
