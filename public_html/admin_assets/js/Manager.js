@@ -64,17 +64,50 @@ class Manager extends SIGAMessages {
         $(_ManagerImg.fileText).text(event.target.value.split('\\').pop());
 
     }
+
+    selectImgPreview(_ManagerImg) {
+         var input = _ManagerImg.seletorAttach;
+        formdata = false;
+        if (window.FormData) {
+           var formdata = new FormData();
+        }
+        input.bind('change', function () {
+            //this.files = null;
+            formdata.append('attachment', this.files[0]);
+            $.ajax({
+                url: '/admin/admin/upload',
+                type: 'post',
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                data: formdata,
+                beforeSend:function()
+                {
+                    $(_ManagerImg.carregando).hide('fast');
+                },
+                success: function (data) {
+                    
+                    _ManagerImg.messageSiga(data.msg, data.class);
+                    if(data.result){
+                        $("#image-preview").attr('src',data.temp);
+                        $("#images").val(data.realfolder);
+                    }
+                    
+                }
+            });
+        });
+    }
     selectSql(_ManagerSql) {
         var input = _ManagerSql.seletorSqlAttach;
         formdata = false;
         if (window.FormData) {
-            formdata = new FormData();
+           var formdata = new FormData();
         }
         input.bind('change', function () {
-            this.files = null;
+            //this.files = null;
             formdata.append('attachment', this.files[0]);
             $.ajax({
-                url: '/admin/admin/getsql',
+                url: '/admin/admin/upload',
                 type: 'post',
                 dataType: 'json',
                 processData: false,
@@ -98,13 +131,16 @@ $(function () {
     if (_Manager.seletorSqlAttach.length) {
         _Manager.selectSql(_Manager);
     }
+    // if (_Manager.seletorAttach.length) {
+    //     _Manager.selectImgPreview(_Manager);
+    // }
 
     _Manager.seletorAttach.change(function (event) {
         _Manager.selectImg(event, _Manager);
     });
-    _Manager.seletorSqlAttach.change(function (event) {
-        _Manager.selectImg(event, _Manager);
-    });
+    // _Manager.seletorSqlAttach.change(function (event) {
+    //     _Manager.selectImg(event, _Manager);
+    // });
 
 
 

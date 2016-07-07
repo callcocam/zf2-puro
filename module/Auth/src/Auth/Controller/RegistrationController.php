@@ -4,7 +4,6 @@ namespace Auth\Controller;
 
 use Zend\View\Model\ViewModel;
 
-
 class RegistrationController extends AbstractController {
 
     public function __construct() {
@@ -25,8 +24,7 @@ class RegistrationController extends AbstractController {
         }
         $this->form = $this->getForm();
         $cache = $this->CachePlugin()->getItem('companies');
-        $request = $this->getRequest();
-        if ($request->isPost()) {
+        if ($this->params()->fromPost()) {
             $this->data = $this->prepareData($this->params()->fromPost());
             $auth = $this->getModel();
             $auth->exchangeArray($this->data);
@@ -78,26 +76,16 @@ class RegistrationController extends AbstractController {
                 } else {
                     $this->Messages()->error("MSG_CADASTRO_ERROR");
                 }
-              
             }
         } else {
             //CARREGAR OS DADOS DO USUARIO LOGADO NO FORM
-              $this->form->setData($this->user);
+            $this->form->setData($this->user);
         }
         $view = new ViewModel(array('form' => $this->form));
         return $view;
     }
 
-    public function registrationSuccessAction() {
-        $usr_email = null;
-        $flashMessenger = $this->flashMessenger();
-        if ($flashMessenger->hasMessages()) {
-            foreach ($flashMessenger->getMessages() as $key => $value) {
-                $usr_email .= $value;
-            }
-        }
-        return new ViewModel(array('usr_email' => $usr_email));
-    }
+    
 
     public function confirmEmailAction() {
         $token = $this->params()->fromRoute('id');
@@ -122,8 +110,8 @@ class RegistrationController extends AbstractController {
                 $this->data = $this->form->getData();
                 $usr_email = $this->data['email'];
                 //PEGA OS DADOS DO USUARIO NO BANCO PELO EMAIL
-                 $auth = $this->getTableGateway()->getUserByEmail($usr_email);
-                 //VERIFICA SE ENCONTRO UM USUARIO
+                $auth = $this->getTableGateway()->getUserByEmail($usr_email);
+                //VERIFICA SE ENCONTRO UM USUARIO
                 if ($auth) {
                     //GERA UMA NOVA MSENHA
                     $password = $this->generatePassword();
@@ -140,29 +128,17 @@ class RegistrationController extends AbstractController {
                         $this->Messages()->error("MSG_FORGOTTEN_PASSWORD_ERROR");
                     }
                 }
-            }
-            else{
-                 foreach ($this->form->getMessages() as $msg):
-                            $this->Messages()->error(implode(PHP_EOL, $msg));
-                  endforeach;
+            } else {
+                foreach ($this->form->getMessages() as $msg):
+                    $this->Messages()->error(implode(PHP_EOL, $msg));
+                endforeach;
             }
         }
         return new ViewModel(array('form' => $this->form));
     }
 
-    public function passwordChangeSuccessAction() {
-        $usr_email = null;
-        $flashMessenger = $this->flashMessenger();
-        if ($flashMessenger->hasMessages()) {
-            foreach ($flashMessenger->getMessages() as $key => $value) {
-                $usr_email .= $value;
-            }
-        }
-        return new ViewModel(array('usr_email' => $usr_email));
-    }
-
     public function sendConfirmationEmail($auth) {
-       //MONTAR A URL DO SITE COM A KEY DE ATIVAÇÃO DA CONTA
+        //MONTAR A URL DO SITE COM A KEY DE ATIVAÇÃO DA CONTA
         $url = sprintf("%s%s", $this->getRequest()->getServer('HTTP_ORIGIN'), $this->url()->fromRoute('auth/default', array(
                     'controller' => 'registration',
                     'action' => 'confirm-email',
@@ -174,7 +150,7 @@ class RegistrationController extends AbstractController {
         //PEGAMOS O SERVIÇO DE EMAIL
         $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
         //SETAMOS AS INFORMAÇÕES DE ENVIO 
-         //:assunto ->Subject
+        //:assunto ->Subject
         //:email do usuario que se cadastro ->To
         //:dados do email ->Data
         //:template de email ->Template
@@ -186,12 +162,12 @@ class RegistrationController extends AbstractController {
     }
 
     public function sendPasswordByEmail($usr_email, $password) {
-       //URL DO SITE
+        //URL DO SITE
         $url = sprintf("%s", $this->getRequest()->getServer('HTTP_ORIGIN'));
         $data['url'] = $url;
         //NOVO PASSWORD
         $data['password'] = $password;
-       //SERVIÇO DE EMAIL
+        //SERVIÇO DE EMAIL
         $mail = $this->getServiceLocator()->get("Mail\Service\Mail");
         //SETAMOS AS INFORMAÇÕES DE ENVIO 
         //:assunto ->Subject
@@ -203,6 +179,14 @@ class RegistrationController extends AbstractController {
                 ->setData($data)
                 ->setViewTemplate('forgotten-password');
         $mail->send();
+    }
+    
+    public function registrationSuccessAction() {
+        return new ViewModel();
+    }
+
+    public function passwordChangeSuccessAction() {
+        return new ViewModel();
     }
 
 }

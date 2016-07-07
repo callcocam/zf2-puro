@@ -31,7 +31,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'codigo',
                     'attributes' => array(
                         'id' => 'codigo',
-                        'value' => '{codigo}',
+                        
                     ),
                 )
         );
@@ -44,7 +44,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'asset_id',
                     'attributes' => array(
                         'id' => 'asset_id',
-                        'value' => 'aeab2f6de9fd7dfc9d3623ca09b6482d',
+                        'value' => md5( $this->empresa['id']),
                     ),
                 )
         );
@@ -83,6 +83,63 @@ class RegistrationForm extends AbstractForm {
         );
 
 
+          //############################################ informações da coluna tipo ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'tipo',
+                    'attributes' => array(
+                        'id' => 'tipo',
+                        'requerid' => '1',
+                        'value' => '0',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+        //############################################ informações da coluna cnpj ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'cnpj',
+                     'attributes' => array(
+                        'id' => 'cnpj',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+
+
+        //############################################ informações da coluna rg ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'rg',
+                   'attributes' => array(
+                        'id' => 'rg',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+
+        //############################################ informações da coluna ie ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'ie',
+                    'attributes' => array(
+                        'id' => 'ie',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+            
         //############################################ informações da coluna email ##############################################:
         $this->add(
                 array(
@@ -110,7 +167,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'facebook',
                     'attributes' => array(
                         'id' => 'facebook',
-                        'value' => 'facebook.com/',
+                        'value' => 'facebook.com',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -146,6 +203,20 @@ class RegistrationForm extends AbstractForm {
                     ),
                 )
         );
+        
+         //############################################ informações da coluna whatsapp ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'whatsapp',
+                    'attributes' => array(
+                        'id' => 'whatsapp',
+                        'value' => '(00)0000-0000',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
 
         //############################################ informações da coluna endereco ##############################################:
@@ -170,7 +241,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'bairro',
                     'attributes' => array(
                         'id' => 'bairro',
-                        'value' => '0',
+                        'value' => 'Não Definido',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -191,6 +262,20 @@ class RegistrationForm extends AbstractForm {
                     ),
                 )
         );
+        
+        //############################################ informações da coluna cep ##############################################:
+        $this->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'cep',
+                    'attributes' => array(
+                        'id' => 'cep',
+                        'value' => '00000-000',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
 
         //############################################ informações da coluna images_users ##############################################:
@@ -200,7 +285,7 @@ class RegistrationForm extends AbstractForm {
                     'name' => 'images',
                     'attributes' => array(
                         'id' => 'images',
-                        'value' => '/img/no_avatar.jpg',
+                        'value' => 'no_avatar.jpg',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),

@@ -18,24 +18,23 @@ if (!isset($filesList) || count($filesList) === 0):
         </thead>
         <tbody><?php
             /** @var SplFileInfo $file */
-            foreach ($filesList as $file):
-                ?>
+            foreach ($filesList as $file):?>
                 <tr>
-                    <td><?php if (array_search($file->getMimeType(), $this->files->getOptions()->getFileAccept())): ?>
-                            <?= $file->getTitle(); ?>
-                        <?php elseif (array_search($file->getMimeType(), $this->files->getOptions()->getMidiaAccept())): ?>
+                    <td><?php if (array_search($file['mimetype'], $this->files->getOptions()->getFileAccept())): ?>
+                            <?= $file['title']; ?>
+                        <?php elseif (array_search($file['mimetype'], $this->files->getOptions()->getMidiaAccept())): ?>
                             <audio controls>
-                                <source src="/dist/<?= $file->getTitle(); ?>" type="audio/mpeg">
+                                <source src="/dist/<?= $file['title']; ?>" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio> 
                         <?php else: ?>
-                            <img alt="[<?= $file->getTitle(); ?>]" title="<?= $file->getTitle(); ?>" src="/dist/tim.php?src=/dist/<?php echo $file->getTitle() ?>&w=100&h=100">
+                            <img alt="[<?= $file['title']; ?>]" title="<?= $file['title']; ?>" src="/dist/tim.php?src=/dist/<?php echo $file['title'] ?>&w=100&h=100">
                         <?php endif; ?>
                     </td>
-                   <td><?php echo $file->getExtension() ?></td>
-                    <td><?php echo $file->getSize() ?></td>
-                    <td><?php echo $file->getMimetype() ?></td>
-                    <td><a href="<?php echo $this->url('upload/default', array('controller' => 'upload', 'action' => 'remove','id'=>$file->getId())) ?>" class="btn btn-blue remove-file" title="Excluir Resgistro">EXCLUIR</a></td>
+                   <td><?php echo $file['extension'] ?></td>
+                    <td><?php echo $file['size'] ?></td>
+                    <td><?php echo $file['mimetype'] ?></td>
+                    <td><a href="<?php echo $this->url('upload/default', array('controller' => 'upload', 'action' => 'remove','id'=>$file['id'])) ?>" class="btn btn-blue remove-file" title="Excluir Resgistro">EXCLUIR</a></td>
                 </tr><?php endforeach; ?>
         </tbody>
     </table><?php

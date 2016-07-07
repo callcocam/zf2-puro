@@ -42,13 +42,18 @@ return array(
     "service_manager" => array(
         "factories" => array(// !!! aliases not alias
             'Admin\Form\BsUsersForm' => 'Admin\Factory\BsUsersFormFactory',
+            'Admin\Form\ProfileForm' => 'Admin\Factory\ProfileFormFactory',
             'BsUsersTableGateway' => 'Admin\Factory\BsUsersFactory',
             'Admin\Model\BsUsersTable' => 'Admin\Factory\BsUsersFactoryTable',
+            'Admin\Model\ProfileTable' => 'Admin\Factory\ProfileFactoryTable',
+            'ProfileTableGateway' => 'Admin\Factory\ProfileFactory',
+            
         ),
         "aliases" => array(// !!! aliases not alias
         ),
         "invokables" => array(
             'Admin\Model\BsUsers' => 'Admin\Model\BsUsers',
+            'Admin\Model\Profile' => 'Admin\Model\Profile',
         ),
     ),
     "view_manager" => array(

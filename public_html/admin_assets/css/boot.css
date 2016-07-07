@@ -20,7 +20,7 @@
  html, body {
       height: 93%;
     margin: 0px;
-    background: #222D32;
+    /*background: #222D32;*/
   }
  
 h1{font-size: 2em; font-weight: 300;}

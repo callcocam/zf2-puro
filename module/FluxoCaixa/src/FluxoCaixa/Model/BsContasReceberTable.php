@@ -27,14 +27,15 @@ class BsContasReceberTable extends AbstractTable {
         $this->joins = [
             ['tabela' => "bs_planos_contas", 'w' => "bs_contas_receber.plano_conta_id=bs_planos_contas.id", 'c' => ['title_bs_planos_contas' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_contas", 'w' => "bs_contas_receber.conta_id=bs_contas.id", 'c' => ['title_bs_contas' => 'title'], 'predicate' => 'left'],
-            ['tabela' => "bs_clientes", 'w' => "bs_contas_receber.cliente_id=bs_clientes.id", 'c' => ['title_bs_cliente' => 'title'], 'predicate' => 'left'],
+            ['tabela' => "bs_users", 'w' => "bs_contas_receber.cliente_id=bs_users.id", 'c' => ['title_bs_cliente' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_centro_custo", 'w' => "bs_contas_receber.centro_custo_id=bs_centro_custo.id", 'c' => ['title_bs_centro_custo' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_tipo_documento", 'w' => "bs_contas_receber.tipo_documento=bs_tipo_documento.id", 'c' => ['title_bs_tipo_documento' => 'title'], 'predicate' => 'left'],
-             ['tabela'=>"bs_caixa",'w'=>"bs_contas_receber.caixa_id=bs_caixa.id",'c'=> ['title_bs_caixa' => 'title'],'predicate'=> 'left'],
+            ['tabela'=>"bs_caixa",'w'=>"bs_contas_receber.caixa_id=bs_caixa.id",'c'=> ['title_bs_caixa' => 'title'],'predicate'=> 'left'],
             ['tabela' => "bs_conta_situacao", 'w' => "bs_contas_receber.situacao=bs_conta_situacao.alias", 'c' => ['title_bs_conta_situacao' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_conta_repete", 'w' => "bs_contas_receber.repete=bs_conta_repete.alias", 'c' => ['title_bs_conta_repete' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_conta_periodos", 'w' => "bs_contas_receber.periodos=bs_conta_periodos.id", 'c' => ['title_bs_conta_periodos' => 'title'], 'predicate' => 'left'],
         ];
+        $this->extraWere=[['bs_conta_situacao.tipo'=>'ET']];
     }
 
     public function insert(\Base\Model\AbstractModel $data) {

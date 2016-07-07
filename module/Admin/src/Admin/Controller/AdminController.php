@@ -21,4 +21,18 @@ class AdminController extends AbstractController {
         $this->action = "index";
     }
 
+//    public function indexAction() {
+//        $table = new \Base\MetaData\Table($this->getAdapter());
+//        $table->setColumns('bs_contas_receber');
+//        $constraints = $table->getConstraints('pk');
+//        foreach ($constraints as $value) {
+//            if (end($value) === "UNIQUE") {
+//                $unique = array_filter(explode("_", reset($value)));
+//                echo end($unique);
+//            }
+//        }
+//        \Zend\Debug\Debug::dump($constraints);
+//        die;
+//    }
+
 }

@@ -83,10 +83,10 @@ class BsCaixaFilter extends AbstractFilter
         
         // Informação para a coluna description:
         $description = new Input ( "description" );
-        $description->setRequired ( true );
+        $description->setRequired ( false );
         $description->getFilterChain ()->attach ( $this->StringTrim );
-        //$description->getFilterChain ()->attach ( $this->StripTags );
-        $description->getValidatorChain()->attach($this->emptyfilter);
+        $description->getFilterChain ()->attach ( $this->StripTags );
+        //$description->getValidatorChain()->attach($this->emptyfilter);
         $this->add ( $description );
         
         // Informação para a coluna ordering:
@@ -131,10 +131,10 @@ class BsCaixaFilter extends AbstractFilter
         
         // Informação para a coluna alias:
         $alias = new Input ( "alias" );
-        $alias->setRequired ( true );
+        $alias->setRequired ( false );
         $alias->getFilterChain ()->attach ( $this->StringTrim );
         $alias->getFilterChain ()->attach ( $this->StripTags );
-        $alias->getValidatorChain()->attach($this->emptyfilter);
+       // $alias->getValidatorChain()->attach($this->emptyfilter);
         $this->add ( $alias );
         
         // Informação para a coluna created:

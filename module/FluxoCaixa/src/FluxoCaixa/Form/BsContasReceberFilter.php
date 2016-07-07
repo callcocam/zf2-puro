@@ -201,13 +201,13 @@ class BsContasReceberFilter extends AbstractFilter
         //$repete->getValidatorChain()->attach($this->emptyfilter);
         $this->add ( $repete );
 
-        // Informação para a coluna perildo:
-        $perildo = new Input ( 'perildo');
-        $perildo->setRequired ( false );
-        $perildo->getFilterChain ()->attach ( $this->StringTrim );
-        $perildo->getFilterChain ()->attach ( $this->StripTags );
-        //$perildo->getValidatorChain()->attach($this->emptyfilter);
-        $this->add ( $perildo );
+        // Informação para a coluna periodos:
+        $periodos = new Input ( 'periodos');
+        $periodos->setRequired ( false );
+        $periodos->getFilterChain ()->attach ( $this->StringTrim );
+        $periodos->getFilterChain ()->attach ( $this->StripTags );
+        //$periodos->getValidatorChain()->attach($this->emptyfilter);
+        $this->add ( $periodos );
 
         // Informação para a coluna qtdade:
         $qtdade = new Input ( "qtdade" );

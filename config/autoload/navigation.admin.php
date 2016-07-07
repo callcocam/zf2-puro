@@ -401,41 +401,6 @@ $return = array(
                     ),)
           ),
           array(
-              'label' => 'GESTÃO/COMERCIAL',
-              'class' => 'treeview',
-              'action'     => '#',
-              'icone'     => 'ion ion-wrench',
-              'title'   => 'OPERACIONAL',
-              'pages'   => array(                    array(
-                          'label'      => 'CLIENTES',
-                          'route'      => 'gestao/default',
-                          'controller' => 'bs-clientes',
-                          'resource'   => 'Gestao\Controller\BsClientes',
-                          'action'     => 'index',
-                          'privilege'  => 'index',
-                          'icone'      => 'fa fa-angle-double-right',
-                          'title'      => 'CLIENTES',
-                          'pages'      => array(                    array(
-                        'label' => 'Cadastrar',
-                        'route' => 'gestao/default',
-                        'controller' => 'bs-clientes',
-                        'resource' => 'Gestao\Controller\BsClientes',
-                        'action' => 'inserir',
-                        'privilege' => 'inserir',
-                        'title' => 'Cadastrar Registro',
-                    ),
-                    array(
-                        'label' => 'Editar',
-                        'route' => 'gestao/default',
-                        'controller' => 'bs-clientes',
-                        'resource' => 'Gestao\Controller\BsClientes',
-                        'action' => 'editar',
-                        'privilege' => 'editar',
-                        'title' => 'Editar Registro',
-                    )),
-                    ),)
-          ),
-          array(
               'label' => 'CONTROLE/ESTOQUE',
               'class' => 'treeview',
               'action'     => '#',

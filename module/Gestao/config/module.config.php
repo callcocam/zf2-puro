@@ -33,7 +33,7 @@ return array(
     ),
      "controllers" => array(
         "invokables" => array(
-                'Gestao\Controller\BsClientes'=>'Gestao\Controller\BsClientesController',
+                
         ),
         "factories" => array(
                 
@@ -42,16 +42,14 @@ return array(
     ),
     "service_manager" => array(
         "factories" => array(// !!! aliases not alias
-         'Gestao\Form\BsClientesForm'=>'Gestao\Factory\BsClientesFormFactory',
-'BsClientesTableGateway'=>'Gestao\Factory\BsClientesFactory',
-'Gestao\Model\BsClientesTable'=>'Gestao\Factory\BsClientesFactoryTable',   
+        
            
         ),
         "aliases" => array(// !!! aliases not alias
          
         ),
         "invokables" => array(
-          'Gestao\Model\BsClientes' => 'Gestao\Model\BsClientes', 
+         
         ),
     ),
     "view_manager" => array(

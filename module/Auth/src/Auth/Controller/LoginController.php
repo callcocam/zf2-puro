@@ -17,7 +17,6 @@ class LoginController extends AbstractController {
     }
 
     public function loginAction() {
-
         //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route, array('controller' => $this->controller, 'action' => 'index'));
@@ -72,7 +71,7 @@ class LoginController extends AbstractController {
         if (!$this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->route);
         }
-        $this->Messages()->flashError("Vote sempre");
+        $this->Messages()->flashError("Volte sempre");
         $this->storage = $this->getSessionStorage();
         $this->getAuthService()->clearIdentity();
         $this->storage->forgetMe();

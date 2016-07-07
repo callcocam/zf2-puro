@@ -23,16 +23,18 @@ class GerarNavigation extends Options {
                 $entro = true;
                 extract($value->toArray());
                 $title = strtoupper($title);
-                $this->setBody("          array(");
-                $this->setBody("              'label' => '{$title}',");
-                $this->setBody("              'class' => 'treeview',");
-                $this->setBody("              'action'     => '#',");
-                $this->setBody("              'icone'     => '{$icone}',");
-                $this->setBody("              'title'   => '{$description}',");
                 $this->subMenu($id);
-                $it = implode(PHP_EOL, $this->item);
-                $this->setBody("              'pages'   => array({$it})");
-                $this->setBody("          ),");
+                if ($this->item):
+                    $this->setBody("          array(");
+                    $this->setBody("              'label' => '{$title}',");
+                    $this->setBody("              'class' => 'treeview',");
+                    $this->setBody("              'action'     => '#',");
+                    $this->setBody("              'icone'     => '{$icone}',");
+                    $this->setBody("              'title'   => '{$description}',");
+                    $it = implode(PHP_EOL, $this->item);
+                    $this->setBody("              'pages'   => array({$it})");
+                    $this->setBody("          ),");
+                endif;
             }
             $this->setBody(" );     // Fim navigation default");
             $this->setBody('return $return;');
@@ -50,7 +52,7 @@ class GerarNavigation extends Options {
         if ($BsResources):
             foreach ($BsResources as $value):
                 $this->subAction($value);
-                $subaction=  implode(PHP_EOL, $this->subaction);
+                $subaction = implode(PHP_EOL, $this->subaction);
                 extract($value->toArray());
                 $title = strtoupper($title);
                 $this->setMenuitem("                    array(");
@@ -74,7 +76,7 @@ class GerarNavigation extends Options {
     }
 
     public function subAction($value) {
-        $this->subaction=array();
+        $this->subaction = array();
         extract($value->toArray());
         $this->setSubaction("                    array(");
         $this->setSubaction("                        'label' => 'Cadastrar',");
@@ -94,7 +96,6 @@ class GerarNavigation extends Options {
         $this->setSubaction("                        'privilege' => 'editar',");
         $this->setSubaction("                        'title' => 'Editar Registro',");
         $this->setSubaction("                    )");
-      
     }
 
     public function setSubaction($subaction) {

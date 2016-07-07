@@ -19,9 +19,10 @@ class BsUsersTable extends \Base\Model\AbstractTable {
 
    
 
-    function __construct(TableGateway $tableGateway) {
+    public function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
     }
+    
 
     public function getUserByToken($token) {
         $rowset = $this->tableGateway->select(array('usr_registration_token' => $token));

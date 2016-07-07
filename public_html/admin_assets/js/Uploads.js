@@ -121,10 +121,12 @@ class Uploads extends SIGAMessages {
 $(function () {
     _Up = new Uploads();
     _Up.initFileUpload(_Up, $(".uploadFile"));
-    //  _Up.initFileUpload(_Up,$(".uploadFile"));
-    $('.remove-file').click(function(e){
+     $('.remove-file').click(function(e){
         _UpExcluir=new App();
         e.preventDefault();
         _Up.removeFile($(this),_UpExcluir);
     })
+
+
+     
 })

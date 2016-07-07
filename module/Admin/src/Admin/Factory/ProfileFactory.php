@@ -4,28 +4,30 @@
  */
 
 
-namespace Gestao\Factory;
+namespace Admin\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
+use Base\Factory\AbstractFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Gestao\Form\BsClientesForm;
 
 /**
  * SIGA-Smart
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsClientesFormFactory implements FactoryInterface
+class ProfileFactory extends AbstractFactory
 {
 
     /**
-     * createService Factory
+     * createService Factory Model
      *
      * @return createService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new BsClientesForm($serviceLocator);
+        // Configurações iniciais do Factory Model
+        $this->tabela="bs_users";
+        $this->model="Admin\Model\Profile";
+        return parent::createService($serviceLocator);
     }
 
 

@@ -236,7 +236,7 @@ class BsContasReceberForm extends AbstractForm {
                     'name' => 'cliente_id',
                     'options' => array(
                         'label' => 'FILD_CLIENTE_ID_LABEL',
-                        'value_options'=>$this->setValueOption('Gestao\Model\BsClientesTable',array('state' =>'0'))
+                        'value_options'=>$this->setValueOption('Admin\Model\BsUsersTable',array('state' =>'0'))
                     ),
                     'attributes' => array(
                         'id' => 'cliente_id',

@@ -29,6 +29,7 @@ abstract class AbstractTable {
     protected $last_insert;
     protected $class;
     protected $msg;
+    protected $extraWere = array();
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -36,28 +37,36 @@ abstract class AbstractTable {
      * Busca todos os regstros do banco sem nenhuma restrição
      * @return type object table bd
      */
-    public function findALL($condicao = array(), $paginated = true) {
+    public function findALL($condicao = array('state' => '0'), $paginated = true) {
         //pegamos a tabela principal
         $table = $this->tableGateway->getTable();
         //abrir zend db sql e iniciar um select
         $select = $this->tableGateway->getSql()->select();
         // verificar se não estamos listando a tabela de usuario
         //e unir com a tabella de usuario qualquer outra tabela
-        if ($table != 'bs_users'):
-            $select->join('bs_users', "bs_users.id = {$table}.modified_by", array('editor_by' => 'title'));
-        endif;
+        $select->join(array('user' => 'bs_users'), "{$table}.modified_by=user.id ", array('editor_by' => 'title'), 'left');
         //verificar e monta as união de tabelas vindas de sua table real
         if ($this->joins):
             foreach ($this->joins as $j):
                 $select->join($j['tabela'], $j['w'], $j['c'], $j['predicate']);
             endforeach;
         endif;
+    
         if (isset($condicao['busca'])):
             $select->where($this->filtro($condicao, $table));
+        else:
+            if ($condicao):
+                foreach ($condicao as $key => $value) {
+                    $select->where(array("{$table}.{$key}" => $value));
+                }
+            endif;
         endif;
-//        if ($table != 'bs_users'):
-//             echo $select->getSqlString();
-//        endif;
+        if ($this->extraWere):
+            foreach ($this->extraWere as $w):
+                $select->where($w);
+            endforeach;
+        endif;
+
         $select->order("{$table}.id DESC");
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $results = $statement->execute();
@@ -75,20 +84,16 @@ abstract class AbstractTable {
         if (isset($condicao['state']) && (int) $condicao['state'] >= 0):
             $where->equalTo("{$table}.state", $condicao['state']);
         endif;
+
         if (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && empty($condicao['publish_down'])):
             $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime("2050-01-01")));
         elseif (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && !empty($condicao['publish_down'])):
             $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
         endif;
-        if (isset($condicao['busca']) && !empty($condicao['busca'])):
+          if (isset($condicao['busca']) && !empty($condicao['busca'])):
             $where->expression("CONCAT_WS(' ', {$table}.title, {$table}.description) LIKE ?", "%{$condicao['busca']}%");
         endif;
         return $where;
-    }
-    
-    public function setJoin()
-    {
-        
     }
 
     /**

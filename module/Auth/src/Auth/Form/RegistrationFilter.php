@@ -62,11 +62,19 @@ class RegistrationFilter extends \Base\Form\AbstractFilter {
 
         // Informação para a coluna title:
         $title = new Input("title");
-        $title->setRequired(false);
+        $title->setRequired(TRUE);
         $title->getFilterChain()->attach($this->StringTrim);
         $title->getFilterChain()->attach($this->StripTags);
-        //$title->getValidatorChain()->attach($this->emptyfilter);
+        $title->getValidatorChain()->attach($this->emptyfilter);
         $this->add($title);
+        
+         // Informação para a coluna tipo:
+        $tipo = new Input("tipo");
+        $tipo->setRequired(FALSE);
+        $tipo->getFilterChain()->attach($this->StringTrim);
+        $tipo->getFilterChain()->attach($this->StripTags);
+       // $tipo->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($tipo);
 
         // Informação para a coluna email:
         $email = new Input("email");
@@ -99,6 +107,38 @@ class RegistrationFilter extends \Base\Form\AbstractFilter {
         $phone->getFilterChain()->attach($this->StripTags);
         //$phone->getValidatorChain()->attach($this->emptyfilter);
         $this->add($phone);
+        
+        // Informação para a coluna whatsapp:
+        $whatsapp = new Input("whatsapp");
+        $whatsapp->setRequired(FALSE);
+        $whatsapp->getFilterChain()->attach($this->StringTrim);
+        $whatsapp->getFilterChain()->attach($this->StripTags);
+        //$whatsapp->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($whatsapp);
+        
+         // Informação para a coluna cnpj:
+        $cnpj = new Input("cnpj");
+        $cnpj->setRequired(FALSE);
+        $cnpj->getFilterChain()->attach($this->StringTrim);
+        $cnpj->getFilterChain()->attach($this->StripTags);
+        //$cnpj->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($cnpj);
+
+        // Informação para a coluna rg:
+        $rg = new Input("rg");
+        $rg->setRequired(FALSE);
+        $rg->getFilterChain()->attach($this->StringTrim);
+        $rg->getFilterChain()->attach($this->StripTags);
+        //$rg->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($rg);
+
+        // Informação para a coluna ie:
+        $ie = new Input("ie");
+        $ie->setRequired(FALSE);
+        $ie->getFilterChain()->attach($this->StringTrim);
+        $ie->getFilterChain()->attach($this->StripTags);
+        //$ie->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($ie);
 
         // Informação para a coluna endereco:
         $endereco = new Input("endereco");
@@ -123,6 +163,14 @@ class RegistrationFilter extends \Base\Form\AbstractFilter {
         $cidade->getFilterChain()->attach($this->StripTags);
         //$cidade->getValidatorChain()->attach($this->emptyfilter);
         $this->add($cidade);
+        
+        // Informação para a coluna cep:
+        $cep = new Input("cep");
+        $cep->setRequired(false);
+        $cep->getFilterChain()->attach($this->StringTrim);
+        $cep->getFilterChain()->attach($this->StripTags);
+        //$cep->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($cep);
 
         // Informação para a coluna images:
         $images_users = new Input("images");

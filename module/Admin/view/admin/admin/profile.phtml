@@ -1,0 +1,42 @@
+<?php
+echo $this->headTitle(strtoupper(substr($controller, 3)));
+?>
+<section class="content-header">
+    <div class="breadcrumb">
+        <ul class="breadcrumbs-item">
+            <li>Admin</li>
+            <li class="divisor"> / </li>
+            <li>Panel</li>
+            <li class="divisor"> / </li>
+            <li><a href="<?php echo $this->url($this->route, array('controller' => $this->controller, 'action' => "index")) ?>"><?= ucfirst($this->controller) ?> </a></li>  
+            <li class="divisor"> / </li>
+            <li>MANUTENÇÃO - <b><?php echo "Manutenção"; ?></b></li>
+        </ul>
+
+    </div>
+</section>
+<section class="content">
+
+    <?php
+    echo $this->messages();
+    $form = $this->form;
+    $form->setAttribute('action', $this->url($this->route, array('controller' => $this->controller, 'action' => $this->action)));
+    $form->setAttribute('class', 'form-geral Manager');
+    $this->formElementErrors()
+            ->setMessageOpenFormat('<ul class="nav"><li class="erro-obrigatorio">')
+            ->setMessageSeparatorString('</li>')->render($form);
+    echo $this->form()->openTag($form);
+    $this->GerarViewHelper()->GerarElement($form);
+     if(!is_dir("./module/Admin/view/admin/admin/tpl/{$this->controller}")):
+        mkdir("./module/Admin/view/admin/admin/tpl/{$this->controller}");
+    endif;
+    if (!$this->resolver("admin/admin/tpl/{$this->controller}/profile")) :
+         file_put_contents("./module/Admin/view/admin/admin/tpl/{$this->controller}/profile.phtml", $this->GerarViewHelper()->formGrupo());
+    endif;
+    $html = $this->partial("admin/admin/tpl/{$this->controller}/profile");
+    $primeiro = str_replace(array_keys($this->GerarViewHelper()->getHtml()), array_values($this->GerarViewHelper()->getHtml()), $html);
+    echo str_replace(array_keys($this->GerarViewHelper()->getLabels()), array_values($this->GerarViewHelper()->getLabels()), $primeiro);
+    echo $this->form()->closeTag();
+    ?>
+</section><!-- /.content -->
+

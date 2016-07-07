@@ -173,7 +173,7 @@ class Check {
 
         self::$Data = $ImageUrl;
         if (!is_dir(self::$Data)):
-            $patch = '/uploads/';
+            $patch = '/dist/';
             $imagem = self::$Data;
             $tagImage="";
             if($ImageW)
@@ -201,13 +201,13 @@ class Check {
      * uploads. Se existir retorna a imagem redimensionada!
      * @return HTML = imagem redimencionada!
      */
-    public static function ImageCaminho($ImageUrl) {
+    public static function ImageCaminho($ImageUrl,$w="420",$h="330") {
 
         self::$Data = $ImageUrl;
         if (!is_dir(self::$Data)):
             $patch = '';
             $imagem = self::$Data;
-            return "/dist/tim.php?src=/uploads/{$imagem}";
+            return "/dist/tim.php?src=/dist/{$imagem}&w={$w}&h={$h}";
         else:
             return false;
         endif;

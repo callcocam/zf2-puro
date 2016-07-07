@@ -19,12 +19,12 @@ use Zend\Filter\StringTrim;
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsUsersFilter  extends \Base\Form\AbstractFilter {
+class BsUsersFilter extends \Base\Form\AbstractFilter {
 
     /**
      * @return Zend\InputFilter
      */
-    public function __construct($serviceLocator=null) {
+    public function __construct($serviceLocator = null) {
         $this->inputFilter = new InputFilter ();
         $this->emptyfilter = new NotEmpty ();
         $this->emailfilter = new EmailAddress ();
@@ -45,7 +45,6 @@ class BsUsersFilter  extends \Base\Form\AbstractFilter {
         $id->getValidatorChain()->attach($this->emptyfilter);
         $this->add($id);
         //Check that the email address exists in the database
-      
         // Informação para a coluna codigo:
         $codigo = new Input("codigo");
         $codigo->setRequired(false);
@@ -79,6 +78,54 @@ class BsUsersFilter  extends \Base\Form\AbstractFilter {
         //$title->getValidatorChain()->attach($this->emptyfilter);
         $this->add($title);
 
+        // Informação para a coluna tipo:
+        $tipo = new Input("tipo");
+        $tipo->setRequired(true);
+        $tipo->getFilterChain()->attach($this->StringTrim);
+        $tipo->getFilterChain()->attach($this->StripTags);
+        $tipo->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($tipo);
+
+        // Informação para a coluna phone:
+        $phone = new Input("phone");
+        $phone->setRequired(true);
+        $phone->getFilterChain()->attach($this->StringTrim);
+        $phone->getFilterChain()->attach($this->StripTags);
+        $phone->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($phone);
+
+        // Informação para a coluna whatsapp:
+        $whatsapp = new Input("whatsapp");
+        $whatsapp->setRequired(FALSE);
+        $whatsapp->getFilterChain()->attach($this->StringTrim);
+        $whatsapp->getFilterChain()->attach($this->StripTags);
+        //$whatsapp->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($whatsapp);
+
+        // Informação para a coluna cnpj:
+        $cnpj = new Input("cnpj");
+        $cnpj->setRequired(FALSE);
+        $cnpj->getFilterChain()->attach($this->StringTrim);
+        $cnpj->getFilterChain()->attach($this->StripTags);
+        //$cnpj->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($cnpj);
+
+        // Informação para a coluna rg:
+        $rg = new Input("rg");
+        $rg->setRequired(FALSE);
+        $rg->getFilterChain()->attach($this->StringTrim);
+        $rg->getFilterChain()->attach($this->StripTags);
+        //$rg->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($rg);
+
+        // Informação para a coluna ie:
+        $ie = new Input("ie");
+        $ie->setRequired(FALSE);
+        $ie->getFilterChain()->attach($this->StringTrim);
+        $ie->getFilterChain()->attach($this->StripTags);
+        //$ie->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($ie);
+
         // Informação para a coluna email:
         $email = new Input("email");
         $email->setRequired(true);
@@ -104,37 +151,37 @@ class BsUsersFilter  extends \Base\Form\AbstractFilter {
         //$twitter->getValidatorChain()->attach($this->emptyfilter);
         $this->add($twitter);
 
-        // Informação para a coluna phone:
-        $phone = new Input("phone");
-        $phone->setRequired(false);
-        $phone->getFilterChain()->attach($this->StringTrim);
-        $phone->getFilterChain()->attach($this->StripTags);
-        //$phone->getValidatorChain()->attach($this->emptyfilter);
-        $this->add($phone);
+        // Informação para a coluna cidade:
+        $cidade = new Input("cidade");
+        $cidade->setRequired(TRUE);
+        $cidade->getFilterChain()->attach($this->StringTrim);
+        $cidade->getFilterChain()->attach($this->StripTags);
+        $cidade->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($cidade);
 
-        // Informação para a coluna endereco:
-        $endereco = new Input("endereco");
-        $endereco->setRequired(false);
-        $endereco->getFilterChain()->attach($this->StringTrim);
-        $endereco->getFilterChain()->attach($this->StripTags);
-        //$endereco->getValidatorChain()->attach($this->emptyfilter);
-        $this->add($endereco);
+        // Informação para a coluna cep:
+        $cep = new Input("cep");
+        $cep->setRequired(false);
+        $cep->getFilterChain()->attach($this->StringTrim);
+        $cep->getFilterChain()->attach($this->StripTags);
+        //$cep->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($cep);
 
         // Informação para a coluna bairro:
         $bairro = new Input("bairro");
-        $bairro->setRequired(false);
+        $bairro->setRequired(TRUE);
         $bairro->getFilterChain()->attach($this->StringTrim);
         $bairro->getFilterChain()->attach($this->StripTags);
-        //$bairro->getValidatorChain()->attach($this->emptyfilter);
+        $bairro->getValidatorChain()->attach($this->emptyfilter);
         $this->add($bairro);
 
-        // Informação para a coluna cidade:
-        $cidade = new Input("cidade");
-        $cidade->setRequired(false);
-        $cidade->getFilterChain()->attach($this->StringTrim);
-        $cidade->getFilterChain()->attach($this->StripTags);
-        //$cidade->getValidatorChain()->attach($this->emptyfilter);
-        $this->add($cidade);
+        // Informação para a coluna endereco:
+        $endereco = new Input("endereco");
+        $endereco->setRequired(TRUE);
+        $endereco->getFilterChain()->attach($this->StringTrim);
+        $endereco->getFilterChain()->attach($this->StripTags);
+        $endereco->getValidatorChain()->attach($this->emptyfilter);
+        $this->add($endereco);
 
         // Informação para a coluna images:
         $images_users = new Input("images");
@@ -146,13 +193,13 @@ class BsUsersFilter  extends \Base\Form\AbstractFilter {
 
         // Informação para a coluna password:
         $password = new Input("password");
-        $password->setRequired(false);
+        $password->setRequired(TRUE);
         $password->getFilterChain()->attach($this->StringTrim);
         $password->getFilterChain()->attach($this->StripTags);
-        //$password->getValidatorChain()->attach($this->emptyfilter);
+        $password->getValidatorChain()->attach($this->emptyfilter);
         $this->add($password);
-        
-          // Informação para a coluna password:
+
+        // Informação para a coluna password:
         $usr_registration_token = new Input("usr_registration_token");
         $usr_registration_token->setRequired(false);
         $usr_registration_token->getFilterChain()->attach($this->StringTrim);

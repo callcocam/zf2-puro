@@ -41,7 +41,13 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-            // For Yable data Gateway
+            'Admin\Files\FilesOptions' => function ($sm) {
+                    return new \Admin\Files\FilesOptions($sm);
+                },
+                'Admin\Files\FilesService' => function ($sm) {
+                    $options = $sm->get('Admin\Files\FilesOptions');
+                    return new \Admin\Files\FilesService($options);
+                },
             ),
             'invokables' => array(
             )

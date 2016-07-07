@@ -35,7 +35,7 @@
             if ($element->getAttribute('type') == "hidden"):
                 echo $this->formHidden($element);
             elseif ($element->getAttribute('type') == "submit"):
-               
+
             elseif ($element->getAttribute('type') == "submit"):
             else:
                 $label = $this->translate($element->getLabel());
@@ -50,7 +50,8 @@
         endforeach;
         echo $this->formSubmit($form->get('save')->setValue("BTN_CREATE_USER_LABEL"));
         echo $this->form()->closeTag();
-        ?>
+        ?><div class="clear"></div>
     </div><!-- /.login-box-body -->
+
 </div><!-- /.login-box -->
 

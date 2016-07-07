@@ -42,6 +42,7 @@ abstract class AbstractController extends AbstractActionController {
     protected $filtro;
     protected $use_paginator = true;
     protected $item_per_page = 12;
+    protected $filesService;
 
     abstract function __construct();
 
@@ -98,26 +99,28 @@ abstract class AbstractController extends AbstractActionController {
         return $this->cache;
     }
 
+    public function getFilesService() {
+        return $this->getServiceLocator()->get("Admin\Files\FilesService");
+    }
+
     public function indexAction() {
 
-        $view = new ViewModel();
         if (!empty($this->table)):
             $page = $this->params()->fromRoute('page', 1);
             if ($this->params()->fromPost()):
                 $this->data = $this->getTableGateway()->findAll($this->params()->fromPost());
                 $this->filtro = $this->params()->fromPost();
             else:
-                $this->data = $this->getTableGateway()->findAll(array('state'=>'0'));
+                $this->data = $this->getTableGateway()->findAll(array('state' => '0'));
             endif;
-          
-                // set the number of items per page to 10
-                $this->data->setItemCountPerPage($this->item_per_page);
-                // set the current page to what has been passed in query string, or to 1 if none set
-                $this->data->setCurrentPageNumber($page);
-           endif;
-        //$table = $this->getServiceLocator()->get('Table');
-        //$view->setVariable('table', $table);
-        $view = new ViewModel(array('data'=> $this->data,'route'=> $this->route,'controller'=>$this->controller,'user'=> $this->user,'filtro'=> $this->filtro));
+
+            // set the number of items per page to 10
+            $this->data->setItemCountPerPage($this->item_per_page);
+            // set the current page to what has been passed in query string, or to 1 if none set
+            $this->data->setCurrentPageNumber($page);
+        endif;
+
+        $view = new ViewModel(array('data' => $this->data, 'route' => $this->route, 'controller' => $this->controller, 'user' => $this->user, 'filtro' => $this->filtro));
         $view->setTemplate($this->template);
         return $view;
     }
@@ -158,13 +161,13 @@ abstract class AbstractController extends AbstractActionController {
 
     public function excluirAction() {
         $param = $this->params()->fromRoute('id', '0');
-         $this->result =false;
+        $this->result = false;
         if ($param) {
             if ($this->getTableGateway()->delete($param)):
                 $this->classe = 'trigger_success';
-               $this->result = $this->getTableGateway()->getResult();     
+                $this->result = $this->getTableGateway()->getResult();
             endif;
-            
+
             $this->error = $this->getTableGateway()->getError();
         }
         return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'class' => $this->classe,
@@ -175,7 +178,18 @@ abstract class AbstractController extends AbstractActionController {
         $this->form = $this->getForm();
         if ($this->params()->fromPost()) {
             $this->data = array_merge_recursive($this->params()->fromPost(), $this->params()->fromFiles());
+            if (isset($this->data['modified_by'])):
+                $this->data['modified_by'] = $this->user['id'];
+            endif;
             $model = $this->getModel();
+            if ($this->params()->fromFiles('attachment') && is_array($this->params()->fromFiles('attachment'))):
+                if (!$this->upload($this->params()->fromFiles('attachment'))):
+                    return new JsonModel(array('result' => $this->filesService->getResult(), 'acao' => $this->acao, 'codigo' => $this->data['codigo'], 'id' => $this->data['id'],
+                        'class' => 'trigger_error',
+                        'msg' => $this->filesService->getMessages(), 'data' => $this->data));
+                endif;
+
+            endif;
             $model->exchangeArray($this->data);
             $this->form->setData($this->data);
             $this->setConstraints();
@@ -203,17 +217,17 @@ abstract class AbstractController extends AbstractActionController {
             } else {
                 $msgs = [];
 
-                $erro=$this->form->getMessages();
+                $erro = $this->form->getMessages();
                 //$this->printAll($erro);
                 if (isset($erro)):
-                foreach ($erro as $key => $value) {
-                    foreach ($value as $value_i) {
-                        $msgs[]="{$key} : {$value_i}";
+                    foreach ($erro as $key => $value) {
+                        foreach ($value as $value_i) {
+                            $msgs[] = "{$key} : {$value_i}";
+                        }
                     }
-                }
                 endif;
                 $this->result = null;
-                $this->error =implode("<p> ", $msgs);
+                $this->error = implode("<p> ", $msgs);
                 $this->acao = 'save';
             }
             return new JsonModel(array('result' => $this->result, 'acao' => $this->acao, 'codigo' => $this->codigo, 'id' => $this->id, 'class' => $this->classe,
@@ -225,6 +239,35 @@ abstract class AbstractController extends AbstractActionController {
             'action' => 'index'));
         $view->setTemplate('/admin/admin/deny');
         return $view;
+    }
+
+    public function upload($file) {
+
+        if ($file):
+            $this->filesService = $this->getFilesService();
+            $this->filesService->persistFile($file, $this->data);
+            if ($this->filesService->getResult()):
+                $this->data['images'] = $this->filesService->getRealFolder();
+                return TRUE;
+            endif;
+
+        endif;
+        return false;
+    }
+
+    public function uploadAction() {
+        $data = array_merge_recursive($this->params()->fromPost(), $this->params()->fromFiles());
+        if ($data):
+            $this->filesService = $this->getFilesService();
+            $data = $this->params()->fromPost();
+            $file = $this->params()->fromFiles('attachment');
+            $code = $this->filesService->persistFile($file, $data);
+            return new JsonModel(['result' => $this->filesService->getResult(), 'acao' => "", 'codigo' => $this->filesService->getCodigo(), 'id' => $this->filesService->getId(), 'class' => $code,
+                'msg' => $this->filesService->getMessages(), 'data' => $this->filesService->getData(),
+                'code' => $code, 'temp' => $this->filesService->getTemp(), 'realfolder' => $this->filesService->getRealFolder()
+            ]);
+        endif;
+        return $this->redirect()->toRoute($this->route);
     }
 
     public function setNoRecordExists($table, $fild, $exclude = "", $recordFound = "Registro Ja Existe", $noRecordFound = "Registro Não Existe") {
@@ -263,30 +306,28 @@ abstract class AbstractController extends AbstractActionController {
         $table->setColumns($this->getTableGateway()->getTable());
         $constraints = $table->getConstraints('pk');
         if ($this->constraints):
-            foreach ($this->constraints as $key => $value) {
+            foreach ($this->constraints as $value) {
                 array_push($constraints, $value);
             }
         endif;
         foreach ($constraints as $value) {
             try {
-                if ($value[1] === "UNIQUE") {
-                    $unique = array_filter(explode("_", $value[0]));
-                    if (isset($unique[4])) {
+                if (end($value) === "UNIQUE") {
+                        $unique = array_filter(explode("_", reset($value)));
                         $tabela = $this->getTableGateway()->getTable();
-                        $field = $unique[4];
+                        $field = end($unique);
                         $id = $this->data['id'];
                         if (isset($this->data['save']) && (int) $id):
                             $validator = $this->setNoRecordExists($tabela, $field, array('field' => 'id', 'value' => $id));
-                            $validator->setMessage("ERRO AO ATUALIZAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
-                            $validator->setMessage("ERRO AO ATUALIZAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                            $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}] NÂO ESTA DISPONIVEL", 'noRecordFound');
+                            $validator->setMessage("ERRO AO ATUALIZAR, O [{$this->data[$field]}],  NÂO ESTA DISPONIVEL!!", 'recordFound');
                         else:
                             $validator = $this->setNoRecordExists($tabela, $field);
-                            $validator->setMessage("ERRO AO CADATSRAR, O [] não esta cadastrado na tabela {$tabela} na coluna {$field}", 'noRecordFound');
-                            $validator->setMessage("ERRO AO CADATSRAR, O [] ja esta cadastrado na tabela {$tabela} na coluna {$field}", 'recordFound');
+                            $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] NÂO ESTA DISPONIVEL", 'noRecordFound');
+                            $validator->setMessage("ERRO AO CADATSRAR, O [{$this->data[$field]}] NÂO ESTA DISPONIVEL", 'recordFound');
                         endif;
-
                         $this->form->getInputFilter()->get($field)->getValidatorChain()->attach($validator);
-                    }
+                
                 }
             } catch (\Zend\InputFilter\Exception\InvalidArgumentException $ex) {
                 
@@ -297,22 +338,21 @@ abstract class AbstractController extends AbstractActionController {
     public function getCaixa() {
         $cache = $this->getServiceLocator()->get('Cache');
         if (!$cache->hasItem("caixa")) {
-        $model = $this->getServiceLocator()->get('FluxoCaixa\Model\BsCaixaTable');
-        $this->caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
-        if ($this->caixa):
+            $model = $this->getServiceLocator()->get('FluxoCaixa\Model\BsCaixaTable');
+            $this->caixa = $model->findOneBy(array('state' => 0, 'created' => date("Y-m-d")));
+            if ($this->caixa):
                 $cache->addItem("caixa", $this->caixa->toArray());
                 $this->caixa = $cache->getItem('caixa');
             else:
-                $this->caixa=false;
+                $this->caixa = false;
                 $cache->removeItem("caixa");
-        endif;
+            endif;
         }
-        else 
-        {
+        else {
             $this->caixa = $cache->getItem('caixa');
             if ($this->caixa['created'] != date("Y-m-d")) {
                 $cache->removeItem("caixa");
-                $this->caixa=false;
+                $this->caixa = false;
             }
         }
         return $this->caixa;
@@ -322,7 +362,5 @@ abstract class AbstractController extends AbstractActionController {
         $this->caixa = $caixa;
         return $this;
     }
-
-
 
 }

@@ -37,6 +37,7 @@ class BsContasPagarTable extends AbstractTable {
             ['tabela' => "bs_conta_repete", 'w' => "bs_contas_pagar.repete=bs_conta_repete.alias", 'c' => ['title_bs_conta_repete' => 'title'], 'predicate' => 'left'],
             ['tabela' => "bs_conta_periodos", 'w' => "bs_contas_pagar.periodos=bs_conta_periodos.id", 'c' => ['title_bs_conta_periodos' => 'title'], 'predicate' => 'left'],
         ];
+        $this->extraWere=[['bs_conta_situacao.tipo'=>'SD']];
     }
 
     public function insert(\Base\Model\AbstractModel $data) {

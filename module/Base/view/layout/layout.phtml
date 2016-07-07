@@ -7,7 +7,7 @@ extract($usuario);
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 ' . $this->translate('CURSO COMPONENTES'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('CURSO COMPONENTES'))->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php
         echo $this->headMeta()
@@ -54,7 +54,7 @@ extract($usuario);
                                 <li class="profile-sub-avatar"><a href="#"> <img src="/admin_assets/img/no_avatar.jpg" class="img-profile-item b-r-full"></a></li>
                                 <li class="profile-sub-info"><a href="#"><?= $title ?></a></li>
                                 <li class="profile-sub-date"><a href="#"><?php echo date("m", strtotime($created)); ?>, <?php echo date("Y", strtotime($created)); ?></a></li>
-                                <li class="profile-sub-profile"><a class="btn btn-blue" href="<?php echo $this->url('auth/default', array('controller' => 'registration', 'action' => 'profileupdate')); ?>">M. Conta</a></li>
+                                <li class="profile-sub-profile"><a class="btn btn-blue" href="<?php echo $this->url('admin/default', array('controller' => 'bs-users', 'action' => 'profile')); ?>">M. Conta</a></li>
                                 <li class="profile-sub-logout"><a class="btn btn-red" href="<?php echo $this->url('auth/default', array('controller' => 'login', 'action' => 'logout')); ?>">Sair Do Sist.</a></li>
                             </ul>
                         </li>

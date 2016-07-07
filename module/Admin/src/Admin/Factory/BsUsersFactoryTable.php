@@ -27,7 +27,9 @@ class BsUsersFactoryTable implements FactoryInterface
     {
         // Configurações iniciais do Factory Table
         $tableGateway = $serviceLocator->get("BsUsersTableGateway");
-        return new BsUsersTable($tableGateway);
+        $f=new BsUsersTable($tableGateway);
+        $f->setFile($serviceLocator->get("Admin\Files\FilesService"));
+        return $f;
     }
 
 

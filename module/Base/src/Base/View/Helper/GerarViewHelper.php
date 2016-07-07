@@ -47,9 +47,9 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
             }
             if ($element->hasAttribute('placeholder')) {
                 $element->setAttribute('placeholder', $this->view->translate($element->getAttribute('placeholder')));
-             }
+            }
             if (!empty($element->getLabel())) {
-                  self::$labels["{{{$key}}}"] = $this->view->HtmlTag("label")->setAttributes(array("class" => "field-label {$visible}", "for" => $element->getName()))->setText($this->view->translate($element->getLabel()));
+                self::$labels["{{{$key}}}"] = $this->view->HtmlTag("label")->setAttributes(array("class" => "field-label {$visible}", "for" => $element->getName()))->setText($this->view->translate($element->getLabel()));
             }
             // verifica se e um campo hidden [oculto]
             $blokcs = $element->getAttribute('data-position');
@@ -61,9 +61,8 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
                 self::$html["#{$key}#"] = $this->view->formSubmit($element);
             } elseif ($element->getAttribute('type') === "radio") {
                 $this->setBtn($key);
-                 self::$html["#{$key}#"] = $this->view->FormRadio($element);
-            }
-            else {
+                self::$html["#{$key}#"] = $this->view->FormRadio($element);
+            } else {
                 if ($blokcs === "geral") {
                     $this->setGeral($key, $visible);
                 }
@@ -71,7 +70,14 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
                     $this->setControle($key, $visible);
                 }
                 if ($blokcs === "images") {
-                    self::$html["#imagePreview#"] = \Base\Model\Check::Image($element->getValue(), $element->getValue(), "550", "330", "thumbnail img-responsive preview_IMG");
+                    $base_path = $this->ServiceLocator->getServiceLocator()->get('request')->getServer('DOCUMENT_ROOT');
+                    if (!is_file(sprintf("%s%sdist%s%s", $base_path, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $element->getValue()))):
+                        $caminho = "no_avatar.jpg";
+                    else:
+                        $caminho = $element->getValue();
+                    endif;
+                    self::$html["#imagePreview#"] = \Base\Model\Check::Image($caminho, $element->getValue(), "420", "330", "thumbnail img-responsive preview_IMG");
+                    $element->setAttribute('type', 'hidden')->setLabel("");
                     $this->setImages($key, $visible);
                 }
                 if ($blokcs === "galery") {
@@ -97,14 +103,16 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
             $box->appendText($this->view->HtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-08')->setText(PHP_EOL)->appendText($boxGeral)->appendText(PHP_EOL))->appendText(PHP_EOL);
         endif;
 
-        if (self::$controle):
-            $boxControle = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$controle), "title" => "CONTROLES", "class" => "box-default", 'icone' => 'clipboard'));
-            $box->appendText($this->view->HtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxControle)->appendText(PHP_EOL))->appendText(PHP_EOL);
-        endif;
         if (self::$images):
             $boxImages = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$images), "title" => "IMAGENS", "class" => "box-default", 'icone' => 'clipboard'));
             $box->appendText($this->view->HtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxImages)->appendText(PHP_EOL))->appendText(PHP_EOL);
         endif;
+        
+        if (self::$controle):
+            $boxControle = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$controle), "title" => "CONTROLES", "class" => "box-default", 'icone' => 'clipboard'));
+            $box->appendText($this->view->HtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxControle)->appendText(PHP_EOL))->appendText(PHP_EOL);
+        endif;
+
         if (self::$galery):
             $boxGalery = $this->boxWidgets(array('body' => implode(PHP_EOL, self::$galery), "title" => "GALERIAS", "class" => "box-default", 'icone' => 'clipboard'));
             $box->appendText($this->view->HtmlTag("div")->setClass('box box-full-12 box-medium-06 box-large-04')->setText(PHP_EOL)->appendText($boxGalery)->appendText(PHP_EOL))->appendText(PHP_EOL);
@@ -197,8 +205,6 @@ class GerarViewHelper extends \Zend\View\Helper\AbstractHelper {
         $box->setText(PHP_EOL)->appendText($box_header)->appendText(PHP_EOL)->appendText($box_body)->appendText(PHP_EOL)->appendText($box_footer)->appendText(PHP_EOL);
         return $box;
     }
-
-  
 
     public function setTable($tabela) {
         $table = $this->sl->get("Table");

@@ -17,7 +17,7 @@ use Zend\Db\TableGateway\TableGateway;
  */
 class BsUsersTable extends \Base\Model\AbstractTable {
 
-   
+   protected $file;
 
     function __construct(TableGateway $tableGateway) {
         $this->tableGateway = $tableGateway;
@@ -50,5 +50,11 @@ class BsUsersTable extends \Base\Model\AbstractTable {
         $data['password'] = $password;
         $this->tableGateway->update($data, array('id' => (int) $usr_id));
     }
+    
+    public function setFile($file) {
+        $this->file = $file;
+    }
+
+
 
 }

@@ -7,24 +7,50 @@ namespace Auth\Model;
  */
 class BsUsers extends \Base\Model\AbstractModel {
 
-    private $email;
-    private $phone;
-    private $facebook;
-    private $twitter;
-    private $cidade;
-    private $endereco;
-    private $bairro;
-    private $images;
-    private $role_id;
-    private $password;
-    private $usr_registration_token;
+    protected $tipo = '';
+    protected $cnpj = '';
+    protected $rg = '';
+    protected $ie = '';
+    protected $phone = '';
+    protected $whatsapp = '';
+    protected $email = '';
+    protected $facebook = '';
+    protected $twitter = '';
+    protected $cidade = '';
+    protected $cep = '';
+    protected $bairro = '';
+    protected $endereco = '';
+    protected $images = '';
+    protected $role_id = '5';
+    protected $password = '';
+    protected $usr_registration_token = '';
 
-    public function getEmail() {
-        return $this->email;
+    public function getTipo() {
+        return $this->tipo;
+    }
+
+    public function getCnpj() {
+        return $this->cnpj;
+    }
+
+    public function getRg() {
+        return $this->rg;
+    }
+
+    public function getIe() {
+        return $this->ie;
     }
 
     public function getPhone() {
         return $this->phone;
+    }
+
+    public function getWhatsapp() {
+        return $this->whatsapp;
+    }
+
+    public function getEmail() {
+        return $this->email;
     }
 
     public function getFacebook() {
@@ -39,12 +65,16 @@ class BsUsers extends \Base\Model\AbstractModel {
         return $this->cidade;
     }
 
-    public function getEndereco() {
-        return $this->endereco;
+    public function getCep() {
+        return $this->cep;
     }
 
     public function getBairro() {
         return $this->bairro;
+    }
+
+    public function getEndereco() {
+        return $this->endereco;
     }
 
     public function getImages() {
@@ -63,13 +93,38 @@ class BsUsers extends \Base\Model\AbstractModel {
         return $this->usr_registration_token;
     }
 
-    public function setEmail($email) {
-        $this->email = $email;
+    public function setTipo($tipo) {
+        $this->tipo = $tipo;
+        return $this;
+    }
+
+    public function setCnpj($cnpj) {
+        $this->cnpj = $cnpj;
+        return $this;
+    }
+
+    public function setRg($rg) {
+        $this->rg = $rg;
+        return $this;
+    }
+
+    public function setIe($ie) {
+        $this->ie = $ie;
         return $this;
     }
 
     public function setPhone($phone) {
         $this->phone = $phone;
+        return $this;
+    }
+
+    public function setWhatsapp($whatsapp) {
+        $this->whatsapp = $whatsapp;
+        return $this;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
         return $this;
     }
 
@@ -88,13 +143,18 @@ class BsUsers extends \Base\Model\AbstractModel {
         return $this;
     }
 
-    public function setEndereco($endereco) {
-        $this->endereco = $endereco;
+    public function setCep($cep) {
+        $this->cep = $cep;
         return $this;
     }
 
     public function setBairro($bairro) {
         $this->bairro = $bairro;
+        return $this;
+    }
+
+    public function setEndereco($endereco) {
+        $this->endereco = $endereco;
         return $this;
     }
 

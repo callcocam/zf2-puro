@@ -26,7 +26,7 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-               
+                
             
             ),
             'invokables' => array(

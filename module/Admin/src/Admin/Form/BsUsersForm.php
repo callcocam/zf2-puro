@@ -23,6 +23,148 @@ class BsUsersForm extends AbstractForm {
         parent::__construct($serviceLocator, "BsUsersForm");
         $this->setInputFilter(new BsUsersFilter($serviceLocator));
 
+        //############################################ informações da coluna cidade ##############################################:
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'empresa',
+                    'options' => array(
+                        'label' => 'FILD_EMPRESA_LABEL',
+                        'value_options' => $this->setValueOption('Operacional\Model\BsCompaniesTable'),
+                        "disable_inarray_validator" => true,
+                    ),
+                    'attributes' => array(
+                        'id' => 'empresa',
+                        'title' => 'FILD_EMPRESA_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_EMPRESA_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+        //############################################ informações da coluna tipo ##############################################:
+        $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'tipo',
+                    'options' => array(
+                        'label' => 'FILD_TIPO_LABEL',
+                        'value_options' => ['0' => "FISICA", '1' => 'JURIDICA'],
+                    ),
+                    'attributes' => array(
+                        'id' => 'tipo',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_TIPO_PLACEHOLDER',
+                        'requerid' => '1',
+                        'value' => '0',
+                        'title' => 'tipo',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+        //############################################ informações da coluna cnpj ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'cnpj',
+                    'options' => array(
+                        'label' => 'FILD_CNPJ_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'cnpj',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_CNPJ_PLACEHOLDER',
+                        'requerid' => '1',
+                        'title' => 'cnpj',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+
+
+        //############################################ informações da coluna rg ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'rg',
+                    'options' => array(
+                        'label' => 'FILD_RG_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'rg',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_RG_PLACEHOLDER',
+                        'requerid' => '1',
+                        'title' => 'rg',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+
+        //############################################ informações da coluna ie ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'ie',
+                    'options' => array(
+                        'label' => 'FILD_IE_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'ie',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_IE_PLACEHOLDER',
+                        'requerid' => '1',
+                        'title' => 'ie',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+        //############################################ informações da coluna phone ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'phone',
+                    'options' => array(
+                        'label' => 'FILD_PHONE_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'phone',
+                        'title' => 'FILD_PHONE_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_PHONE_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+        //############################################ informações da coluna whatsapp ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'whatsapp',
+                    'options' => array(
+                        'label' => 'FILD_WHATSAPP_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'whatsapp',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_WHATSAPP_PLACEHOLDER',
+                        'requerid' => '1',
+                        'title' => 'whatsapp',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
         //############################################ informações da coluna email ##############################################:
         $this->add(
@@ -83,26 +225,65 @@ class BsUsersForm extends AbstractForm {
                 )
         );
 
-
-        //############################################ informações da coluna phone ##############################################:
+        //############################################ informações da coluna cidade ##############################################:
         $this->add(
                 array(
-                    'type' => 'text',
-                    'name' => 'phone',
+                    'type' => 'select',
+                    'name' => 'cidade',
                     'options' => array(
-                        'label' => 'FILD_PHONE_LABEL',
+                        'label' => 'FILD_CIDADE_LABEL',
+                        'value_options' => $this->setValueOption('Operacional\Model\BsCidadesTable'),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
-                        'id' => 'phone',
-                        'title' => 'FILD_PHONE_DESC',
+                        'id' => 'cidade',
+                        'title' => 'FILD_CIDADE_DESC',
                         'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_PHONE_PLACEHOLDER',
+                        'placeholder' => 'FILD_CIDADE_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
 
+        //############################################ informações da coluna cep ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'cep',
+                    'options' => array(
+                        'label' => 'FILD_CEP_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'cep',
+                        'class' => 'form-control',
+                        'placeholder' => 'FILD_CEP_PLACEHOLDER',
+                        'requerid' => '1',
+                        'title' => 'cep',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
+
+        //############################################ informações da coluna bairro ##############################################:
+        $this->add(
+                array(
+                    'type' => 'text',
+                    'name' => 'bairro',
+                    'options' => array(
+                        'label' => 'FILD_BAIRRO_LABEL',
+                    ),
+                    'attributes' => array(
+                        'id' => 'bairro',
+                        'title' => 'FILD_BAIRRO_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_BAIRRO_PLACEHOLDER',
+                        'data-access' => '3',
+                        'data-position' => 'geral',
+                    ),
+                )
+        );
 
         //############################################ informações da coluna endereco ##############################################:
         $this->add(
@@ -124,46 +305,9 @@ class BsUsersForm extends AbstractForm {
         );
 
 
-        //############################################ informações da coluna bairro ##############################################:
-        $this->add(
-                array(
-                    'type' => 'text',
-                    'name' => 'bairro',
-                    'options' => array(
-                        'label' => 'FILD_BAIRRO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'bairro',
-                        'title' => 'FILD_BAIRRO_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_BAIRRO_PLACEHOLDER',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
 
 
-        //############################################ informações da coluna cidade ##############################################:
-        $this->add(
-                array(
-                    'type' => 'select',
-                    'name' => 'cidade',
-                    'options' => array(
-                        'label' => 'FILD_CIDADE_LABEL',
-                        'value_options' => $this->setValueOption('Operacional\Model\BsCidadesTable'),
-                        "disable_inarray_validator" => true,
-                    ),
-                    'attributes' => array(
-                        'id' => 'cidade',
-                        'title' => 'FILD_CIDADE_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_CIDADE_PLACEHOLDER',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
+
 
 
         //############################################ informações da coluna images_users ##############################################:
@@ -189,40 +333,23 @@ class BsUsersForm extends AbstractForm {
         //############################################ informações da coluna password ##############################################:
         $this->add(
                 array(
-                    'type' => 'password',
+                    'type' => 'hidden',
                     'name' => 'password',
                     'options' => array(
-                        'label' => 'FILD_PASSWORD_LABEL',
+                    // 'label' => 'FILD_PASSWORD_LABEL',
                     ),
                     'attributes' => array(
                         'id' => 'password',
-                        'title' => 'FILD_PASSWORD_DESC',
+                        //'title' => 'FILD_PASSWORD_DESC',
                         'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_PASSWORD_PLACEHOLDER',
+                        // 'placeholder' => 'FILD_PASSWORD_PLACEHOLDER',
+                        'value'=>  md5(date("YmdHis")),
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
 
-        //############################################ informações da coluna usr_password_confirm ##############################################:
-        $this->add(
-                array(
-                    'type' => 'password',
-                    'name' => 'usr_password_confirm',
-                    'options' => array(
-                        'label' => 'FIL_USER_CONFIRM_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'usr_password_confirm',
-                        'title' => 'FILD_USER_CONFIRM_DESC',
-                        'class' => 'form-control input-sm',
-                        'placeholder' => 'FILD_USER_CONFIRM_PLACEHOLDER',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
 
         //############################################ informações da coluna usr_registration_token ##############################################:
         $this->add(
@@ -241,17 +368,23 @@ class BsUsersForm extends AbstractForm {
         //############################################ informações da coluna role_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'hidden',
+                    'type' => 'select',
                     'name' => 'role_id',
+                    'options' => array(
+                        'label' => 'FILD_ROLE_ID_LABEL',
+                        'value_options' => $this->getRoles($this->authservice['role_id']),
+                        "disable_inarray_validator" => true,
+                    ),
                     'attributes' => array(
                         'id' => 'role_id',
-                        'value' => '5',
+                        'title' => 'FILD_ROLE_ID_DESC',
+                        'class' => 'form-control input-sm',
+                        'placeholder' => 'FILD_ROLE_ID_PLACEHOLDER',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
                 )
         );
-
 
         //############################################ informações da coluna description ##############################################:
         $this->add(
@@ -273,22 +406,6 @@ class BsUsersForm extends AbstractForm {
                     ),
                 )
         );
-
-
-       
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Csrf',
-            'name' => 'security',
-            'options' => array(
-                'csrf_options' => array(
-                    'timeout' => 600
-                )
-            ),
-            'attributes' => array(
-                'data-access' => '3',
-                'data-position' => 'geral',
-            )
-        ));
     }
 
 }
