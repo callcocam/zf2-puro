@@ -6,7 +6,7 @@ class AppIcheck extends SIGAMessages {
         //esconde repete periodos qtdade 
         escondeContaPagaRecebida(_this)
         {
-             if( _this.eq(0).attr('checked'))
+             if( _this.val()==1)
               {
                 $('.cl-paga').fadeOut('slow');
                 $('.cl-repete').fadeOut('slow');
@@ -19,13 +19,13 @@ class AppIcheck extends SIGAMessages {
               else
               {
                 $('.cl-paga').fadeIn('slow');
-               
+               $('#publish_up').val($('#publish_down').val());
                 
               }
         }
         escondeRepete(_this)
         {
-          if(_this.eq(0).attr('checked'))
+          if(_this.val()==0)
           {
             $("#qtdade").val(1);
             $('#periodos').val(3);

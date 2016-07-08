@@ -55,17 +55,18 @@ class BsContasReceberTable extends AbstractTable {
                 if ($date != date("Y-m-d 00:00:00")) {//se a data for diferente de hoje
                     $data->setCaixaId(0);
                     $data->setState('1');
-                    $data->setSituacao('1');
+                    $data->setSituacao('2');
                 } else {
-                    $data->setSituacao('0');
+                    $data->setSituacao('1');
                 }
                 $data->setQtdade($index);
                 parent::insert($data);
                 $new_date = strtotime(date("Y-m-d 00:00:00", strtotime($date)) . " {$periodo_alias}");
                 $data->setPublishUp(date("Y-m-d 00:00:00", $new_date));
+                $data->setPublishDown(date("Y-m-d 00:00:00", $new_date));
                 $parcela = str_pad($index, 2, '0', STR_PAD_LEFT);
                 if($this->getResult()):
-                    $this->error = "{$parcela} DESPESAS FORAM ADIDIONADAS COM SUCESSO, PERILDO {$periodo_title}";
+                    $this->error = "{$parcela} RECEITAS FORAM ADIDIONADAS COM SUCESSO, PERILDO {$periodo_title}";
                 endif;
                 
             }
@@ -76,7 +77,7 @@ class BsContasReceberTable extends AbstractTable {
     }
 
     public function update(\Base\Model\AbstractModel $data) {
-        if (!$data->getSituacao()):
+        if ($data->getSituacao()==1):
             $caixa = $this->getSqlPerson('bs_caixa', array('state' => 0, 'created' => date("Y-m-d")));
             if ($caixa):
                 $data->setCaixaId($caixa['id']);

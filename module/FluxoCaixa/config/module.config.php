@@ -96,7 +96,9 @@ return array(
 'FluxoCaixa\Model\BsContaSituacaoTable'=>'FluxoCaixa\Factory\BsContaSituacaoFactoryTable',
 'FluxoCaixa\Form\BsContaPeriodosForm'=>'FluxoCaixa\Factory\BsContaPeriodosFormFactory',
 'BsContaPeriodosTableGateway'=>'FluxoCaixa\Factory\BsContaPeriodosFactory',
-'FluxoCaixa\Model\BsContaPeriodosTable'=>'FluxoCaixa\Factory\BsContaPeriodosFactoryTable',   
+'FluxoCaixa\Model\BsContaPeriodosTable'=>'FluxoCaixa\Factory\BsContaPeriodosFactoryTable',  
+'FluxoCaixa\Form\PagarForm' =>'FluxoCaixa\Factory\PagarFormFactory',
+'FluxoCaixa\Form\ReceberForm' =>'FluxoCaixa\Factory\ReceberFormFactory',
            
         ),
         "aliases" => array(// !!! aliases not alias

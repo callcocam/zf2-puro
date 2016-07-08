@@ -65,11 +65,11 @@ class DdlController extends \Base\Controller\AbstractController {
                 $this->gerarcampos($tabela, "alias", "text", "Apelido", "controle");
                 $table->addColumn(new Column\Date("created"));
                 $this->gerarcampos($tabela, "created", "text", "Data Da Criação", "datas");
-                $table->addColumn(new Column\Datetime("modified"));
+                $table->addColumn(new Column\Date("modified"));
                 $this->gerarcampos($tabela, "modified", "hidden");
-                $table->addColumn(new Column\Datetime("publish_up"));
+                $table->addColumn(new Column\Date("publish_up"));
                 $this->gerarcampos($tabela, "publish_up", "text", "Inicia Uma Publicação", "datas");
-                $table->addColumn(new Column\Datetime("publish_down"));
+                $table->addColumn(new Column\Date("publish_down"));
                 $this->gerarcampos($tabela, "publish_down", "text", "Finaliza Uma Publicação", "datas");
                 $table->addConstraint(new Constraint\PrimaryKey('id'));
                 $table->addConstraint(

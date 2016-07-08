@@ -466,6 +466,16 @@ class AbstractForm extends \Zend\Form\Form {
         return $valueOptions;
     }
 
+    public function setOneValue($table,$index='id',$valor='title', $condicao = array('state' => '0')) {
+      $dados = $this->getServiceLocator()->get($table)->findOneBy($condicao);
+      $valueOptions="NADA FOI ENCONTRA DO";
+      if($dados):
+        $value =$dados->toArray();
+
+       endif;
+       return $valueOptions;
+    }
+
     public function getCaixa()
     {
         $cache= $this->serviceLocator->get('Cache');

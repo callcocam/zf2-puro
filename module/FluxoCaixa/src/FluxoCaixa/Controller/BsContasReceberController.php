@@ -36,6 +36,7 @@ class BsContasReceberController extends AbstractController {
            $this->Messages()->flashInfo("OPPSS!, VOÇÊ DEVE ABRIR UMA CONTA PARA O DIA DE HOJE {$this->getServiceLocator()->get('DateFormat')->getDate()}");
             return $this->redirect()->toRoute($this->route, array('controller' => 'bs-caixa', 'action' => 'index'));
         endif;
+        $this->form = "FluxoCaixa\Form\ReceberForm";
         $this->template = "/admin/admin/editar";
         return parent::editarAction();
     }

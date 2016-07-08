@@ -8,6 +8,7 @@ namespace FluxoCaixa\Model;
 
 use Base\Model\AbstractTable;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
 /**
  * SIGA-Smart
@@ -24,6 +25,30 @@ class BsCaixaTable extends AbstractTable {
     public function __construct(TableGateway $tableGateway) {
         // Configurações iniciais do TableModel
         $this->tableGateway = $tableGateway;
+    }
+
+    public function findALL($condicao = array(), $paginated = true) {
+        $result = parent::findALL($condicao, $paginated);
+        $resultSet = [];
+        foreach ($result as $key => $value) {
+           $said_real=$this->getSqlPersonItem('bs_contas_pagar', array("caixa_id" => $value['id'], 'situacao' => '1'), ['said_real' => new \Zend\Db\Sql\Expression('SUM(valor)')], 'said_real');
+            $bs['said_real'] = number_format($said_real, 2, ',', '.');
+
+            $said_previsto=$this->getSqlPersonItem('bs_contas_pagar', array("caixa_id" => $value['id'], 'situacao' => '2'), ['said_previsto' => new \Zend\Db\Sql\Expression('SUM(valor)')], 'said_previsto');
+            $bs['said_previsto'] = number_format($said_previsto, 2, ',', '.');
+
+            $ent_real= $this->getSqlPersonItem('bs_contas_receber', array("caixa_id" => $value['id'], 'situacao' => '1'), ['ent_real' => new \Zend\Db\Sql\Expression('SUM(valor)')], 'ent_real');
+            $bs['ent_real'] = number_format($ent_real, 2, ',', '.');
+
+            $ent_previsto=$this->getSqlPersonItem('bs_contas_receber', array("caixa_id" => $value['id'], 'situacao' => '2'), ['ent_previsto' => new \Zend\Db\Sql\Expression('SUM(valor)')], 'ent_previsto');
+            $bs['ent_previsto'] = number_format($ent_previsto, 2, ',', '.');
+
+            $resultSet[$key] = array_replace($result->getItem($key), $bs);
+        }
+        $paginator = new \Zend\Paginator\Paginator(new
+                \Zend\Paginator\Adapter\ArrayAdapter($resultSet)
+        );
+        return $paginator;
     }
 
     public function insert(\Base\Model\AbstractModel $data) {

@@ -30,6 +30,10 @@ abstract class AbstractTable {
     protected $class;
     protected $msg;
     protected $extraWere = array();
+    protected $from = array();
+    protected $group = null;
+    protected $order = null;
+    protected $distinct = null;
 
     abstract function __construct(TableGateway $tableGateway);
 
@@ -42,8 +46,11 @@ abstract class AbstractTable {
         $table = $this->tableGateway->getTable();
         //abrir zend db sql e iniciar um select
         $select = $this->tableGateway->getSql()->select();
-        // verificar se não estamos listando a tabela de usuario
-        //e unir com a tabella de usuario qualquer outra tabela
+        if ($this->columns):
+            $select->columns($this->columns);
+        // 
+        endif;
+        //unir com a tabella de usuario
         $select->join(array('user' => 'bs_users'), "{$table}.modified_by=user.id ", array('editor_by' => 'title'), 'left');
         //verificar e monta as união de tabelas vindas de sua table real
         if ($this->joins):
@@ -51,7 +58,7 @@ abstract class AbstractTable {
                 $select->join($j['tabela'], $j['w'], $j['c'], $j['predicate']);
             endforeach;
         endif;
-    
+
         if (isset($condicao['busca'])):
             $select->where($this->filtro($condicao, $table));
         else:
@@ -66,8 +73,16 @@ abstract class AbstractTable {
                 $select->where($w);
             endforeach;
         endif;
-
-        $select->order("{$table}.id DESC");
+        if (!empty($this->group)):
+            $select->group($this->group);
+        endif;
+        if (!empty($this->order)):
+            $select->order($this->order);
+        endif;
+        if (!empty($this->distinct)):
+            $select->quantifier($this->distinct);
+        endif;
+//        echo "<pre>{$select->getSqlString($this->getTableGateway()->getAdapter()->getPlatform())}</pre>";
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $results = $statement->execute();
         $resultSet = new \Zend\Db\ResultSet\ResultSet(); //$this->tableGateway->getResultSetPrototype();
@@ -81,16 +96,17 @@ abstract class AbstractTable {
     protected function filtro($condicao, $table) {
 
         $where = new \Zend\Db\Sql\Where();
-        if (isset($condicao['state']) && (int) $condicao['state'] >= 0):
-            $where->equalTo("{$table}.state", $condicao['state']);
+        if (isset($condicao['state'])):
+            $operator=$condicao['state']>=0?"=":">";
+            $where->addPredicate(new \Zend\Db\Sql\Predicate\Operator("{$table}.state", $operator,$condicao['state']));
         endif;
 
         if (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && empty($condicao['publish_down'])):
-            $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime("2050-01-01")));
+            $where->equalTo("{$table}.publish_up", date('Y-m-d 00:00:00', strtotime($condicao['created'])));
         elseif (isset($condicao['created']) && !empty($condicao['created']) && isset($condicao['publish_down']) && !empty($condicao['publish_down'])):
-            $where->between("{$table}.created", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
+            $where->between("{$table}.publish_up", date('Y-m-d', strtotime($condicao['created'])), date('Y-m-d', strtotime($condicao['publish_down'])));
         endif;
-          if (isset($condicao['busca']) && !empty($condicao['busca'])):
+        if (isset($condicao['busca']) && !empty($condicao['busca'])):
             $where->expression("CONCAT_WS(' ', {$table}.title, {$table}.description) LIKE ?", "%{$condicao['busca']}%");
         endif;
         return $where;
@@ -261,14 +277,27 @@ abstract class AbstractTable {
         return $row['maxId'] + 1;
     }
 
-    public function getSqlPerson($table, $condicao = array('state' => 0)) {
+    public function getSqlPerson($table, $condicao = array('state' => 0),$columns=array("*")) {
         $sql = new \Zend\Db\Sql\Sql($this->tableGateway->getAdapter());
         $select = $sql->select();
         $select->from($table);
+        $select->columns($columns);
         $select->where($condicao);
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
         return $results->current();
+    }
+    
+    public function getSqlPersonItem($table, $condicao = array('state' => 0),$columns=array("*"),$fild='id') {
+        $sql = new \Zend\Db\Sql\Sql($this->tableGateway->getAdapter());
+        $select = $sql->select();
+        $select->from($table);
+        $select->columns($columns);
+        $select->where($condicao);
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        $item=$results->current();
+        return $item[$fild];
     }
 
     public function getError() {

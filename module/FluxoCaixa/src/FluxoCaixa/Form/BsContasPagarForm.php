@@ -76,7 +76,8 @@ class BsContasPagarForm extends AbstractForm
                     'class' => 'css-label ',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','id','title',array('tipo'=>'DS')),
+                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','alias','title',array('tipo'=>'SD')),
+                "disable_inarray_validator" => true,
             ),
             'attributes' => array(
                 'id' => 'situacao',
@@ -100,6 +101,7 @@ class BsContasPagarForm extends AbstractForm
                     'id' => 'sliderLabel',
                 ),
                 'value_options' => $this->setCustonValueOption('FluxoCaixa\Model\BsContaRepeteTable','alias','title'),
+                "disable_inarray_validator" => true,
             ),
             'attributes' => array(
                 'id' => 'repete',
@@ -122,6 +124,7 @@ class BsContasPagarForm extends AbstractForm
                     'options' => array(
                         'label' => 'FILD_PERIODOS_LABEL',
                         'value_options'=> $this->setCustonValueOption('FluxoCaixa\Model\BsContaPeriodosTable','id','title'),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'periodos',
@@ -170,6 +173,7 @@ class BsContasPagarForm extends AbstractForm
                     'options' => array(
                         'label' => 'FILD_CONTA_ID_LABEL',
                         'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsContasTable'),
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'conta_id',
@@ -192,6 +196,7 @@ class BsContasPagarForm extends AbstractForm
                     'options' => array(
                         'label' => 'FILD_PLANO_CONTA_ID_LABEL',
                           'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsPlanosContasTable",array('state' => '0', 'parent_id' => '','tipo'=>'1')),
+                          "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'plano_conta_id',
@@ -214,6 +219,7 @@ class BsContasPagarForm extends AbstractForm
                     'options' => array(
                         'label' => 'FILD_CENTRO_CUSTO_ID_LABEL',
                          'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsCentroCustoTable",array('state' => '0', 'parent_id' => '')),
+                         "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'centro_custo_id',
@@ -236,7 +242,8 @@ class BsContasPagarForm extends AbstractForm
         	                    'name' => 'fornecedor_id',
         	                    'options' => array(
                      			'label' => 'FILD_FORNECEDOR_ID_LABEL',
-                     			  'value_options'=>[]
+                     			  'value_options'=>$this->setValueOption('ControleEstoque\Model\BsFornecedoresTable'),
+                                  "disable_inarray_validator" => true,
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'fornecedor_id',
@@ -260,7 +267,8 @@ class BsContasPagarForm extends AbstractForm
                     'name' => 'fpgto_id',
                     'options' => array(
                         'label' => 'FILD_FPGTO_ID_LABEL',
-                        'value_options'=>[]
+                        'value_options'=>['0'=>'--SELECIONAR--'],
+                        "disable_inarray_validator" => true,
                     ),
                     'attributes' => array(
                         'id' => 'fpgto_id',
@@ -285,6 +293,7 @@ class BsContasPagarForm extends AbstractForm
         	                    'options' => array(
                      			'label' => 'FILD_TIPO_CUSTO_LABEL',
                      			'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoCustoTable'),
+                                "disable_inarray_validator" => true,
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'tipo_custo',
@@ -307,6 +316,7 @@ class BsContasPagarForm extends AbstractForm
         	                    'options' => array(
                      			'label' => 'FILD_APROPRIACAO_CUSTO_LABEL',
                      			'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsApropriacaoCustoTable'),
+                                "disable_inarray_validator" => true,
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'apropriacao_custo',
@@ -329,6 +339,7 @@ class BsContasPagarForm extends AbstractForm
         	                    'options' => array(
                      			'label' => 'FILD_TIPO_DOCUMENTO_LABEL',
                      			  'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoDocumentoTable'),
+                                  "disable_inarray_validator" => true,
                      		   	 ),
         	                    'attributes' => array(
                                         'id'=>'tipo_documento',

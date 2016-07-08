@@ -59,6 +59,7 @@ extract($user);
                     $implode = "{{" . implode("}}&{{", array_keys($value)) . "}}";
                     $keys = explode("&", $implode);
                    // var_dump($keys);
+                    $value['state']=(int)$value['state']?"ARQUIVADO/DESPUBLICADO":"ATIVO/PUBLICADO";
                     if (array_key_exists("images", $value)) {
                         $images = $value['images'];
                         $value['images'] = $this->HtmlTag("img")->setAttributes(array(
@@ -66,6 +67,7 @@ extract($user);
                             'title' => $value['title'],
                             'src' => "/dist/tim.php?src=/uploads/{$images}&w=370&h=200"
                         ));
+
                         $value['title'] = \Base\Model\Check::Words($value['title'], 3);
                         $html[] = str_replace(array_values($keys), array_values($value), $partial);
                     } else {

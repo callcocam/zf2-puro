@@ -16,7 +16,7 @@ return array(
     'static_salt' => 'aFGQ475SDsdfsaf2342',
     'Log' => array(
         'notificationMail' => array(
-            'notify' => TRUE,
+            'notify' => FALSE,
             'priorities' => array(
                 '0' => 'Emergency',
                 '2' => 'Critical',

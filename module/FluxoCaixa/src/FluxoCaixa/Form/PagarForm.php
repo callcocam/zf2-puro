@@ -1,8 +1,8 @@
 <?php
-
 /**
  * @license © 2005 - 2016 by Zend Technologies Ltd. All rights reserved.
  */
+
 
 namespace FluxoCaixa\Form;
 
@@ -14,18 +14,20 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * Esta class foi gerada via Zend\Code\Generator.
  */
-class BsContasReceberForm extends AbstractForm {
+class PagarForm extends AbstractForm
+{
 
     /**
      * construct do Table
      *
      * @return Base\Form\AbstractForm
      */
-    public function __construct($serviceLocator, array $options = array()) {
+    public function __construct($serviceLocator, array $options = array())
+    {
         // Configurações iniciais do Form
-        parent::__construct($serviceLocator, "BsContasReceber", $options);
-        $this->setInputFilter(new BsContasReceberFilter());
-        //############################################ informações da coluna caixa_id ##############################################:
+        parent::__construct($serviceLocator, "BsContasPagar", $options);
+        $this->setInputFilter(new  BsContasPagarFilter());
+                    //############################################ informações da coluna caixa_id ##############################################:
         $this->add(
                 array(
                     'type' => 'hidden',
@@ -44,8 +46,6 @@ class BsContasReceberForm extends AbstractForm {
                     ),
                 )
         );
-
-
 //############################################ informações da coluna valor ##############################################:
         $this->add(
                 array(
@@ -66,7 +66,7 @@ class BsContasReceberForm extends AbstractForm {
                 )
         );
 
-          //############################################ informações da coluna situacao ##############################################:
+        //############################################ informações da coluna situacao ##############################################:
         $this->add(array(
             'type' => 'radio',
             'name' => 'situacao',
@@ -76,8 +76,7 @@ class BsContasReceberForm extends AbstractForm {
                     'class' => 'css-label ',
                     'id' => 'sliderLabel',
                 ),
-                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','alias','title',array('tipo'=>'ET')),
-                "disable_inarray_validator" => true,
+                'value_options' =>  $this->setCustonValueOption('FluxoCaixa\Model\BsContaSituacaoTable','alias','title',array('tipo'=>'SD')),
             ),
             'attributes' => array(
                 'id' => 'situacao',
@@ -86,23 +85,17 @@ class BsContasReceberForm extends AbstractForm {
                 'title' => 'situacao',
                 'data-access' => '3',
                 'data-position' => 'geral',
-                'class' => 'css-checkbox situacao',
+                'class' => 'css-checkbox',
             )
         ));
 
         //############################################ informações da coluna repete ##############################################:
         $this->add(array(
-            'type' => 'radio',
+            'type' => 'hidden',
             'name' => 'repete',
             'options' => array(
                 'label' => 'FILD_REPETE_LABEL',
-                'label_attributes' => array(
-                    'class' => 'css-label',
-                    'id' => 'sliderLabel',
-                ),
-                'value_options' => $this->setCustonValueOption('FluxoCaixa\Model\BsContaRepeteTable','alias','title'),
-                "disable_inarray_validator" => true,
-            ),
+               ),
             'attributes' => array(
                 'id' => 'repete',
                 'requerid' => '1',
@@ -110,30 +103,26 @@ class BsContasReceberForm extends AbstractForm {
                 'title' => 'situacao',
                 'data-access' => '3',
                 'data-position' => 'geral',
-                'class' => 'css-checkbox  repete',
+                'class' => 'css-checkbox',
             )
         ));
-
 
 
 
         //############################################ informações da coluna periodos ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'periodos',
                     'options' => array(
                         'label' => 'FILD_PERIODOS_LABEL',
-                        'value_options'=>   $this->setCustonValueOption('FluxoCaixa\Model\BsContaPeriodosTable','id','title'),
-                        "disable_inarray_validator" => true,
-                    ),
+                      ),
                     'attributes' => array(
                         'id' => 'periodos',
                         'class' => 'form-control',
                         'placeholder' => 'FILD_PERIODOS_PLACEHOLDER',
                         'requerid' => '1',
                         'title' => 'periodos',
-                          'value'=>'+1 month',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -144,7 +133,7 @@ class BsContasReceberForm extends AbstractForm {
         //############################################ informações da coluna qtdade ##############################################:
         $this->add(
                 array(
-                    'type' => 'Number',
+                    'type' => 'text',
                     'name' => 'qtdade',
                     'options' => array(
                         'label' => 'FILD_QTDADE_LABEL',
@@ -154,13 +143,10 @@ class BsContasReceberForm extends AbstractForm {
                         'class' => 'form-control',
                         'placeholder' => 'FILD_QTDADE_PLACEHOLDER',
                         'requerid' => '1',
-                        'value'=>'1',
                         'title' => 'qtdade',
                         'data-access' => '3',
                         'data-position' => 'geral',
-                         'min' => '1',
-                        'max' => '12',
-                        'step' => '1', // default step interval is 1
+                        
                     ),
                 )
         );
@@ -169,12 +155,11 @@ class BsContasReceberForm extends AbstractForm {
         //############################################ informações da coluna conta_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'conta_id',
                     'options' => array(
                         'label' => 'FILD_CONTA_ID_LABEL',
-                        'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsContasTable'),
-                        "disable_inarray_validator" => true,
+                        
                     ),
                     'attributes' => array(
                         'id' => 'conta_id',
@@ -192,13 +177,11 @@ class BsContasReceberForm extends AbstractForm {
         //############################################ informações da coluna plano_conta_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'plano_conta_id',
                     'options' => array(
                         'label' => 'FILD_PLANO_CONTA_ID_LABEL',
-                          'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsPlanosContasTable",array('state' => '0', 'parent_id' => '','tipo'=>'0')),
-                          "disable_inarray_validator" => true,
-                    ),
+                          ),
                     'attributes' => array(
                         'id' => 'plano_conta_id',
                         'class' => 'form-control',
@@ -215,19 +198,17 @@ class BsContasReceberForm extends AbstractForm {
         //############################################ informações da coluna centro_custo_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'centro_custo_id',
                     'options' => array(
                         'label' => 'FILD_CENTRO_CUSTO_ID_LABEL',
-                         'value_options'=>$this->setValueOpt("FluxoCaixa\Model\BsCentroCustoTable",array('state' => '0', 'parent_id' => '')),
-                         "disable_inarray_validator" => true,
-                    ),
+                          ),
                     'attributes' => array(
                         'id' => 'centro_custo_id',
                         'class' => 'form-control',
                         'placeholder' => 'FILD_CENTRO_CUSTO_ID_PLACEHOLDER',
                         'requerid' => '1',
-                        'title' => 'centro_custo_id',
+                       'title' => 'centro_custo_id',
                         'data-access' => '3',
                         'data-position' => 'geral',
                     ),
@@ -235,39 +216,38 @@ class BsContasReceberForm extends AbstractForm {
         );
 
 
-        //############################################ informações da coluna cliente_id ##############################################:
-        $this->add(
-                array(
-                    'type' => 'select',
-                    'name' => 'cliente_id',
-                    'options' => array(
-                        'label' => 'FILD_CLIENTE_ID_LABEL',
-                        'value_options'=>$this->setValueOption('Admin\Model\BsUsersTable',array('state' =>'0')),
-                        "disable_inarray_validator" => true,
-                    ),
-                    'attributes' => array(
-                        'id' => 'cliente_id',
-                        'class' => 'form-control',
-                        'placeholder' => 'FILD_CLIENTE_ID_PLACEHOLDER',
-                        'requerid' => '1',
-                        'title' => 'cliente_id',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
+
+                    //############################################ informações da coluna fornecedor_id ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'hidden',
+        	                    'name' => 'fornecedor_id',
+        	                    'options' => array(
+                     			'label' => 'FILD_FORNECEDOR_ID_LABEL',
+                     			 	 ),
+        	                    'attributes' => array(
+                                        'id'=>'fornecedor_id',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_FORNECEDOR_ID_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'fornecedor_id',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
 
 
+                    //############################################ informações da coluna fpgto_id ##############################################:
+        		
         //############################################ informações da coluna fpgto_id ##############################################:
         $this->add(
                 array(
-                    'type' => 'select',
+                    'type' => 'hidden',
                     'name' => 'fpgto_id',
                     'options' => array(
                         'label' => 'FILD_FPGTO_ID_LABEL',
-                        'value_options'=>[''=>'--SELECIONE--'],
-                        "disable_inarray_validator" => true,
-                    ),
+                     ),
                     'attributes' => array(
                         'id' => 'fpgto_id',
                         'class' => 'form-control',
@@ -281,56 +261,106 @@ class BsContasReceberForm extends AbstractForm {
         );
 
 
-        //############################################ informações da coluna tipo_documento ##############################################:
-        $this->add(
-                    array(
-                        'type' => 'select',
-                        'name' => 'tipo_documento',
-                        'options' => array(
-                        'label' => 'FILD_TIPO_DOCUMENTO_LABEL',
-                        'value_options'=>$this->setValueOption('FluxoCaixa\Model\BsTipoDocumentoTable'),
-                        "disable_inarray_validator" => true,
-                            ),
-                        'attributes' => array(
-                                'id'=>'tipo_documento',
-                                'class'=>'form-control',
-                                'placeholder'=>'FILD_TIPO_DOCUMENTO_PLACEHOLDER',
-                                'requerid'=>'1',
-                                'title'=>'tipo_documento',
-                                'data-access'=>'3',
-                                'data-position'=>'geral',
-                            ),
-                    )
-                );
-        	            
-       //############################################ informações da coluna num_documento ##############################################:
-        $this->add(
-                array(
-                    'type' => 'text',
-                    'name' => 'num_documento',
-                    'options' => array(
-                        'label' => 'FILD_NUM_DOCUMENTO_LABEL',
-                    ),
-                    'attributes' => array(
-                        'id' => 'num_documento',
-                        'class' => 'form-control',
-                        'placeholder' => 'FILD_NUM_DOCUMENTO_PLACEHOLDER',
-                        'requerid' => '1',
-                        'title' => 'num_documento',
-                        'data-access' => '3',
-                        'data-position' => 'geral',
-                    ),
-                )
-        );
-        
+
+
+                    //############################################ informações da coluna tipo_custo ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'hidden',
+        	                    'name' => 'tipo_custo',
+        	                    'options' => array(
+                     			'label' => 'FILD_TIPO_CUSTO_LABEL',
+                     		  	 ),
+        	                    'attributes' => array(
+                                        'id'=>'tipo_custo',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_TIPO_CUSTO_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'tipo_custo',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
+
+
+                    //############################################ informações da coluna apropriacao_custo ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'hidden',
+        	                    'name' => 'apropriacao_custo',
+        	                    'options' => array(
+                     			'label' => 'FILD_APROPRIACAO_CUSTO_LABEL',
+                     			 ),
+        	                    'attributes' => array(
+                                        'id'=>'apropriacao_custo',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_APROPRIACAO_CUSTO_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'apropriacao_custo',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
+
+
+                    //############################################ informações da coluna tipo_documento ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'hidden',
+        	                    'name' => 'tipo_documento',
+        	                    'options' => array(
+                     			'label' => 'FILD_TIPO_DOCUMENTO_LABEL',
+                     			 	 ),
+        	                    'attributes' => array(
+                                        'id'=>'tipo_documento',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_TIPO_DOCUMENTO_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'tipo_documento',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
+
+
+                    //############################################ informações da coluna num_documento ##############################################:
+        		    $this->add(
+        	                array(
+        	                    'type' => 'text',
+        	                    'name' => 'num_documento',
+        	                    'options' => array(
+                     			'label' => 'FILD_NUM_DOCUMENTO_LABEL',
+                     		   	 ),
+        	                    'attributes' => array(
+                                        'id'=>'num_documento',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'FILD_NUM_DOCUMENTO_PLACEHOLDER',
+                                        'requerid'=>'1',
+                                        'title'=>'num_documento',
+                                        'data-access'=>'3',
+                                        'data-position'=>'geral',
+            	        	        ),
+        	                )
+        	            );
+
         if ($this->has('caixa_id')):
             $this->get('caixa_id')->setValue($this->getCaixa());
         endif;
-        if ($this->has('publish_up')):
-            $this->get('publish_up')->setLabel("FILD_PUBLISH_UP_START_LABEL");
+         if ($this->has('publish_up')):
+            $this->get('publish_up')->setAttribute('id','publish_up_update');
+        endif;
+        if ($this->has('publish_down')):
+             $this->get('publish_down')->setAttribute('id','publish_down_update');
+        endif;
+         if ($this->has('created')):
+             $this->get('created')->setAttribute('id','created_update');
         endif;
     }
-    public function setValueOpt($tabela,$condicao=array('state'=>'0')) {
+    
+public function setValueOpt($tabela,$condicao=array('state'=>'0')) {
         $table = $this->getServiceLocator()->get($tabela);
         $dados = $table->findBy($condicao);
         $valueOptions = array('' => '--CATEGORIA PAI--');
